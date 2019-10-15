@@ -1,6 +1,9 @@
 package memeid
 
+import cats.Show
 import cats.kernel._
+import cats.syntax.eq._
+import cats.instances.long._
 
 import java.lang.Long
 import java.util.{UUID => JUUID}
@@ -40,5 +43,9 @@ object UUID {
         Long.compareUnsigned(x.lsb, y.lsb)
       }
     }
+  }
+
+  implicit val showForUUID: Show[UUID] = new Show[UUID]{
+    def show(u: UUID): String = u.juuid.toString
   }
 }
