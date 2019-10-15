@@ -10,7 +10,7 @@ import org.scalacheck.Prop.forAll
 object UUIDSpec extends Properties("UUID") {
   property("round-trips as java.util.UUID") = forAll { (msb: Long, lsb: Long) => 
     val uuid = UUID(msb, lsb)
-    val asJava = UUID.toJava(uuid)
+    val asJava = uuid.toJava
     val asUuid = UUID.fromJava(asJava)
     uuid === asUuid
   }
@@ -27,14 +27,14 @@ object UUIDSpec extends Properties("UUID") {
       anotherUuid
     ) === -1 &&
     Order[java.util.UUID].compare(
-      UUID.toJava(aUuid),
-      UUID.toJava(anotherUuid)
+      aUuid.toJava,
+      anotherUuid.toJava
     ) === 1
   }  
 
   property("hash code is consistent with java.util.UUID") = forAll { (msb: Long, lsb: Long) =>
     val uuid = UUID(msb, lsb)
-    val asJava = UUID.toJava(uuid)
+    val asJava = uuid.toJava
     Hash[UUID].hash(uuid) === Hash[java.util.UUID].hash(asJava)
   }
 
