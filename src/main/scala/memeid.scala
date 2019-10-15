@@ -9,10 +9,12 @@ import java.lang.Long
 import java.util.{UUID => JUUID}
 
 case class UUID(private val juuid: JUUID) {
-  @inline 
+  @inline
   def msb: Long = juuid.getMostSignificantBits
   @inline
   def lsb: Long = juuid.getLeastSignificantBits
+  @inline
+  def variant: Int = juuid.variant()
 
   def toJava: JUUID =
     juuid
@@ -32,7 +34,8 @@ object UUID {
 
   /* Typeclass instances */
 
-  implicit val orderForUUID: Order[UUID] with Hash[UUID] = new Order[UUID] with Hash[UUID]{
+  implicit val orderForUUID: Order[UUID] with Hash[UUID] = new Order[UUID]
+  with Hash[UUID] {
     override def eqv(x: UUID, y: UUID): Boolean = x.juuid.equals(y.juuid)
     def hash(x: UUID): Int = x.juuid.hashCode
     def compare(x: UUID, y: UUID): Int = {
@@ -45,7 +48,7 @@ object UUID {
     }
   }
 
-  implicit val showForUUID: Show[UUID] = new Show[UUID]{
+  implicit val showForUUID: Show[UUID] = new Show[UUID] {
     def show(u: UUID): String = u.juuid.toString
   }
 }
