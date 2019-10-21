@@ -8,7 +8,7 @@ import cats.instances.long._
 import java.lang.Long
 import java.util.{UUID => JUUID}
 
-abstract class Version
+sealed trait  Version
 case object Null extends Version
 case object V1 extends Version
 case object V2 extends Version
