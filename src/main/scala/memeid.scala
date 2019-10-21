@@ -8,13 +8,35 @@ import cats.instances.long._
 import java.lang.Long
 import java.util.{UUID => JUUID}
 
+abstract class Version
+case object Null extends Version
+case object V1 extends Version
+case object V2 extends Version
+case object V3 extends Version
+case object V4 extends Version
+case object V5 extends Version
+case class UnknownVersion(v: Int) extends Version
+
 case class UUID(private val juuid: JUUID) {
   @inline
   def msb: Long = juuid.getMostSignificantBits
+
   @inline
   def lsb: Long = juuid.getLeastSignificantBits
+
   @inline
-  def variant: Int = juuid.variant()
+  def variant: Int = juuid.variant
+
+  @inline
+  def version: Version = juuid.version match {
+    case 0 => Null
+    case 1 => V1
+    case 2 => V2
+    case 3 => V3
+    case 4 => V4
+    case 5 => V5
+    case x => UnknownVersion(x)
+  }
 
   def toJava: JUUID =
     juuid

@@ -46,4 +46,19 @@ object UUIDSpec extends Properties("UUID") {
     !(uuid.variant === 2)
   }
 
+  property("Null UUID version and variant are Null") = forAll { (_: Long) =>
+    UUID.empty.version == Null &&
+    UUID.empty.variant == 0
+  }
+
+  property("Possible versions are converted to ADT") = forAll { (msb: Long, lsb: Long) =>
+    val uuid = UUID(msb, lsb)
+    uuid.version == Null |
+    uuid.version == V1 |
+    uuid.version == V2 |
+    uuid.version == V3 |
+    uuid.version == V4 |
+    uuid.version == V5 |
+    uuid.version.isInstanceOf[UnknownVersion]
+  }
 }
