@@ -8,7 +8,7 @@ import cats.instances.uuid._
 import cats.kernel._
 import cats.syntax.contravariant._
 
-final case class UUID(private val juuid: JUUID) {
+final class UUID private[memeid] (private[memeid] val juuid: JUUID) {
 
   @inline
   def msb: Long = juuid.getMostSignificantBits
@@ -35,16 +35,17 @@ final case class UUID(private val juuid: JUUID) {
 }
 
 object UUID {
+
   // The `null` UUID
-  val empty: UUID = UUID(new JUUID(0, 0))
+  val empty: UUID = new UUID(new JUUID(0, 0))
 
   /* Constructors */
 
   def apply(msb: Long, lsb: Long): UUID =
-    UUID(new JUUID(msb, lsb))
+    new UUID(new JUUID(msb, lsb))
 
   def fromJava(u: JUUID): UUID =
-    UUID(u)
+    new UUID(u)
 
   /* Typeclass instances */
 
