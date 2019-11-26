@@ -30,8 +30,6 @@ final class UUID private[memeid] (private[memeid] val juuid: JUUID) {
     case x => Version.UnknownVersion(x)
   }
 
-  def toJava: JUUID =
-    juuid
 }
 
 object UUID {
@@ -43,9 +41,6 @@ object UUID {
 
   def from(msb: Long, lsb: Long): UUID =
     new UUID(new JUUID(msb, lsb))
-
-  def fromJava(u: JUUID): UUID =
-    new UUID(u)
 
   /* Typeclass instances */
 
