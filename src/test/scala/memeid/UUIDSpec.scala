@@ -1,56 +1,65 @@
 package memeid
 
+import java.util.{UUID => JUUID}
+
 import cats._
 import cats.instances.all._
-import cats.syntax.eq._
 
-import org.scalacheck.Prop.forAll
-import org.scalacheck._
+import memeid.Version._
+import org.specs2.ScalaCheck
+import org.specs2.mutable.Specification
 
-object UUIDSpec extends Properties("UUID") {
+class UUIDSpec extends Specification with ScalaCheck {
 
-  property("compares properly using unsigned comparison") = forAll { (lsb: Long) =>
-    // specifically chosen since they will not compare correctly unless using unsigned comparison
-    val msb         = 0x20000000
-    val lmsb        = 0xE0000000
-    val aUuid       = UUID.from(msb.toLong, lsb)
-    val anotherUuid = UUID.from(lmsb.toLong, lsb)
+  "Order[UUID]" should {
 
-    Order[UUID].compare(aUuid, anotherUuid) === -1 &&
-    Order[java.util.UUID].compare(aUuid.juuid, anotherUuid.juuid) === 1
+    "compare using unsigned comparison" in prop { lsb: Long =>
+      // specifically chosen since they will not compare correctly unless using unsigned comparison
+      val uuid1 = UUID.from(0x20000000.toLong, lsb)
+      val uuid2 = UUID.from(0xE0000000.toLong, lsb)
+
+      (Order[UUID].compare(uuid1, uuid2) must be equalTo -1) and
+        (Order[JUUID].compare(uuid1.juuid, uuid2.juuid) must be equalTo 1)
+    }
+
   }
 
-  property("hash code is consistent with java.util.UUID") = forAll { (msb: Long, lsb: Long) =>
-    val uuid  = UUID.from(msb, lsb)
-    val juuid = uuid.juuid
-    Hash[UUID].hash(uuid) === Hash[java.util.UUID].hash(juuid)
-  }
-
-  property("detect a valid UUID variant") = forAll { (msb: Long) =>
-    val lsb: Long = 0x9000000000000000L
-    val uuid      = UUID.from(msb, lsb)
-    uuid.variant === 2
-  }
-
-  property("detect an invalid UUID variant") = forAll { (msb: Long) =>
-    val lsb: Long = 0xC000000000000000L
-    val uuid      = UUID.from(msb, lsb)
-    !(uuid.variant === 2)
-  }
-
-  property("Null UUID version and variant are Null") = forAll { (_: Long) =>
-    UUID.empty.version == Version.Null &&
-    UUID.empty.variant == 0
-  }
-
-  property("Possible versions are converted to ADT") = forAll { (msb: Long, lsb: Long) =>
+  "Hash[UUID] returns hash code consistent with java.util.UUID" in prop { (msb: Long, lsb: Long) =>
     val uuid = UUID.from(msb, lsb)
-    uuid.version == Version.Null |
-      uuid.version == Version.V1 |
-      uuid.version == Version.V2 |
-      uuid.version == Version.V3 |
-      uuid.version == Version.V4 |
-      uuid.version == Version.V5 |
-      uuid.version.isInstanceOf[Version.UnknownVersion]
+
+    Hash[UUID].hash(uuid) must be equalTo Hash[JUUID].hash(uuid.juuid)
   }
+
+  "UUID.variant" should {
+    "detect a valid variant" in prop { msb: Long =>
+      val uuid = UUID.from(msb, 0x9000000000000000L)
+
+      uuid.variant must be equalTo 2
+    }
+
+    "detect an invalid UUID variant" in prop { msb: Long =>
+      val uuid = UUID.from(msb, 0xC000000000000000L)
+
+      uuid.variant must not be equalTo(2)
+    }
+  }
+
+  "UUID.null" should {
+
+    "have Null version" in {
+      UUID.empty.version must be equalTo Null
+    }
+
+    "have variant 0" in {
+      UUID.empty.variant must be equalTo 0
+    }
+
+  }
+
+  "All possible versions are converted to ADT" in prop { (msb: Long, lsb: Long) =>
+    val uuid = UUID.from(msb, lsb)
+
+    uuid.version must beOneOf(Null, V1, V2, V3, V4, V5, UnknownVersion(uuid.juuid.version()))
+  }
+
 }

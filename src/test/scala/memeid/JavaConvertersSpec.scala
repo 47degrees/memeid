@@ -1,19 +1,19 @@
 package memeid
 
-import org.scalacheck.Prop.forAll
+import java.util.{UUID => JUUID}
+
 import memeid.JavaConverters._
-import org.scalacheck.Properties
+import org.specs2.ScalaCheck
+import org.specs2.mutable.Specification
 
-import cats.syntax.eq._
+class JavaConvertersSpec extends Specification with ScalaCheck {
 
-object JavaConvertersSpec extends Properties("UUID") {
-
-  property("convert between java.util <-> memeid") = forAll { (msb: Long, lsb: Long) =>
+  "We can convert between java.util <-> memeid" in prop { (msb: Long, lsb: Long) =>
     val uuid = UUID.from(msb, lsb)
 
-    val juuid = uuid.asJava
+    val juuid: JUUID = uuid.asJava
 
-    uuid === juuid.asScala
+    uuid must be equalTo juuid.asScala
   }
 
 }
