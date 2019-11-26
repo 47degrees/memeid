@@ -1,23 +1,24 @@
 package memeid
 
-import cats.Show
-import cats.kernel._
-import cats.syntax.eq._
-import cats.instances.long._
-
 import java.lang.Long
 import java.util.{UUID => JUUID}
 
-sealed trait  Version
-case object Null extends Version
-case object V1 extends Version
-case object V2 extends Version
-case object V3 extends Version
-case object V4 extends Version
-case object V5 extends Version
-case class UnknownVersion(v: Int) extends Version
+import cats.Show
+import cats.instances.uuid._
+import cats.kernel._
+import cats.syntax.contravariant._
 
-case class UUID(private val juuid: JUUID) {
+sealed trait Version
+case object Null                        extends Version
+case object V1                          extends Version
+case object V2                          extends Version
+case object V3                          extends Version
+case object V4                          extends Version
+case object V5                          extends Version
+final case class UnknownVersion(v: Int) extends Version
+
+final case class UUID(private val juuid: JUUID) {
+
   @inline
   def msb: Long = juuid.getMostSignificantBits
 
@@ -56,21 +57,18 @@ object UUID {
 
   /* Typeclass instances */
 
-  implicit val orderForUUID: Order[UUID] with Hash[UUID] = new Order[UUID]
-  with Hash[UUID] {
-    override def eqv(x: UUID, y: UUID): Boolean = x.juuid.equals(y.juuid)
-    def hash(x: UUID): Int = x.juuid.hashCode
-    def compare(x: UUID, y: UUID): Int = {
-      val mc = Long.compareUnsigned(x.msb, y.msb)
-      if (mc != 0) {
-        mc
-      } else {
-        Long.compareUnsigned(x.lsb, y.lsb)
+  implicit val UUIDHashOrderInstance: Order[UUID] with Hash[UUID] = new Order[UUID] with Hash[UUID] {
+
+    override def hash(x: UUID): Int = Hash[JUUID].hash(x.juuid)
+
+    override def compare(x: UUID, y: UUID): Int =
+      Long.compareUnsigned(x.msb, y.msb) match {
+        case 0 => Long.compareUnsigned(x.lsb, y.lsb)
+        case x => x
       }
-    }
+
   }
 
-  implicit val showForUUID: Show[UUID] = new Show[UUID] {
-    def show(u: UUID): String = u.juuid.toString
-  }
+  implicit val UUIDShowInstance: Show[UUID] = Show[JUUID].contramap(_.juuid)
+
 }
