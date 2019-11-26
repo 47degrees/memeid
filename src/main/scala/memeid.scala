@@ -7,6 +7,7 @@ import cats.Show
 import cats.instances.int._
 import cats.instances.uuid._
 import cats.kernel._
+import cats.syntax.contravariant._
 import cats.syntax.eq._
 
 sealed trait Version
@@ -74,7 +75,6 @@ object UUID {
     }
   }
 
-  implicit val showForUUID: Show[UUID] = new Show[UUID] {
-    def show(u: UUID): String = u.juuid.toString
-  }
+  implicit val UUIDShowInstance: Show[UUID] = Show[JUUID].contramap(_.juuid)
+
 }
