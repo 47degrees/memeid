@@ -2,8 +2,6 @@ package memeid
 
 import cats.Show
 import cats.kernel._
-import cats.syntax.eq._
-import cats.instances.long._
 
 import java.lang.Long
 import java.util.{UUID => JUUID}
