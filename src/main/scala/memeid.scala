@@ -4,11 +4,9 @@ import java.lang.Long
 import java.util.{UUID => JUUID}
 
 import cats.Show
-import cats.instances.int._
 import cats.instances.uuid._
 import cats.kernel._
 import cats.syntax.contravariant._
-import cats.syntax.eq._
 
 sealed trait Version
 case object Null                        extends Version
@@ -59,20 +57,16 @@ object UUID {
 
   /* Typeclass instances */
 
-  implicit val orderForUUID: Order[UUID] with Hash[UUID] = new Order[UUID] with Hash[UUID] {
+  implicit val UUIDHashOrderInstance: Order[UUID] with Hash[UUID] = new Order[UUID] with Hash[UUID] {
 
-    override def eqv(x: UUID, y: UUID): Boolean = x.juuid === y.juuid
+    override def hash(x: UUID): Int = Hash[JUUID].hash(x.juuid)
 
-    override def hash(x: UUID): Int = x.juuid.hashCode
-
-    override def compare(x: UUID, y: UUID): Int = {
-      val mc = Long.compareUnsigned(x.msb, y.msb)
-      if (mc =!= 0) {
-        mc
-      } else {
-        Long.compareUnsigned(x.lsb, y.lsb)
+    override def compare(x: UUID, y: UUID): Int =
+      Long.compareUnsigned(x.msb, y.msb) match {
+        case 0 => Long.compareUnsigned(x.lsb, y.lsb)
+        case x => x
       }
-    }
+
   }
 
   implicit val UUIDShowInstance: Show[UUID] = Show[JUUID].contramap(_.juuid)
