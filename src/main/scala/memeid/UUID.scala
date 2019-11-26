@@ -41,7 +41,7 @@ object UUID {
 
   /* Constructors */
 
-  def apply(msb: Long, lsb: Long): UUID =
+  def from(msb: Long, lsb: Long): UUID =
     new UUID(new JUUID(msb, lsb))
 
   def fromJava(u: JUUID): UUID =
