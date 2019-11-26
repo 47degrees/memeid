@@ -30,6 +30,18 @@ final class UUID private[memeid] (private[memeid] val juuid: JUUID) {
     case x => Version.UnknownVersion(x)
   }
 
+  @SuppressWarnings(Array("scalafix:Disable.equals", "scalafix:Disable.Any"))
+  override def equals(obj: Any): Boolean = obj match {
+    case x: UUID => Order[UUID].eqv(this, x)
+    case _       => false
+  }
+
+  @SuppressWarnings(Array("scalafix:Disable.hashCode"))
+  override def hashCode(): Int = Hash[UUID].hash(this)
+
+  @SuppressWarnings(Array("scalafix:Disable.toString"))
+  override def toString: String = Show[UUID].show(this)
+
 }
 
 object UUID {
