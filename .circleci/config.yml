@@ -38,5 +38,7 @@ jobs:
             - ~/.m2
           key: v1-dependencies--{{ checksum "build.sbt" }}
 
+      - run: cat /dev/null | sbt "fix --check"
+
       # run tests!
       - run: cat /dev/null | sbt test:test
