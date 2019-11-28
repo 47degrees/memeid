@@ -19,17 +19,6 @@ final class UUID private[memeid] (private[memeid] val juuid: JUUID) {
   @inline
   def variant: Int = juuid.variant
 
-  @inline
-  def version: Version = juuid.version match {
-    case 0 => Version.Null
-    case 1 => Version.V1
-    case 2 => Version.V2
-    case 3 => Version.V3
-    case 4 => Version.V4
-    case 5 => Version.V5
-    case x => Version.UnknownVersion(x)
-  }
-
   @SuppressWarnings(Array("scalafix:Disable.equals", "scalafix:Disable.Any"))
   override def equals(obj: Any): Boolean = obj match {
     case x: UUID => Order[UUID].eqv(this, x)

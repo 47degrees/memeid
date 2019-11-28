@@ -5,7 +5,6 @@ import java.util.{UUID => JUUID}
 import cats._
 import cats.instances.all._
 
-import memeid.Version._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
@@ -46,20 +45,10 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "UUID.null" should {
 
-    "have Null version" in {
-      UUID.empty.version must be equalTo Null
-    }
-
     "have variant 0" in {
       UUID.empty.variant must be equalTo 0
     }
 
-  }
-
-  "All possible versions are converted to ADT" in prop { (msb: Long, lsb: Long) =>
-    val uuid = UUID.from(msb, lsb)
-
-    uuid.version must beOneOf(Null, V1, V2, V3, V4, V5, UnknownVersion(uuid.juuid.version()))
   }
 
 }
