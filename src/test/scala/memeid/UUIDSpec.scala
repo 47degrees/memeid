@@ -73,6 +73,50 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   }
 
+  "UUID.is" should {
+
+    "return true only if version is 1" in prop { uuid: UUID.V1 =>
+      (uuid.is[UUID.V1] must beTrue) and
+        (uuid.is[UUID.V2] must beFalse) and
+        (uuid.is[UUID.V3] must beFalse) and
+        (uuid.is[UUID.V4] must beFalse) and
+        (uuid.is[UUID.V5] must beFalse)
+    }
+
+    "return true only if version is 2" in prop { uuid: UUID.V2 =>
+      (uuid.is[UUID.V1] must beFalse) and
+        (uuid.is[UUID.V2] must beTrue) and
+        (uuid.is[UUID.V3] must beFalse) and
+        (uuid.is[UUID.V4] must beFalse) and
+        (uuid.is[UUID.V5] must beFalse)
+    }
+
+    "return true only if version is 3" in prop { uuid: UUID.V3 =>
+      (uuid.is[UUID.V1] must beFalse) and
+        (uuid.is[UUID.V2] must beFalse) and
+        (uuid.is[UUID.V3] must beTrue) and
+        (uuid.is[UUID.V4] must beFalse) and
+        (uuid.is[UUID.V5] must beFalse)
+    }
+
+    "return true only if version is 4" in prop { uuid: UUID.V4 =>
+      (uuid.is[UUID.V1] must beFalse) and
+        (uuid.is[UUID.V2] must beFalse) and
+        (uuid.is[UUID.V3] must beFalse) and
+        (uuid.is[UUID.V4] must beTrue) and
+        (uuid.is[UUID.V5] must beFalse)
+    }
+
+    "return true only if version is 5" in prop { uuid: UUID.V5 =>
+      (uuid.is[UUID.V1] must beFalse) and
+        (uuid.is[UUID.V2] must beFalse) and
+        (uuid.is[UUID.V3] must beFalse) and
+        (uuid.is[UUID.V4] must beFalse) and
+        (uuid.is[UUID.V5] must beTrue)
+    }
+
+  }
+
   "UUID.variant" should {
 
     "detect a valid variant" in prop { msb: Long =>

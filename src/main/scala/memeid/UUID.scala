@@ -37,6 +37,15 @@ sealed trait UUID {
   }
 
   /**
+   * Returns `true` if this UUID matches the provided type;
+   * otherwise, returns `false`.
+   */
+  def is[A <: UUID: ClassTag]: Boolean = this match {
+    case _: A => true
+    case _    => false
+  }
+
+  /**
    * The variant field determines the layout of the [[UUID]].
    *
    * The variant field consists of a variable number of
