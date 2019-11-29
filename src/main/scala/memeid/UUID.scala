@@ -1,6 +1,6 @@
 package memeid
 
-import java.lang.Long
+import java.lang.Long.compareUnsigned
 import java.util.{UUID => JUUID}
 
 import cats.Show
@@ -129,8 +129,8 @@ object UUID {
       override def hash(x: UUID): Int = Hash[JUUID].hash(x.juuid)
 
       override def compare(x: UUID, y: UUID): Int =
-        Long.compareUnsigned(x.msb, y.msb) match {
-          case 0 => Long.compareUnsigned(x.lsb, y.lsb)
+        compareUnsigned(x.msb, y.msb) match {
+          case 0 => compareUnsigned(x.lsb, y.lsb)
           case x => x
         }
 
