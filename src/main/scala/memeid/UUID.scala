@@ -10,18 +10,42 @@ import cats.syntax.contravariant._
 
 import memeid.JavaConverters._
 
+/**
+ * A class that represents an immutable universally unique identifier (UUID).
+ * A UUID represents a 128-bit value.
+ *
+ * @see [[https://tools.ietf.org/html/rfc4122]]
+ */
 sealed trait UUID {
 
   private[memeid] val juuid: JUUID
 
-  @inline
-  def msb: Long = juuid.getMostSignificantBits
+  /** The most significant 64 bits of this UUID's 128 bit value */
+  @inline def msb: Long = juuid.getMostSignificantBits
 
-  @inline
-  def lsb: Long = juuid.getLeastSignificantBits
+  /** The least significant 64 bits of this UUID's 128 bit value */
+  @inline def lsb: Long = juuid.getLeastSignificantBits
 
-  @inline
-  def variant: Int = juuid.variant
+  /**
+   * The variant field determines the layout of the [[UUID]].
+   *
+   * The variant field consists of a variable number of
+   * the most significant bits of octet 8 of the [[UUID]].
+   *
+   * The variant number has the following meaning:
+   *
+   * - '''0''': Reserved for NCS backward compatibility
+   * - '''2''': [[https://tools.ietf.org/html/rfc4122 IETF RFC 4122]]
+   * - '''6''': Reserved, Microsoft Corporation backward compatibility
+   * - '''7''': Reserved for future definition
+   *
+   * Interoperability, in any form, with variants other than the one
+   * defined here is not guaranteed, and is not likely to be an issue in
+   * practice.
+   *
+   * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.1]]
+   */
+  @inline def variant: Int = juuid.variant
 
   @SuppressWarnings(Array("scalafix:Disable.equals", "scalafix:Disable.Any"))
   override def equals(obj: Any): Boolean = obj match {
@@ -94,11 +118,11 @@ object UUID {
       override private[memeid] val juuid: JUUID
   ) extends UUID
 
-  /* Constructors */
-
+  /**
+   * Creates a valid [[UUID]] from two [[Long]] values representing
+   * the most/least significant bits.
+   */
   def from(msb: Long, lsb: Long): UUID = new JUUID(msb, lsb).asScala
-
-  /* Typeclass instances */
 
   implicit val UUIDHashOrderInstance: Order[UUID] with Hash[UUID] =
     new Order[UUID] with Hash[UUID] {

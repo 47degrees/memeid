@@ -15,9 +15,7 @@ import memeid.UUID._
  *
  * The following conversions are supported via `asScala` and `asJava`:
  *
- * {{{
- *  memeid.UUID       <=> java.util.UUID
- * }}}
+ * {{{ memeid.UUID <=> java.util.UUID }}}
  */
 object JavaConverters {
 
