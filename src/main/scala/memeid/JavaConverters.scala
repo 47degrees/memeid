@@ -25,13 +25,13 @@ object JavaConverters {
 
     /** Converts this `java.util.UUID` into a `memeid.UUID` */
     def asScala: UUID = juuid.version() match {
-      case 0 if juuid === empty.juuid => empty
-      case 1                          => new V1(juuid)
-      case 2                          => new V2(juuid)
-      case 3                          => new V3(juuid)
-      case 4                          => new V4(juuid)
-      case 5                          => new V5(juuid)
-      case v                          => new UnknownVersion(v, juuid)
+      case 0 if juuid === Nil.juuid => Nil
+      case 1                        => new V1(juuid)
+      case 2                        => new V2(juuid)
+      case 3                        => new V3(juuid)
+      case 4                        => new V4(juuid)
+      case 5                        => new V5(juuid)
+      case v                        => new UnknownVersion(v, juuid)
     }
 
   }

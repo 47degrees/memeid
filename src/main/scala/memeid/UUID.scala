@@ -39,8 +39,12 @@ sealed trait UUID {
 
 object UUID {
 
-  // The `null` UUID
-  case object empty extends UUID { override val juuid: JUUID = new JUUID(0, 0) }
+  /**
+   * The nil UUID is special form of UUID that is specified to have all 128 bits set to zero.
+   *
+   * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.7]]
+   */
+  case object Nil extends UUID { override val juuid: JUUID = new JUUID(0, 0) }
 
   /**
    * Version 1 UUIDs are those generated using a timestamp and the MAC address of the
