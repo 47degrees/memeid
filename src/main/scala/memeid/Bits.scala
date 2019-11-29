@@ -71,14 +71,14 @@ object Bits {
     }
   }
 
-  /* Load the byte(s) from `num` specified by the `bitmask`. */
-  def loadByte(bitmask: Long, num: Long): Long = {
+  /* Read the byte(s) from `num` specified by the `bitmask`. */
+  def readByte(bitmask: Long, num: Long): Long = {
     val off = maskOffset(bitmask)
     (bitmask >>> off) & (num >>> off)
   }
 
-  /* Deposit the byte(s) from `value` in `num` using the given `bitmask`. */
-  def depositByte(bitmask: Long, num: Long, value: Long): Long = {
+  /* Write the byte(s) from `value` in `num` using the given `bitmask`. */
+  def writeByte(bitmask: Long, num: Long, value: Long): Long = {
     val off     = maskOffset(bitmask)
     val shifted = shiftLeft(value, off)
     (num & ~bitmask) | (bitmask & shifted)
