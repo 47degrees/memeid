@@ -29,6 +29,50 @@ class UUIDSpec extends Specification with ScalaCheck {
     Hash[UUID].hash(uuid) must be equalTo Hash[JUUID].hash(uuid.juuid)
   }
 
+  "UUID.as" should {
+
+    "return Some[UUID.V1] only if version is 1" in prop { uuid: UUID.V1 =>
+      (uuid.as[UUID.V1] must beSome(uuid)) and
+        (uuid.as[UUID.V2] must beNone) and
+        (uuid.as[UUID.V3] must beNone) and
+        (uuid.as[UUID.V4] must beNone) and
+        (uuid.as[UUID.V5] must beNone)
+    }
+
+    "return Some[UUID.V2] only if version is 2" in prop { uuid: UUID.V2 =>
+      (uuid.as[UUID.V1] must beNone) and
+        (uuid.as[UUID.V2] must beSome(uuid)) and
+        (uuid.as[UUID.V3] must beNone) and
+        (uuid.as[UUID.V4] must beNone) and
+        (uuid.as[UUID.V5] must beNone)
+    }
+
+    "return Some[UUID.V3] only if version is 3" in prop { uuid: UUID.V3 =>
+      (uuid.as[UUID.V1] must beNone) and
+        (uuid.as[UUID.V2] must beNone) and
+        (uuid.as[UUID.V3] must beSome(uuid)) and
+        (uuid.as[UUID.V4] must beNone) and
+        (uuid.as[UUID.V5] must beNone)
+    }
+
+    "return Some[UUID.V4] only if version is 4" in prop { uuid: UUID.V4 =>
+      (uuid.as[UUID.V1] must beNone) and
+        (uuid.as[UUID.V2] must beNone) and
+        (uuid.as[UUID.V3] must beNone) and
+        (uuid.as[UUID.V4] must beSome(uuid)) and
+        (uuid.as[UUID.V5] must beNone)
+    }
+
+    "return Some[UUID.V5] only if version is 5" in prop { uuid: UUID.V5 =>
+      (uuid.as[UUID.V1] must beNone) and
+        (uuid.as[UUID.V2] must beNone) and
+        (uuid.as[UUID.V3] must beNone) and
+        (uuid.as[UUID.V4] must beNone) and
+        (uuid.as[UUID.V5] must beSome(uuid))
+    }
+
+  }
+
   "UUID.variant" should {
 
     "detect a valid variant" in prop { msb: Long =>

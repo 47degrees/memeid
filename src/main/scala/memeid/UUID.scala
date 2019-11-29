@@ -3,6 +3,8 @@ package memeid
 import java.lang.Long.compareUnsigned
 import java.util.{UUID => JUUID}
 
+import scala.reflect.ClassTag
+
 import cats.Show
 import cats.instances.uuid._
 import cats.kernel._
@@ -24,6 +26,15 @@ sealed trait UUID {
 
   /** The least significant 64 bits of this UUID's 128 bit value */
   @inline def lsb: Long = juuid.getLeastSignificantBits
+
+  /**
+   * Returns this `UUID` as the provided type if versions match;
+   * otherwise, returns `None`.
+   */
+  def as[A <: UUID: ClassTag]: Option[A] = this match {
+    case a: A => Some(a)
+    case _    => None
+  }
 
   /**
    * The variant field determines the layout of the [[UUID]].
