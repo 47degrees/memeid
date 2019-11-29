@@ -51,6 +51,10 @@ class UUIDSpec extends Specification with ScalaCheck {
       UUID.empty.variant must be equalTo 0
     }
 
+    "have all 128 bits to 0" in {
+      (UUID.empty.msb must be equalTo 0L) and (UUID.empty.lsb must be equalTo 0L)
+    }
+
   }
 
 }
