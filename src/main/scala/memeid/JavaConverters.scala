@@ -19,7 +19,7 @@ object JavaConverters {
   implicit final class JUUIDAsScala(private val juuid: JUUID) extends AnyVal {
 
     /** Converts this `java.util.UUID` into a `memeid.UUID` */
-    def asScala: UUID = new UUID(juuid)
+    def asScala: UUID = UUID.from(juuid.getMostSignificantBits, juuid.getLeastSignificantBits)
 
   }
 

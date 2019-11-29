@@ -8,7 +8,9 @@ import cats.instances.uuid._
 import cats.kernel._
 import cats.syntax.contravariant._
 
-final class UUID private[memeid] (private[memeid] val juuid: JUUID) {
+sealed trait UUID {
+
+  private[memeid] val juuid: JUUID
 
   @inline
   def msb: Long = juuid.getMostSignificantBits
@@ -40,8 +42,8 @@ object UUID {
 
   /* Constructors */
 
-  def from(msb: Long, lsb: Long): UUID =
-    new UUID(new JUUID(msb, lsb))
+  def from(msbs: Long, lsbs: Long): UUID =
+    new UUID { override private[memeid] val juuid = new JUUID(msbs, lsbs) }
 
   /* Typeclass instances */
 

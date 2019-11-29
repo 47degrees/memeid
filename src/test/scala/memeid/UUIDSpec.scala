@@ -30,6 +30,7 @@ class UUIDSpec extends Specification with ScalaCheck {
   }
 
   "UUID.variant" should {
+
     "detect a valid variant" in prop { msb: Long =>
       val uuid = UUID.from(msb, 0x9000000000000000L)
 
@@ -41,9 +42,10 @@ class UUIDSpec extends Specification with ScalaCheck {
 
       uuid.variant must not be equalTo(2)
     }
+
   }
 
-  "UUID.null" should {
+  "UUID.empty" should {
 
     "have variant 0" in {
       UUID.empty.variant must be equalTo 0
