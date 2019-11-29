@@ -57,33 +57,33 @@ class BitsSpec extends Specification with ScalaCheck {
 
   }
 
-  "Bits.loadByte" should {
-    "load the bytes specified by the bitmask" in {
-      Bits.loadByte(Bits.mask(4, 0), 0x0000000FFFFFFFFL) must be equalTo (0xF)
-      Bits.loadByte(Bits.mask(4, 8), 0x0000000FFFFFFFFL) must be equalTo (0xF)
-      Bits.loadByte(Bits.mask(4, 0), Bits.mask(32, 2)) must be equalTo (0xC)
-      Bits.loadByte(Bits.mask(64, 0), 0xFFFFFFFFFFFFFFFFL) must be equalTo (-1)
-      Bits.loadByte(Bits.mask(63, 1), 0xFFFFFFFFFFFFFFFFL) must be equalTo (0x7FFFFFFFFFFFFFFFL)
-      Bits.loadByte(Bits.mask(60, 4), 0xFFFFFFFFFFFFFFFFL) must be equalTo (0x0FFFFFFFFFFFFFFFL)
-      Bits.loadByte(Bits.mask(1, 63), 0xFFFFFFFFFFFFFFFFL) must be equalTo (0x1)
-      Bits.loadByte(Bits.mask(4, 60), 0xFFFFFFFFFFFFFFFFL) must be equalTo (0xF)
-      Bits.loadByte(Bits.mask(4, 60), 0x7FFFFFFFFFFFFFFFL) must be equalTo (7)
+  "Bits.readByte" should {
+    "read the bytes specified by the bitmask" in {
+      Bits.readByte(Bits.mask(4, 0), 0x0000000FFFFFFFFL) must be equalTo (0xF)
+      Bits.readByte(Bits.mask(4, 8), 0x0000000FFFFFFFFL) must be equalTo (0xF)
+      Bits.readByte(Bits.mask(4, 0), Bits.mask(32, 2)) must be equalTo (0xC)
+      Bits.readByte(Bits.mask(64, 0), 0xFFFFFFFFFFFFFFFFL) must be equalTo (-1)
+      Bits.readByte(Bits.mask(63, 1), 0xFFFFFFFFFFFFFFFFL) must be equalTo (0x7FFFFFFFFFFFFFFFL)
+      Bits.readByte(Bits.mask(60, 4), 0xFFFFFFFFFFFFFFFFL) must be equalTo (0x0FFFFFFFFFFFFFFFL)
+      Bits.readByte(Bits.mask(1, 63), 0xFFFFFFFFFFFFFFFFL) must be equalTo (0x1)
+      Bits.readByte(Bits.mask(4, 60), 0xFFFFFFFFFFFFFFFFL) must be equalTo (0xF)
+      Bits.readByte(Bits.mask(4, 60), 0x7FFFFFFFFFFFFFFFL) must be equalTo (7)
     }
 
     "bit access" in {
       (0L to 63L)
-        .map(i => Bits.loadByte(Bits.mask(1, i), 0xFFFFFFFFFFFFFFFFL))
+        .map(i => Bits.readByte(Bits.mask(1, i), 0xFFFFFFFFFFFFFFFFL))
         .toSet must be equalTo (Set(1))
     }
 
     "nibble access" in {
       (0L to 60L)
-        .map(i => Bits.loadByte(Bits.mask(4, i), 0xFFFFFFFFFFFFFFFFL))
+        .map(i => Bits.readByte(Bits.mask(4, i), 0xFFFFFFFFFFFFFFFFL))
         .toSet must be equalTo (Set(0xF))
     }
   }
 
-  "Bits.depositByte" should {
+  "Bits.writeByte" should {
     "allows us to put bytes" in {
       val byte = 0x3L
       val full = 0xFFFFFFFFFFFFFFFFL
@@ -91,8 +91,8 @@ class BitsSpec extends Specification with ScalaCheck {
       (0L to 7L)
         .map(i => {
           val mask      = Bits.mask(4, i * 4)
-          val deposited = Bits.depositByte(mask, full, byte)
-          Bits.loadByte(mask, deposited)
+          val written = Bits.writeByte(mask, full, byte)
+          Bits.readByte(mask, written)
         })
         .toSet must be equalTo (Set(byte))
     }
