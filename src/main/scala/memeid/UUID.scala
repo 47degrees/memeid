@@ -6,7 +6,6 @@ import java.util.{UUID => JUUID}
 import cats.Show
 import cats.instances.uuid._
 import cats.kernel._
-import cats.syntax.contravariant._
 
 import memeid.JavaConverters._
 
@@ -124,8 +123,8 @@ object UUID {
    */
   def from(msb: Long, lsb: Long): UUID = new JUUID(msb, lsb).asScala
 
-  implicit val UUIDHashOrderInstance: Order[UUID] with Hash[UUID] =
-    new Order[UUID] with Hash[UUID] {
+  implicit val UUIDHashOrderShowInstance: Order[UUID] with Hash[UUID] with Show[UUID] =
+    new Order[UUID] with Hash[UUID] with Show[UUID] {
 
       override def hash(x: UUID): Int = Hash[JUUID].hash(x.juuid)
 
@@ -135,8 +134,7 @@ object UUID {
           case x => x
         }
 
+      override def show(t: UUID): String = Show[JUUID].show(t.juuid)
     }
-
-  implicit val UUIDShowInstance: Show[UUID] = Show[JUUID].contramap(_.juuid)
 
 }
