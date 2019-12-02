@@ -63,8 +63,8 @@ object Bits {
   }
 
   private def maskOffsetRec(mask: Long, res: Long): Long = {
-    val remainders = 1L & (mask >> res)
-    if (remainders > 0) {
+    val firstBit = 1L & (mask >> res)
+    if (firstBit > 0) {
       res
     } else {
       maskOffsetRec(mask, res + 1)
