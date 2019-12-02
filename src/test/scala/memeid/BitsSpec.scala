@@ -40,7 +40,6 @@ class BitsSpec extends Specification with ScalaCheck {
       Bits.mask(16, 0) must be equalTo (Bits.mask(5, 11) | Bits.mask(11, 0))
     }
 
-    // todo: use custom arbitrary/gen to create meaningful values instead of discarding so much
     "mask width can be queried" in prop { (width: Long, offset: Long) =>
       ((width > 0) && (offset >= 0) && (width <= 64) && (offset <= 64) && ((width + offset) <= 64)) ==> {
         val mask = Bits.mask(width, offset)
@@ -90,7 +89,7 @@ class BitsSpec extends Specification with ScalaCheck {
 
       (0L to 7L)
         .map(i => {
-          val mask      = Bits.mask(4, i * 4)
+          val mask    = Bits.mask(4, i * 4)
           val written = Bits.writeByte(mask, full, byte)
           Bits.readByte(mask, written)
         })
