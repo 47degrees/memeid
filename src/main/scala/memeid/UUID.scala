@@ -132,5 +132,4 @@ object UUID extends Constructors with CatsInstances {
       val version: Int,
       override private[memeid] val juuid: JUUID
   ) extends UUID
-
 }

@@ -62,6 +62,7 @@ object Bits {
     }
   }
 
+  @tailrec
   private def maskOffsetRec(mask: Long, res: Long): Long = {
     val firstBit = 1L & (mask >> res)
     if (firstBit > 0) {
