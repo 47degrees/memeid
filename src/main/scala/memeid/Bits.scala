@@ -83,4 +83,43 @@ object Bits {
     val shifted = shiftLeft(value, off)
     (num & ~bitmask) | (bitmask & shifted)
   }
+
+  /* Convert to a Long from a byte seq. */
+  def fromBytes(barr: Seq[Byte]): Long =
+    fromBytesRec(0, barr, 8)
+
+  @tailrec
+  private def fromBytesRec(result: Long, bytes: Seq[Byte], count: Int): Long = {
+    if (count == 0)
+      result
+    else
+      fromBytesRec(
+        Bits.writeByte(
+          Bits.mask(8, 8L * (count - 1)),
+          result,
+          bytes.head.toLong
+        ),
+        bytes.tail,
+        count - 1
+      )
+  }
+
+  /* Convert to a byte array from a Long. */
+  def toBytes(x: Long): Array[Byte] =
+    toBytesRec(x, new Array[Byte](8), 7, 0)
+
+  @tailrec
+  private def toBytesRec(x: Long, bytes: Array[Byte], b: Int, key: Int): Array[Byte] = {
+    if (b < 0)
+      bytes
+    else {
+      val read = Bits.readByte(Bits.mask(8, 8L * b), x)
+      bytes(key) = read.toByte
+      toBytesRec(x, bytes, b - 1, key + 1)
+    }
+  }
+
+  object Cast {
+    def sb8(b: Long): Byte = (0x00000000000000ff & b).toByte
+  }
 }
