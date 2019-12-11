@@ -99,19 +99,21 @@ class BitsSpec extends Specification with ScalaCheck {
 
   "Bits.Cast" should {
     "work for significant 8-bit values" in {
-      Bits.Cast.sb8(255) must be equalTo(-1)
-      Bits.Cast.sb8(127) must be equalTo(127)
-      Bits.Cast.sb8(-128) must be equalTo(-128)
-      Bits.Cast.sb8(-254) must be equalTo(2)
+      Bits.Cast.sb8(255) must be equalTo (-1)
+      Bits.Cast.sb8(127) must be equalTo (127)
+      Bits.Cast.sb8(-128) must be equalTo (-128)
+      Bits.Cast.sb8(-254) must be equalTo (2)
     }
   }
 
   "Bits.fromByte and Bits.toByte" should {
     "round-trip" in {
-      val bytes = (0 to 7).map(_ => Bits.Cast.sb8(new scala.util.Random().nextInt(Bits.mask(8, 0).toInt).toLong))
-      val assembled = Bits.fromBytes(bytes)
+      val bytes = (0 to 7).map(
+        _ => Bits.Cast.sb8(new scala.util.Random().nextInt(Bits.mask(8, 0).toInt).toLong)
+      )
+      val assembled    = Bits.fromBytes(bytes)
       val disassembled = Bits.toBytes(assembled)
-      bytes.toList must be equalTo(disassembled.toList)
+      bytes.toList must be equalTo (disassembled.toList)
     }
   }
 }
