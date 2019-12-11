@@ -88,6 +88,7 @@ object Bits {
   def fromBytes(barr: Seq[Byte]): Long =
     fromBytesRec(0, barr, 8)
 
+  @SuppressWarnings(Array("scalafix:DisableSyntax.==", "scalafix:Disable.head"))
   @tailrec
   private def fromBytesRec(result: Long, bytes: Seq[Byte], count: Int): Long = {
     if (count == 0)
