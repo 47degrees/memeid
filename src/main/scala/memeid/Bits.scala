@@ -85,7 +85,7 @@ object Bits {
   }
 
   /* Convert to a Long from a byte seq. */
-  def fromBytes(barr: Seq[Byte]): Long =
+  protected[memeid] def fromBytes(barr: Seq[Byte]): Long =
     fromBytesRec(0, barr, 8)
 
   @SuppressWarnings(Array("scalafix:DisableSyntax.==", "scalafix:Disable.head"))
@@ -106,7 +106,7 @@ object Bits {
   }
 
   /* Convert to a byte array from a Long. */
-  def toBytes(x: Long): Array[Byte] =
+  protected[memeid] def toBytes(x: Long): Array[Byte] =
     toBytesRec(x, new Array[Byte](8), 7, 0)
 
   @tailrec
