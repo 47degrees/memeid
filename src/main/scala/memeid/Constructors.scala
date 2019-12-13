@@ -3,8 +3,7 @@ package memeid
 import java.util.{UUID => JUUID}
 
 import cats.effect._
-import cats.syntax.apply._
-import cats.syntax.flatMap._
+import cats.implicits._
 
 import memeid.JavaConverters._
 import memeid.bits._
@@ -25,6 +24,16 @@ trait Constructors {
    * the most/least significant bits.
    */
   def from(msb: Long, lsb: Long): UUID = new JUUID(msb, lsb).asScala
+
+  /**
+   * Creates a [[memeid.UUID UUID]] from the [[java.util.UUID#toString string standard representation]]
+   * wrapped in a [[scala.util.Right Right]].
+   *
+   * Returns [[scala.util.Left Left]] with the error in case the string doesn't follow the
+   * string standard representation.
+   */
+  def from(s: String): Either[Throwable, UUID] =
+    Either.catchNonFatal(JUUID.fromString(s).asScala)
 
   def v1[F[_]: Sync](implicit N: Node[F], T: Time[F]): F[UUID] =
     T.monotonic.flatMap { ts =>
