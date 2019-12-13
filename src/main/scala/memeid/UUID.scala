@@ -9,8 +9,6 @@ import cats.Show
 import cats.instances.uuid._
 import cats.kernel._
 
-import memeid.JavaConverters._
-
 /**
  * A class that represents an immutable universally unique identifier (UUID).
  * A UUID represents a 128-bit value.
@@ -80,7 +78,7 @@ sealed trait UUID {
 
 }
 
-object UUID {
+object UUID extends Constructors {
 
   /**
    * The nil UUID is special form of UUID that is specified to have all 128 bits set to zero.
@@ -136,12 +134,6 @@ object UUID {
       val version: Int,
       override private[memeid] val juuid: JUUID
   ) extends UUID
-
-  /**
-   * Creates a valid [[UUID]] from two [[Long]] values representing
-   * the most/least significant bits.
-   */
-  def from(msb: Long, lsb: Long): UUID = new JUUID(msb, lsb).asScala
 
   implicit val UUIDHashOrderShowInstance: Order[UUID] with Hash[UUID] with Show[UUID] =
     new Order[UUID] with Hash[UUID] with Show[UUID] {
