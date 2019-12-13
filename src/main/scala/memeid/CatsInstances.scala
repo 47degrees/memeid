@@ -1,19 +1,19 @@
 package memeid
 
 import java.lang.Long.compareUnsigned
-import java.util.{UUID => JUUID}
 
 import cats.Show
-import cats.instances.uuid._
+import cats.instances.uuid.catsStdShowForUUID
 import cats.kernel.{Hash, Order}
+import cats.syntax.contravariant._
 
 @SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))
 trait CatsInstances {
 
-  implicit val UUIDHashOrderShowInstances: Order[UUID] with Hash[UUID] with Show[UUID] =
-    new Order[UUID] with Hash[UUID] with Show[UUID] {
+  implicit val UUIDHashOrderInstances: Order[UUID] with Hash[UUID] =
+    new Order[UUID] with Hash[UUID] {
 
-      override def hash(x: UUID): Int = Hash[JUUID].hash(x.juuid)
+      override def hash(x: UUID): Int = x.juuid.hashCode /* scalafix:ok */ ()
 
       override def compare(x: UUID, y: UUID): Int =
         compareUnsigned(x.msb, y.msb) match {
@@ -21,7 +21,8 @@ trait CatsInstances {
           case x => x
         }
 
-      override def show(t: UUID): String = Show[JUUID].show(t.juuid)
     }
+
+  implicit val UUIDShowInstance: Show[UUID] = catsStdShowForUUID.contramap(_.juuid)
 
 }
