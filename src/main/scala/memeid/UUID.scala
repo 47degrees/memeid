@@ -1,15 +1,11 @@
 package memeid
 
-import java.lang.Long.compareUnsigned
 import java.util.{UUID => JUUID}
 
 import scala.reflect.ClassTag
 
 import cats.Show
-import cats.instances.uuid._
 import cats.kernel._
-
-import memeid.JavaConverters._
 
 /**
  * A class that represents an immutable universally unique identifier (UUID).
@@ -80,7 +76,7 @@ sealed trait UUID {
 
 }
 
-object UUID {
+object UUID extends Constructors with CatsInstances {
 
   /**
    * The nil UUID is special form of UUID that is specified to have all 128 bits set to zero.
@@ -136,25 +132,5 @@ object UUID {
       val version: Int,
       override private[memeid] val juuid: JUUID
   ) extends UUID
-
-  /**
-   * Creates a valid [[UUID]] from two [[Long]] values representing
-   * the most/least significant bits.
-   */
-  def from(msb: Long, lsb: Long): UUID = new JUUID(msb, lsb).asScala
-
-  implicit val UUIDHashOrderShowInstance: Order[UUID] with Hash[UUID] with Show[UUID] =
-    new Order[UUID] with Hash[UUID] with Show[UUID] {
-
-      override def hash(x: UUID): Int = Hash[JUUID].hash(x.juuid)
-
-      override def compare(x: UUID, y: UUID): Int =
-        compareUnsigned(x.msb, y.msb) match {
-          case 0 => compareUnsigned(x.lsb, y.lsb)
-          case x => x
-        }
-
-      override def show(t: UUID): String = Show[JUUID].show(t.juuid)
-    }
 
 }
