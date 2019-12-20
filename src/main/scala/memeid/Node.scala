@@ -85,14 +85,13 @@ object Node {
       implicit
       S: Sync[F]
   ): Node[F] = new Node[F] {
-    def clockSequence: F[Short] = clkSeq
+    val clockSequence = clkSeq
 
-    def nodeId =
-      S.delay({
-        val addresses  = Sys.getNetworkInterfaces ++ Sys.getLocalInterfaces
-        val properties = Sys.getProperties
-        makeNodeId(addresses, properties)
-      })
+    val nodeId = S.pure({
+      val addresses  = Sys.getNetworkInterfaces ++ Sys.getLocalInterfaces
+      val properties = Sys.getProperties
+      makeNodeId(addresses, properties)
+    })
   }
 
   implicit def apply[F[_]: Sync]: Node[F] = fromClockSequence(Sync[F].pure(clockSeq.value))

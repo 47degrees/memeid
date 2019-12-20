@@ -7,7 +7,13 @@ import cats.data._
 import cats.effect._
 import cats.instances.all._
 import cats.syntax.order._
+import cats.syntax.functor._
+import cats.syntax.apply._
+import cats.syntax.flatMap._
 import cats.syntax.parallel._
+
+import memeid.JavaConverters._
+import scala.concurrent.duration._
 
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
@@ -177,6 +183,20 @@ class V1Spec extends Specification with ScalaCheck {
       def ids = NonEmptyList.fromList(List.range(1, 999)).get
       val io  = ids.parTraverse(_ => UUID.v1[IO]).unsafeRunSync.toList
       io.toSet.size must be equalTo ids.size
+    }
+
+    // todo: more thorough testing of this
+    def bench[F[_] : Sync : Clock, A](f: F[A]): F[(Long, A)] = for {
+      start <- Clock[F].monotonic(NANOSECONDS)
+      a <- f
+      end <- Clock[F].monotonic(NANOSECONDS)
+    } yield (end - start, a)
+
+    "be faster than random generation" in {
+      val random: IO[UUID] = IO.delay(JUUID.randomUUID.asScala)
+      val v1: IO[UUID] = UUID.v1[IO]
+      val ((r, _), (v, _)) = (bench(random), bench(v1)).tupled.unsafeRunSync
+      r must be greaterThan v
     }
   }
 }
