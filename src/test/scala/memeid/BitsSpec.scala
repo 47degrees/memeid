@@ -87,13 +87,11 @@ class BitsSpec extends Specification with ScalaCheck {
       val byte = 0x3L
       val full = 0xFFFFFFFFFFFFFFFFL
 
-      (0L to 7L)
-        .map(i => {
-          val mask    = Bits.mask(4, i * 4)
-          val written = Bits.writeByte(mask, full, byte)
-          Bits.readByte(mask, written)
-        })
-        .toSet must be equalTo (Set(byte))
+      (0L to 7L).map { i =>
+        val mask    = Bits.mask(4, i * 4)
+        val written = Bits.writeByte(mask, full, byte)
+        Bits.readByte(mask, written)
+      }.toSet must be equalTo (Set(byte))
     }
   }
 
@@ -108,8 +106,8 @@ class BitsSpec extends Specification with ScalaCheck {
 
   "Bits.fromByte and Bits.toByte" should {
     "round-trip" in {
-      val bytes = (0 to 7).map(
-        _ => Bits.Cast.sb8(new scala.util.Random().nextInt(Bits.mask(8, 0).toInt).toLong)
+      val bytes = (0 to 7).map(_ =>
+        Bits.Cast.sb8(new scala.util.Random().nextInt(Bits.mask(8, 0).toInt).toLong)
       )
       val assembled    = Bits.fromBytes(bytes)
       val disassembled = Bits.toBytes(assembled)

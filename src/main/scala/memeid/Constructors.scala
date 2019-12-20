@@ -3,8 +3,8 @@ package memeid
 import java.util.{UUID => JUUID}
 
 import cats.effect._
-import cats.syntax.flatMap._
 import cats.syntax.apply._
+import cats.syntax.flatMap._
 
 import memeid.JavaConverters._
 import memeid.bits._
@@ -27,16 +27,14 @@ trait Constructors {
   }
 
   def v1[F[_]: Sync: Time](implicit N: Node[F]): F[UUID] =
-    Time[F]
-      .monotonic
-      .flatMap(ts => {
-        val low  = Bits.readByte(Bits.mask(32, 0), ts)
-        val mid  = Bits.readByte(Bits.mask(16, 32), ts)
-        val high = Bits.writeByte(Bits.mask(4, 12), Bits.readByte(Bits.mask(12, 48), ts), 0x1)
-        val msb  = high | (low << 32) | (mid << 16)
-        (N.clockSequence, N.nodeId).mapN({
-          case (clkSeq, nodeId) => new UUID.V1(new JUUID(msb, v1Lsb(clkSeq, nodeId)))
-        })
+    Time[F].monotonic.flatMap { ts =>
+      val low  = Bits.readByte(Bits.mask(32, 0), ts)
+      val mid  = Bits.readByte(Bits.mask(16, 32), ts)
+      val high = Bits.writeByte(Bits.mask(4, 12), Bits.readByte(Bits.mask(12, 48), ts), 0x1)
+      val msb  = high | (low << 32) | (mid << 16)
+      (N.clockSequence, N.nodeId).mapN({
+        case (clkSeq, nodeId) => new UUID.V1(new JUUID(msb, v1Lsb(clkSeq, nodeId)))
       })
+    }
 
 }

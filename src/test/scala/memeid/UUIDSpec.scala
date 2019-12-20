@@ -166,14 +166,16 @@ class V1Spec extends Specification with ScalaCheck {
     }
 
     "not generate the same UUID twice" in {
-      val ids = NonEmptyList.fromList(List.range(1, 10)).get
-      val io = ids.parTraverse(_ => UUID.v1[IO]).unsafeRunSync.toList
+      @SuppressWarnings(Array("scalafix:Disable.get"))
+      def ids = NonEmptyList.fromList(List.range(1, 10)).get
+      val io  = ids.parTraverse(_ => UUID.v1[IO]).unsafeRunSync.toList
       io.toSet.size must be equalTo ids.size
     }
 
     "not generate the same UUID twice with high concurrency" in {
-      val ids = NonEmptyList.fromList(List.range(1, 999)).get
-      val io = ids.parTraverse(_ => UUID.v1[IO]).unsafeRunSync.toList
+      @SuppressWarnings(Array("scalafix:Disable.get"))
+      def ids = NonEmptyList.fromList(List.range(1, 999)).get
+      val io  = ids.parTraverse(_ => UUID.v1[IO]).unsafeRunSync.toList
       io.toSet.size must be equalTo ids.size
     }
   }
