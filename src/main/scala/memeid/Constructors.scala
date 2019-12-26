@@ -61,4 +61,13 @@ trait Constructors {
     val v4lsb = writeByte(mask(2, 62), lsb, 0x2)
     new UUID.V4(new JUUID(v4msb, v4lsb))
   }
+
+  // Construct a SQUUID (random, time-based) UUID.
+  def squuid[F[_]: Sync: Time]: F[UUID] =
+    (v4, Time[F].posix).mapN {
+      case (uuid, ts) => {
+        val timedMsb = (ts << 32) | (uuid.msb & Mask.ub32)
+        new UUID.V4(new JUUID(timedMsb, uuid.lsb))
+      }
+    }
 }

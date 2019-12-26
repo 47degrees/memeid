@@ -9,13 +9,15 @@ import cats.instances.long._
 import cats.syntax.eq._
 
 trait Time[F[_]] {
+  /* A posix timestamp. */
+  def posix: F[Long]
+
   /* A gregorian time monotonic timestamp. */
   def monotonic: F[Long]
 }
 
 object Time {
-
-  def tick: Long =
+  def current: Long =
     System.currentTimeMillis
 
   /* Class to ensure unique gregorian timestamps for a given `resolution`. It works by keeping a sequence of
@@ -39,7 +41,7 @@ object Time {
         if (seq < resolution) {
           next
         } else {
-          update(tick)
+          update(current)
         }
       }
     }
@@ -58,9 +60,10 @@ object Time {
   val state: AtomicReference[State] = new AtomicReference[State](State.empty)
 
   implicit def apply[F[_]: Sync]: Time[F] = new Time[F] {
+    def posix: F[Long] = Sync[F].delay { current / 1000 }
 
     def monotonic: F[Long] = Sync[F].delay {
-      state.updateAndGet(_.update(tick)).timestamp
+      state.updateAndGet(_.update(current)).timestamp
     }
   }
 }
