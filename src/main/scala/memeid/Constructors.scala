@@ -35,6 +35,7 @@ trait Constructors {
   def from(s: String): Either[Throwable, UUID] =
     Either.catchNonFatal(JUUID.fromString(s).asScala)
 
+  // Construct a v1 (time-based) UUID.
   def v1[F[_]: Sync](implicit N: Node[F], T: Time[F]): F[UUID] =
     T.monotonic.flatMap { ts =>
       val low  = readByte(mask(32, 0), ts)
@@ -51,4 +52,13 @@ trait Constructors {
       })
     }
 
+  // Construct a v4 (random) UUID.
+  def v4[F[_]: Sync]: F[UUID] = Sync[F].delay(new UUID.V4(JUUID.randomUUID))
+
+  // Construct a v4 (random) UUID from the given `msb` and `lsb`.
+  def v4[F[_]: Sync](msb: Long, lsb: Long): F[UUID] = Sync[F].delay {
+    val v4msb = writeByte(mask(4, 12), msb, 0x4)
+    val v4lsb = writeByte(mask(2, 62), lsb, 0x2)
+    new UUID.V4(new JUUID(v4msb, v4lsb))
+  }
 }
