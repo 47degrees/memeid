@@ -22,10 +22,10 @@ object Time {
    * will block until it finds a different timestamp to generate new monotonic values. */
   final case class State(seq: Short, ts: Long, resolution: Short) {
     /* Advance to next state, upping the sequence number. */
-    def next: State = State((seq + 1).toShort, ts, resolution)
+    private def next: State = State((seq + 1).toShort, ts, resolution)
 
     /* Reset the state with a new tick. */
-    def reset(newTs: Long): State =
+    private def reset(newTs: Long): State =
       copy(seq = 0, ts = newTs)
 
     /* Update the state with a new tick. */

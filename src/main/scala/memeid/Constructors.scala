@@ -21,16 +21,16 @@ trait Constructors {
 
   // TODO: memoize
   private def v1Lsb(clockSequence: Short, nodeId: Long): Long = {
-    val clkHigh = Bits.writeByte(Bits.mask(2, 6), Bits.readByte(Bits.mask(6, 8), nodeId), 0x2)
-    val clkLow  = Bits.readByte(Bits.mask(8, 0), clockSequence.toLong)
-    Bits.writeByte(Bits.mask(8, 56), Bits.writeByte(Bits.mask(8, 48), nodeId, clkLow), clkHigh)
+    val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), nodeId), 0x2)
+    val clkLow  = readByte(mask(8, 0), clockSequence.toLong)
+    writeByte(mask(8, 56), writeByte(mask(8, 48), nodeId, clkLow), clkHigh)
   }
 
   def v1[F[_]: Sync: Time](implicit N: Node[F]): F[UUID] =
     Time[F].monotonic.flatMap { ts =>
-      val low  = Bits.readByte(Bits.mask(32, 0), ts)
-      val mid  = Bits.readByte(Bits.mask(16, 32), ts)
-      val high = Bits.writeByte(Bits.mask(4, 12), Bits.readByte(Bits.mask(12, 48), ts), 0x1)
+      val low  = readByte(mask(32, 0), ts)
+      val mid  = readByte(mask(16, 32), ts)
+      val high = writeByte(mask(4, 12), readByte(mask(12, 48), ts), 0x1)
       val msb  = high | (low << 32) | (mid << 16)
       (N.clockSequence, N.nodeId).mapN({
         case (clkSeq, nodeId) => new UUID.V1(new JUUID(msb, v1Lsb(clkSeq, nodeId)))

@@ -78,7 +78,7 @@ object Node {
       .map({
         case (d, b) => (d | b).toByte
       })
-    Bits.fromBytes(List(0: Byte, 0: Byte) ++ bytes)
+    fromBytes(List(0: Byte, 0: Byte) ++ bytes)
   }
 
   def fromClockSequence[F[_]](clkSeq: F[Short])(

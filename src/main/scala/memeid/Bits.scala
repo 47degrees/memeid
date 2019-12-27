@@ -1,7 +1,8 @@
-package memeid.bits
+package memeid
 
 import scala.annotation.tailrec
 
+import cats.instances.int._
 import cats.instances.long._
 import cats.syntax.eq._
 
@@ -13,12 +14,12 @@ import cats.syntax.eq._
  *  This is not general-purpose, should not be used outside of the `memeid` implementation since it makes assumptions about the inputs it receives that can't be enforced by the type system.
  *
  */
-object Bits {
-  private def shiftLeft(x: Long, offset: Long) = x << offset
+private[memeid] object bits {
+  def shiftLeft(x: Long, offset: Long): Long = x << offset
 
-  private def setBit(x: Long, n: Long): Long = x | (1L << n)
+  def setBit(x: Long, n: Long): Long = x | (1L << n)
 
-  private def expt2(pow: Long): Long = setBit(0, pow)
+  def expt2(pow: Long): Long = setBit(0, pow)
 
   /* Create a bitmask of the given `width` and `offset`. */
   def mask(width: Long, offset: Long): Long = {
@@ -42,7 +43,7 @@ object Bits {
   }
 
   @tailrec
-  private def maskWidthRec(mask: Long, res: Long): Long = {
+  def maskWidthRec(mask: Long, res: Long): Long = {
     val remaining = 1 & (mask >> res)
     if (remaining === 0) {
       res
@@ -63,7 +64,7 @@ object Bits {
   }
 
   @tailrec
-  private def maskOffsetRec(mask: Long, res: Long): Long = {
+  def maskOffsetRec(mask: Long, res: Long): Long = {
     val firstBit = 1L & (mask >> res)
     if (firstBit > 0) {
       res
@@ -89,15 +90,15 @@ object Bits {
   protected[memeid] def fromBytes(barr: Seq[Byte]): Long =
     fromBytesRec(0, barr, 8)
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.==", "scalafix:Disable.head"))
+  @SuppressWarnings(Array("scalafix:Disable.head"))
   @tailrec
-  private def fromBytesRec(result: Long, bytes: Seq[Byte], count: Int): Long = {
-    if (count == 0)
+  def fromBytesRec(result: Long, bytes: Seq[Byte], count: Int): Long = {
+    if (count === 0)
       result
     else
       fromBytesRec(
-        Bits.writeByte(
-          Bits.mask(8, 8L * (count - 1)),
+        writeByte(
+          mask(8, 8L * (count - 1)),
           result,
           bytes.head.toLong
         ),
@@ -111,11 +112,11 @@ object Bits {
     toBytesRec(x, new Array[Byte](8), 7, 0)
 
   @tailrec
-  private def toBytesRec(x: Long, bytes: Array[Byte], b: Int, key: Int): Array[Byte] = {
+  def toBytesRec(x: Long, bytes: Array[Byte], b: Int, key: Int): Array[Byte] = {
     if (b < 0)
       bytes
     else {
-      val read = Bits.readByte(Bits.mask(8, 8L * b), x)
+      val read = readByte(mask(8, 8L * b), x)
       bytes(key) = read.toByte
       toBytesRec(x, bytes, b - 1, key + 1)
     }
