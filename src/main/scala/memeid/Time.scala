@@ -5,6 +5,8 @@ import java.util.concurrent.atomic.AtomicReference
 import scala.annotation.tailrec
 
 import cats.effect._
+import cats.instances.long._
+import cats.syntax.eq._
 
 trait Time[F[_]] {
   /* A gregorian time monotonic timestamp. */
@@ -30,9 +32,8 @@ object Time {
 
     /* Update the state with a new tick. */
     @tailrec
-    @SuppressWarnings(Array("scalafix:DisableSyntax.!="))
     def update(newTs: Long): State = {
-      if (ts != newTs) {
+      if (ts =!= newTs) {
         reset(newTs)
       } else {
         if (seq < resolution) {
