@@ -1,6 +1,7 @@
 package memeid
 
 import java.util.{UUID => JUUID}
+import java.nio.ByteBuffer
 
 import cats.effect._
 import cats.implicits._
@@ -9,6 +10,7 @@ import memeid.JavaConverters._
 import memeid.bits._
 import memeid.node._
 import memeid.time._
+import memeid.digest._
 
 protected[memeid] object Mask {
   val VERSION: Long = mask(4, 12)

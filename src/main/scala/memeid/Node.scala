@@ -1,7 +1,6 @@
 package memeid.node
 
 import java.net.{InetAddress, NetworkInterface}
-import java.security.MessageDigest
 
 import scala.collection.JavaConverters._
 import scala.util.Random
@@ -12,6 +11,7 @@ import cats.syntax.show._
 import cats.{Eval, Show}
 
 import memeid.bits._
+import memeid.digest._
 
 trait Node[F[_]] {
   // The 16-bit clock sequence for this node
@@ -51,7 +51,6 @@ object Node {
   //  "Obtain a 47-bit cryptographic quality random number, with the least significant bit
   //   of the first octet of the Node-ID set to one."
   def makeNodeId(addresses: Set[String], properties: Map[String, String]): Long = {
-    val digest = MessageDigest.getInstance("MD5")
     val dataForDigest = nodeIdDataSources.foldLeft(addresses)({
       case (acc, key) =>
         properties.get(key) match {
@@ -59,9 +58,7 @@ object Node {
           case Some(v) => acc + v
         }
     })
-    dataForDigest.foreach({ d =>
-      digest.update(d.getBytes)
-    })
+    val digest = Digest.md5(dataForDigest.toList.map(_.getBytes))
     // "A better solution is to obtain a 47-bit cryptographic quality random
     //  number and use it as the low 47-bits of the Node-ID, with the least
     //  significant bit of the first octet of the Node-ID set to one.
@@ -72,7 +69,7 @@ object Node {
     //
     // Note: "first" as in first in network transmission order, so is referring to the least significant octet.
     val multicastBit = List(0x00, 0x00, 0x00, 0x00, 0x00, 0x01)
-    val bytes = digest.digest
+    val bytes = digest
       .take(6)
       .zip(multicastBit)
       .map({
