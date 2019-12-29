@@ -1,16 +1,16 @@
 package memeid
 
-import java.util.{UUID => JUUID}
 import java.nio.ByteBuffer
+import java.util.{UUID => JUUID}
 
 import cats.effect._
 import cats.implicits._
 
 import memeid.JavaConverters._
 import memeid.bits._
+import memeid.digest._
 import memeid.node._
 import memeid.time._
-import memeid.digest._
 
 protected[memeid] object Mask {
   val VERSION: Long = mask(4, 12)
@@ -74,5 +74,30 @@ trait Constructors {
         val timedMsb = (ts << 32) | (uuid.msb & Mask.UB32)
         new UUID.V4(new JUUID(timedMsb, uuid.lsb))
       }
+
+  def v3[F[_]: Sync, A](namespace: UUID, local: A)(implicit D: Digestible[A]): F[UUID] =
+    Sync[F].delay {
+      val digest = MD5.digest
+      digest.update(Digestible[UUID].toByteArray(namespace))
+      digest.digest(D.toByteArray(local))
+      val bytes  = digest.digest
+      val rawMsb = fromBytes(bytes.take(8))
+      val rawLsb = fromBytes(bytes.drop(8))
+      val msb    = writeByte(mask(4, 12), rawMsb, 3)
+      val lsb    = writeByte(mask(2, 52), rawLsb, 0x2)
+      new UUID.V3(new JUUID(msb, lsb))
+    }
+
+  def v5[F[_]: Sync, A](namespace: UUID, local: A)(implicit D: Digestible[A]): F[UUID] =
+    Sync[F].delay {
+      val digest = SHA1.digest
+      digest.update(Digestible[UUID].toByteArray(namespace))
+      digest.digest(D.toByteArray(local))
+      val bytes  = digest.digest
+      val rawMsb = fromBytes(bytes.take(8))
+      val rawLsb = fromBytes(bytes.drop(8))
+      val msb    = writeByte(mask(4, 12), rawMsb, 5)
+      val lsb    = writeByte(mask(2, 52), rawLsb, 0x2)
+      new UUID.V5(new JUUID(msb, lsb))
     }
 }

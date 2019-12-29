@@ -1,22 +1,25 @@
 package memeid.digest
 
+import java.nio.charset.StandardCharsets
+import java.security.MessageDigest
+
 import memeid._
 import memeid.bits._
-
-import java.security.MessageDigest
-import java.nio.charset.StandardCharsets
 
 sealed trait Algorithm {
   def digest: MessageDigest
 }
+
 case object MD5 extends Algorithm {
-  def digest = MessageDigest.getInstance("MD5")
+  def digest: MessageDigest = MessageDigest.getInstance("MD5")
 }
+
 case object SHA1 extends Algorithm {
-  def digest = MessageDigest.getInstance("SHA1")
+  def digest: MessageDigest = MessageDigest.getInstance("SHA1")
 }
 
 trait Digestible[A] { self =>
+
   def contramap[B](f: B => A): Digestible[B] = {
     new Digestible[B] {
       def toByteArray(a: B): Array[Byte] =
@@ -38,6 +41,7 @@ object Digestible {
 }
 
 object Digest {
+
   def hash(algo: Algorithm)(arrs: Seq[Array[Byte]]): Array[Byte] = {
     val digest = algo.digest
     arrs.foreach(b => digest.update(b))
@@ -46,13 +50,4 @@ object Digest {
 
   def md5(arrs: Seq[Array[Byte]]): Array[Byte] =
     hash(MD5)(arrs)
-
-  def sha1(arrs: Seq[Array[Byte]]): Array[Byte] =
-    hash(SHA1)(arrs)
-
-  def digest[A : Digestible](algo: Algorithm, a: A): Array[Byte] = {
-    val digest = algo.digest
-    digest.update(Digestible[A].toByteArray(a))
-    digest.digest
-  }
 }
