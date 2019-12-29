@@ -29,7 +29,7 @@ object JavaConverters {
       case 3                        => new V3(juuid)
       case 4                        => new V4(juuid)
       case 5                        => new V5(juuid)
-      case v                        => new UnknownVersion(v, juuid)
+      case _                        => new UnknownVersion(juuid)
     }
 
   }

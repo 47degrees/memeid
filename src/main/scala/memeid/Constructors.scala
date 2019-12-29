@@ -11,6 +11,13 @@ import memeid.bits._
 import memeid.node._
 import memeid.time._
 
+protected[memeid] object Mask {
+  val VERSION: Long = mask(4, 12)
+
+  def version(msb: Long, version: Long): Long =
+    writeByte(VERSION, msb, version)
+}
+
 trait Constructors {
 
   /**
@@ -19,21 +26,19 @@ trait Constructors {
    */
   def from(msb: Long, lsb: Long): UUID = new JUUID(msb, lsb).asScala
 
-  // TODO: memoize
-  private def v1Lsb(clockSequence: Short, nodeId: Long): Long = {
-    val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), nodeId), 0x2)
-    val clkLow  = readByte(mask(8, 0), clockSequence.toLong)
-    writeByte(mask(8, 56), writeByte(mask(8, 48), nodeId, clkLow), clkHigh)
-  }
-
-  def v1[F[_]: Sync: Time](implicit N: Node[F]): F[UUID] =
-    Time[F].monotonic.flatMap { ts =>
+  def v1[F[_]: Sync](implicit N: Node[F], T: Time[F]): F[UUID] =
+    T.monotonic.flatMap { ts =>
       val low  = readByte(mask(32, 0), ts)
       val mid  = readByte(mask(16, 32), ts)
-      val high = writeByte(mask(4, 12), readByte(mask(12, 48), ts), 0x1)
-      val msb  = high | (low << 32) | (mid << 16)
+      val high = readByte(mask(12, 48), ts)
+      val msb  = Mask.version(high, 1) | (low << 32) | (mid << 16)
       (N.clockSequence, N.nodeId).mapN({
-        case (clkSeq, nodeId) => new UUID.V1(new JUUID(msb, v1Lsb(clkSeq, nodeId)))
+        case (clkSeq, nodeId) => {
+          val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), nodeId), 0x2)
+          val clkLow  = readByte(mask(8, 0), clkSeq.toLong)
+          val lsb     = writeByte(mask(8, 56), writeByte(mask(8, 48), nodeId, clkLow), clkHigh)
+          new UUID.V1(new JUUID(msb, lsb))
+        }
       })
     }
 
