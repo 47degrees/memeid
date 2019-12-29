@@ -3,7 +3,7 @@ package memeid
 import java.util.{UUID => JUUID}
 
 import cats._
-import cats.instances.all._
+import cats.instances.uuid._
 
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
