@@ -1,7 +1,5 @@
 package memeid.doobie
 
-import scala.concurrent.ExecutionContext.Implicits.global
-
 import cats.effect._
 import cats.syntax.functor._
 
@@ -16,8 +14,6 @@ import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAll
 
 class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatchers {
-  implicit val contextShiftIO: ContextShift[IO] = IO.contextShift(global)
-
   lazy val transactor: Transactor[IO] =
     Transactor.fromDriverManager[IO](
       driver = "org.h2.Driver",
