@@ -33,5 +33,10 @@ class V4Spec extends Specification with ScalaCheck with IOMatchers {
       val nonNull: UUID = UUID.v4[IO](0, 0).unsafeRunSync
       nonNull must not be equalTo(UUID.Nil)
     }
+
+    "generate version 4 UUIDs regardless of msb/lsb values provided" in {
+      val nonNull: IO[UUID] = UUID.v4[IO](0, 0)
+      nonNull.map(_.version) must returnValue(4)
+    }
   }
 }
