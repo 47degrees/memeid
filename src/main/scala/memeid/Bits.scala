@@ -2,10 +2,6 @@ package memeid
 
 import scala.annotation.tailrec
 
-import cats.instances.int._
-import cats.instances.long._
-import cats.syntax.eq._
-
 /*
  *  A module to work with with bitwise operations on `Long` values.
  *
@@ -42,10 +38,11 @@ private[memeid] object bits {
     }
   }
 
+  @SuppressWarnings(Array("scalafix:DisableSyntax.=="))
   @tailrec
   def maskWidthRec(mask: Long, res: Long): Long = {
     val remaining = 1 & (mask >> res)
-    if (remaining === 0) {
+    if (remaining == 0) {
       res
     } else {
       maskWidthRec(mask, res + 1)
@@ -53,8 +50,9 @@ private[memeid] object bits {
   }
 
   /* Given a bitmask, retrieve its `offset`. */
+  @SuppressWarnings(Array("scalafix:DisableSyntax.=="))
   def maskOffset(mask: Long): Long = {
-    if (mask === 0) {
+    if (mask == 0) {
       0
     } else if (mask < 0) {
       64 - maskWidth(mask)
@@ -90,10 +88,10 @@ private[memeid] object bits {
   protected[memeid] def fromBytes(barr: Seq[Byte]): Long =
     fromBytesRec(0, barr, 8)
 
-  @SuppressWarnings(Array("scalafix:Disable.head"))
+  @SuppressWarnings(Array("scalafix:Disable.head", "scalafix:DisableSyntax.=="))
   @tailrec
   def fromBytesRec(result: Long, bytes: Seq[Byte], count: Int): Long = {
-    if (count === 0)
+    if (count == 0)
       result
     else
       fromBytesRec(

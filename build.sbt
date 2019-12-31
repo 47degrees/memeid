@@ -7,6 +7,20 @@ lazy val root = project
   .settings(name := "memeid")
   .settings(
     libraryDependencies ++= Seq(
+      //"org.typelevel" %% "cats-effect"       % "2.0.0",
+      "org.specs2" %% "specs2-scalacheck" % "4.8.1" % Test,
+      //"org.specs2"    %% "specs2-cats"       % "4.8.1" % Test,
+      //"org.typelevel" %% "cats-laws"         % "2.1.0" % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.0.0" % Test
+    )
+  )
+
+lazy val cats = project
+  .in(file("cats"))
+  .dependsOn(root)
+  .settings(name := "memeid-cats")
+  .settings(
+    libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect"       % "2.0.0",
       "org.specs2"    %% "specs2-scalacheck" % "4.8.1" % Test,
       "org.specs2"    %% "specs2-cats"       % "4.8.1" % Test,

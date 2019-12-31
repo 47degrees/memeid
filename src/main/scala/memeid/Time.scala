@@ -4,16 +4,12 @@ import java.util.concurrent.atomic.AtomicReference
 
 import scala.annotation.tailrec
 
-import cats.effect._
-import cats.instances.long._
-import cats.syntax.eq._
-
-trait Time[F[_]] {
+trait Time {
   /* A posix timestamp. */
-  def posix: F[Long]
+  def posix: Long
 
   /* A gregorian time monotonic timestamp. */
-  def monotonic: F[Long]
+  def monotonic: Long
 }
 
 object Time {
@@ -35,8 +31,9 @@ object Time {
 
     /* Update the state with a new tick. */
     @tailrec
+    @SuppressWarnings(Array("scalafix:DisableSyntax.!="))
     def update(newTs: Long): State = {
-      if (ts =!= newTs) {
+      if (ts != newTs) {
         reset(newTs)
       } else {
         if (seq < resolution) {
@@ -60,11 +57,10 @@ object Time {
    * us to stall timestamp generation if many concurrent timestamps are generated. */
   val state: AtomicReference[State] = new AtomicReference[State](State.empty)
 
-  implicit def apply[F[_]: Sync]: Time[F] = new Time[F] {
-    def posix: F[Long] = Sync[F].delay { current / 1000 }
+  implicit def apply: Time = new Time {
+    def posix: Long = current / 1000
 
-    def monotonic: F[Long] = Sync[F].delay {
+    def monotonic: Long =
       state.updateAndGet(_.update(current)).timestamp
-    }
   }
 }

@@ -1,32 +1,25 @@
 package memeid
 
-import cats.data._
-import cats.effect.IO
-import cats.syntax.parallel._
-
 import org.specs2.ScalaCheck
-import org.specs2.matcher.IOMatchers
 import org.specs2.mutable.Specification
 
-class SQUUIDSpec extends Specification with ScalaCheck with IOMatchers {
+@SuppressWarnings(Array("all"))
+class SQUUIDSpec extends Specification with ScalaCheck {
   "SQUUID constructor" should {
     "create version 4 UUIDs" in {
-      @SuppressWarnings(Array("scalafix:Disable.get"))
-      def ids = NonEmptyList.fromList(List.range(1, 10)).get
+      def ids = Vector(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).par
 
-      val io = for {
-        uuids <- ids.parTraverse(_ => UUID.squuid[IO])
-        versions = uuids.map(_.version)
-      } yield versions.toList.toSet
+      val io = ids.map(_ => UUID.squuid.version)
 
-      io must returnValue[Set[Int]](Set(4))
+      io.toList.toSet must be equalTo (Set(4))
     }
 
     "not generate the same UUID twice" in {
-      @SuppressWarnings(Array("scalafix:Disable.get"))
-      def ids = NonEmptyList.fromList(List.range(1, 10)).get
-      val io  = ids.parTraverse(_ => UUID.squuid[IO]).map(_.toList.toSet.size)
-      io must returnValue(ids.size)
+      def ids = Vector(1, 2, 3, 4, 5, 6, 7, 8, 9, 10).par
+
+      val io = ids.map(_ => UUID.squuid)
+
+      io.toSet.size must be equalTo (ids.size)
     }
   }
 }

@@ -1,11 +1,9 @@
 package memeid
 
+import java.lang.Long.compareUnsigned
 import java.util.{UUID => JUUID}
 
 import scala.reflect.ClassTag
-
-import cats.Show
-import cats.kernel._
 
 /**
  * A class that represents an immutable universally unique identifier (UUID).
@@ -13,7 +11,7 @@ import cats.kernel._
  *
  * @see [[https://tools.ietf.org/html/rfc4122]]
  */
-sealed trait UUID {
+sealed trait UUID extends Comparable[UUID] {
 
   private[memeid] val juuid: JUUID
 
@@ -64,21 +62,30 @@ sealed trait UUID {
 
   @inline def version: Int = juuid.version
 
-  @SuppressWarnings(Array("scalafix:Disable.equals", "scalafix:Disable.Any"))
+  @SuppressWarnings(
+    Array("scalafix:Disable.equals", "scalafix:Disable.Any", "scalafix:DisableSyntax.==")
+  )
   override def equals(obj: Any): Boolean = obj match {
-    case x: UUID => Order[UUID].eqv(this, x)
+    case x: UUID => compareTo(x) == 0
     case _       => false
   }
 
+  override def compareTo(x: UUID): Int = {
+    compareUnsigned(msb, x.msb) match {
+      case 0     => compareUnsigned(lsb, x.lsb)
+      case other => other
+    }
+  }
+
   @SuppressWarnings(Array("scalafix:Disable.hashCode"))
-  override def hashCode(): Int = Hash[UUID].hash(this)
+  override def hashCode(): Int = juuid.hashCode
 
   @SuppressWarnings(Array("scalafix:Disable.toString"))
-  override def toString: String = Show[UUID].show(this)
+  override def toString: String = juuid.toString
 
 }
 
-object UUID extends Constructors with CatsInstances {
+object UUID extends Constructors {
 
   /**
    * The nil UUID is special form of UUID that is specified to have all 128 bits set to zero.

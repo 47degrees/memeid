@@ -1,7 +1,11 @@
-package memeid
+package memeid.cats
 
-import cats.instances.option._
-import cats.kernel.laws.discipline.{HashTests, LowerBoundedTests, OrderTests, UpperBoundedTests}
+import memeid._
+import memeid.arbitraries._
+import memeid.cats.implicits._
+
+import _root_.cats.instances.option._
+import _root_.cats.kernel.laws.discipline.{HashTests, LowerBoundedTests, OrderTests, UpperBoundedTests}
 
 import org.specs2.mutable.Specification
 import org.typelevel.discipline.specs2.mutable.Discipline

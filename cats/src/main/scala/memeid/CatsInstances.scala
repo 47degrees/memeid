@@ -1,14 +1,14 @@
-package memeid
+package memeid.cats
 
 import java.lang.Long.compareUnsigned
 
-import cats.Show
-import cats.instances.uuid.catsStdShowForUUID
-import cats.kernel.{Hash, LowerBounded, Order, PartialOrder, UpperBounded}
-import cats.syntax.contravariant._
+import memeid._
+import _root_.cats.Show
+import _root_.cats.instances.uuid.catsStdShowForUUID
+import _root_.cats.kernel.{Hash, LowerBounded, Order, PartialOrder, UpperBounded}
+import _root_.cats.syntax.contravariant._
 
-@SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))
-trait CatsInstances {
+object implicits {
 
   implicit val UUIDHashOrderInstances: Order[UUID] with Hash[UUID] =
     new Order[UUID] with Hash[UUID] {

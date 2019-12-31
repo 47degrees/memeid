@@ -2,9 +2,6 @@ package memeid
 
 import java.util.{UUID => JUUID}
 
-import cats.instances.uuid._
-import cats.syntax.eq._
-
 import memeid.UUID._
 
 /**
@@ -22,14 +19,15 @@ object JavaConverters {
   implicit final class JUUIDAsScala(private val juuid: JUUID) extends AnyVal {
 
     /** Converts this `java.util.UUID` into a `memeid.UUID` */
+    @SuppressWarnings(Array("scalafix:DisableSyntax.=="))
     def asScala: UUID = juuid.version() match {
-      case 0 if juuid === Nil.juuid => Nil
-      case 1                        => new V1(juuid)
-      case 2                        => new V2(juuid)
-      case 3                        => new V3(juuid)
-      case 4                        => new V4(juuid)
-      case 5                        => new V5(juuid)
-      case _                        => new UnknownVersion(juuid)
+      case 0 if juuid == Nil.juuid => Nil
+      case 1                       => new V1(juuid)
+      case 2                       => new V2(juuid)
+      case 3                       => new V3(juuid)
+      case 4                       => new V4(juuid)
+      case 5                       => new V5(juuid)
+      case _                       => new UnknownVersion(juuid)
     }
 
   }
