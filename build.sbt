@@ -16,7 +16,6 @@ lazy val root = project
   )
 
 lazy val doobie = project
-  .in(file("doobie"))
   .dependsOn(root)
   .settings(name := "memeid-doobie")
   .settings(
@@ -29,7 +28,6 @@ lazy val doobie = project
   )
 
 lazy val circe = project
-  .in(file("circe"))
   .dependsOn(root)
   .settings(name := "memeid-circe")
   .settings(
