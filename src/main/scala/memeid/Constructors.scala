@@ -13,6 +13,7 @@ import memeid.time._
 
 protected[memeid] object Mask {
   val VERSION: Long = mask(4, 12)
+  val UB32: Long = 0x00000000FFFFFFFFL
 
   def version(msb: Long, version: Long): Long =
     writeByte(VERSION, msb, version)
@@ -55,14 +56,13 @@ trait Constructors {
     new UUID.V4(new JUUID(v4msb, v4lsb))
   }
 
-
   def random[F[_]: Sync](msb: Long, lsb: Long): F[UUID] = v4(msb, lsb)
 
   // Construct a SQUUID (random, time-based) UUID.
   def squuid[F[_]: Sync: Time]: F[UUID] =
     (v4, Time[F].posix).mapN {
       case (uuid, ts) => {
-        val timedMsb = (ts << 32) | (uuid.msb & Mask.ub32)
+        val timedMsb = (ts << 32) | (uuid.msb & Mask.UB32)
         new UUID.V4(new JUUID(timedMsb, uuid.lsb))
       }
     }

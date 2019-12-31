@@ -17,6 +17,7 @@ trait Time[F[_]] {
 }
 
 object Time {
+
   def current: Long =
     System.currentTimeMillis
 

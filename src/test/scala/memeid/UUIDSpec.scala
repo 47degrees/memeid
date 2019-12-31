@@ -1,7 +1,5 @@
 package memeid
 
-package memeid
-
 import java.util.{UUID => JUUID}
 
 import cats._

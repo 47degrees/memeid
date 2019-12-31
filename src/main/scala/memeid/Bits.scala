@@ -125,8 +125,4 @@ private[memeid] object bits {
   object Cast {
     def sb8(b: Long): Byte = (0x00000000000000ff & b).toByte
   }
-
-  object Mask {
-    val ub32: Long = 0x00000000ffffffffL
-  }
 }
