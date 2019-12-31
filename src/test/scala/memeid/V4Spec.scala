@@ -10,9 +10,16 @@ import org.specs2.mutable.Specification
 
 class V4Spec extends Specification with ScalaCheck with IOMatchers {
   "V4 constructor" should {
-    "generate version 4 UUIDs" in {
-      val uuid = UUID.v4[IO]
-      uuid.map(_.juuid.version) must returnValue(4)
+    "create version 4 UUIDs" in {
+      @SuppressWarnings(Array("scalafix:Disable.get"))
+      def ids = NonEmptyList.fromList(List.range(1, 10)).get
+
+      val io = for {
+        uuids <- ids.parTraverse(_ => UUID.v4[IO])
+        versions = uuids.map(_.version)
+      } yield versions.toList.toSet
+
+      io must returnValue[Set[Int]](Set(4))
     }
 
     "not generate the same UUID twice" in {
