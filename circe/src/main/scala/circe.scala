@@ -1,23 +1,16 @@
 package memeid.circe
 
-import scala.util.Try
+import java.util.{UUID => JUUID}
 
-import memeid.UUID
+import io.circe.{Decoder, Encoder}
 import memeid.JavaConverters._
-
-import java.util.{ UUID => JUUID }
-
-import cats.syntax.show._
-
-import io.circe.{ Encoder, Decoder }
-
+import memeid.UUID
 
 object implicits {
-  implicit val memeidEncoder: Encoder[UUID] =
-    Encoder.encodeString.contramap(_.show)
 
-  implicit val memeidDecoder: Decoder[UUID] =
-    Decoder.decodeString.emapTry(str => {
-      Try(JUUID.fromString(str)).map(_.asScala)
-    })
+  implicit def memeidEncoder(implicit E: Encoder[JUUID]): Encoder[UUID] =
+    E.contramap(_.asJava)
+
+  implicit def memeidDecoder(implicit D: Decoder[JUUID]): Decoder[UUID] =
+    D.map(_.asScala)
 }
