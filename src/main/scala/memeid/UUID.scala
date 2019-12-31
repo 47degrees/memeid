@@ -62,6 +62,8 @@ sealed trait UUID {
    */
   @inline def variant: Int = juuid.variant
 
+  @inline def version: Int = juuid.version
+
   @SuppressWarnings(Array("scalafix:Disable.equals", "scalafix:Disable.Any"))
   override def equals(obj: Any): Boolean = obj match {
     case x: UUID => Order[UUID].eqv(this, x)
@@ -129,7 +131,6 @@ object UUID extends Constructors with CatsInstances {
    * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.3]]
    */
   final class UnknownVersion private[memeid] (
-      val version: Int,
       override private[memeid] val juuid: JUUID
   ) extends UUID
 }

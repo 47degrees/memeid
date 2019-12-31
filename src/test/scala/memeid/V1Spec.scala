@@ -19,6 +19,18 @@ import org.specs2.mutable.Specification
 
 class V1Spec extends Specification with ScalaCheck with IOMatchers {
   "V1 constructor" should {
+    "create version 1 UUIDs" in {
+      @SuppressWarnings(Array("scalafix:Disable.get"))
+      def ids = NonEmptyList.fromList(List.range(1, 10)).get
+
+      val io = for {
+        uuids <- ids.parTraverse(_ => UUID.v1[IO])
+        versions = uuids.map(_.version)
+      } yield versions.toList.toSet
+
+      io must returnValue[Set[Int]](Set(1))
+    }
+
     "create monotonically increasing UUIDs" in {
       val test = for {
         first <- UUID.v1[IO]
