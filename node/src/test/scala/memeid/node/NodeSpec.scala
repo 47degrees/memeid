@@ -4,6 +4,7 @@ import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
 class NodeSpec extends Specification with ScalaCheck {
+
   "Node.clockSequence" should {
     "be initialized once per system lifetime" in {
       val node1 = implicitly[Node]
@@ -29,4 +30,5 @@ class NodeSpec extends Specification with ScalaCheck {
       node3.nodeId must be equalTo nodeId
     }
   }
+
 }
