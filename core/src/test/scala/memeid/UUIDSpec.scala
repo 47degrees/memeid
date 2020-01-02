@@ -7,10 +7,26 @@ import cats._
 import cats.instances.uuid._
 
 import memeid.digest.Digestible
+import org.scalacheck.Gen
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
+@SuppressWarnings(Array("scalafix:Disable.toString"))
 class UUIDSpec extends Specification with ScalaCheck {
+
+  "UUID.from" should {
+
+    "return Some on valid UUID" in prop { uuid: UUID =>
+      UUID.from(uuid.toString) should beRight(uuid)
+    }
+
+    "return None on invalid string" in prop { s: String =>
+      UUID.from(s) must beLeft().like {
+        case e: IllegalArgumentException => e.getMessage must contain("UUID string")
+      }
+    }.setGen(Gen.alphaNumStr)
+
+  }
 
   "Order[UUID]" should {
 
@@ -161,7 +177,7 @@ class UUIDSpec extends Specification with ScalaCheck {
     }
 
     "give the same bytes for the same UUID" in {
-      val uuid = UUID.v4
+      val uuid = UUID.V1.next
 
       Digestible[UUID].toByteArray(uuid) must be equalTo Digestible[UUID].toByteArray(uuid)
     }
