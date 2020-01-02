@@ -160,6 +160,12 @@ class UUIDSpec extends Specification with ScalaCheck {
       fromByteArray(bytes) must be equalTo uuid
     }
 
+    "give the same bytes for the same UUID" in {
+      val uuid = UUID.v4
+
+      Digestible[UUID].toByteArray(uuid) must be equalTo Digestible[UUID].toByteArray(uuid)
+    }
+
   }
 
 }
