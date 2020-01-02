@@ -5,9 +5,6 @@ import java.util.{UUID => JUUID}
 
 import scala.reflect.ClassTag
 
-import cats.Show
-import cats.kernel._
-
 /**
  * A class that represents an immutable universally unique identifier (UUID).
  * A UUID represents a 128-bit value.
@@ -67,8 +64,8 @@ sealed trait UUID extends Comparable[UUID] {
 
   @SuppressWarnings(Array("scalafix:Disable.equals", "scalafix:Disable.Any"))
   override def equals(obj: Any): Boolean = obj match {
-    case x: UUID => Order[UUID].eqv(this, x)
-    case _       => false
+    case x: UUID if compareTo(x).equals(0) => true
+    case _                                 => false
   }
 
   override def compareTo(x: UUID): Int = {
@@ -79,10 +76,10 @@ sealed trait UUID extends Comparable[UUID] {
   }
 
   @SuppressWarnings(Array("scalafix:Disable.hashCode"))
-  override def hashCode(): Int = Hash[UUID].hash(this)
+  override def hashCode(): Int = juuid.hashCode
 
   @SuppressWarnings(Array("scalafix:Disable.toString"))
-  override def toString: String = Show[UUID].show(this)
+  override def toString: String = juuid.toString
 
 }
 
