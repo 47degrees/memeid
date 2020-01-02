@@ -71,14 +71,14 @@ trait Constructors {
     }
 
   def v3[F[_]: Sync, A](namespace: UUID, local: A)(implicit D: Digestible[A]): F[UUID] =
-    hashed(MD5, 3, namespace, local)
+    hashed(MD5, 3, namespace, local).map(new UUID.V3(_))
 
   def v5[F[_]: Sync, A](namespace: UUID, local: A)(implicit D: Digestible[A]): F[UUID] =
-    hashed(SHA1, 5, namespace, local)
+    hashed(SHA1, 5, namespace, local).map(new UUID.V5(_))
 
   private def hashed[F[_]: Sync, A](algo: Algorithm, version: Long, namespace: UUID, local: A)(
       implicit D: Digestible[A]
-  ): F[UUID] =
+  ): F[JUUID] =
     Sync[F].delay {
       val digest = algo.digest
       val ns     = Digestible[UUID].toByteArray(namespace)
@@ -90,6 +90,6 @@ trait Constructors {
       val rawLsb = fromBytes(bytes.drop(8))
       val msb    = Mask.version(rawMsb, version)
       val lsb    = writeByte(mask(2, 52), rawLsb, 0x2)
-      new UUID.V3(new JUUID(msb, lsb))
+      new JUUID(msb, lsb)
     }
 }
