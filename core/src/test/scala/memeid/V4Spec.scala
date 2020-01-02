@@ -1,11 +1,10 @@
 package memeid
 
 import org.specs2.ScalaCheck
-import org.specs2.matcher.IOMatchers
 import org.specs2.mutable.Specification
 
 @SuppressWarnings(Array("scalafix:Disable.map", "scalafix:Disable.to"))
-class V4Spec extends Specification with ScalaCheck with IOMatchers {
+class V4Spec extends Specification with ScalaCheck {
 
   "V4 constructor" should {
 

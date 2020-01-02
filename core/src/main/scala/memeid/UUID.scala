@@ -90,7 +90,7 @@ sealed trait UUID extends Comparable[UUID] {
 
 }
 
-object UUID extends CatsInstances {
+object UUID {
 
   implicit val DigestibleUUIDInstance: Digestible[UUID] =
     u => toBytes(u.msb) ++ toBytes(u.lsb)

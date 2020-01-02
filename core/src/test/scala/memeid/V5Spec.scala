@@ -1,10 +1,9 @@
 package memeid
 
 import org.specs2.ScalaCheck
-import org.specs2.matcher.IOMatchers
 import org.specs2.mutable.Specification
 
-class V5Spec extends Specification with ScalaCheck with IOMatchers {
+class V5Spec extends Specification with ScalaCheck {
 
   "V5 constructor" should {
 

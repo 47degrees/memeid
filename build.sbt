@@ -5,21 +5,13 @@ ThisBuild / scalaVersion := "2.12.10"
 lazy val root = project
   .in(file("."))
   .settings(name := "memeid")
-  .aggregate(core, literal, doobie, circe)
+  .aggregate(core, cats, literal, doobie, circe)
   .settings(skip in publish := true)
 
 lazy val core = project
   .dependsOn(node, time)
   .settings(name := "memeid")
-  .settings(
-    libraryDependencies ++= Seq(
-      "org.typelevel" %% "cats-effect"       % "2.0.0",
-      "org.specs2"    %% "specs2-scalacheck" % "4.8.1" % Test,
-      "org.specs2"    %% "specs2-cats"       % "4.8.1" % Test,
-      "org.typelevel" %% "cats-laws"         % "2.1.0" % Test,
-      "org.typelevel" %% "discipline-specs2" % "1.0.0" % Test
-    )
-  )
+  .settings(libraryDependencies += "org.specs2" %% "specs2-scalacheck" % "4.8.1" % Test)
 
 lazy val bits = project
   .settings(name := "memeid-bits")
@@ -41,6 +33,19 @@ lazy val time = project
   .settings(name := "memeid-time")
   .settings(skip in publish := true)
 
+lazy val cats = project
+  .dependsOn(core % "compile->compile;test->test")
+  .settings(name := "memeid-cats")
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.typelevel" %% "cats-effect"       % "2.0.0",
+      "org.specs2"    %% "specs2-scalacheck" % "4.8.1" % Test,
+      "org.specs2"    %% "specs2-cats"       % "4.8.1" % Test,
+      "org.typelevel" %% "cats-laws"         % "2.1.0" % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.0.0" % Test
+    )
+  )
+
 lazy val literal = project
   .dependsOn(core)
   .settings(name := "memeid-literal")
@@ -53,7 +58,7 @@ lazy val literal = project
   )
 
 lazy val doobie = project
-  .dependsOn(core)
+  .dependsOn(cats)
   .settings(name := "memeid-doobie")
   .settings(
     libraryDependencies ++= Seq(
@@ -65,7 +70,7 @@ lazy val doobie = project
   )
 
 lazy val circe = project
-  .dependsOn(core)
+  .dependsOn(cats)
   .settings(name := "memeid-circe")
   .settings(
     libraryDependencies ++= Seq(
