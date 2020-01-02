@@ -9,7 +9,7 @@ lazy val root = project
   .settings(skip in publish := true)
 
 lazy val core = project
-  .dependsOn(bits)
+  .dependsOn(bits, digest)
   .settings(name := "memeid")
   .settings(
     libraryDependencies ++= Seq(
@@ -23,6 +23,11 @@ lazy val core = project
 
 lazy val bits = project
   .settings(name := "memeid-bits")
+  .settings(skip in publish := true)
+  .settings(libraryDependencies += "org.specs2" %% "specs2-scalacheck" % "4.8.1" % Test)
+
+lazy val digest = project
+  .settings(name := "memeid-digest")
   .settings(skip in publish := true)
   .settings(libraryDependencies += "org.specs2" %% "specs2-scalacheck" % "4.8.1" % Test)
 
