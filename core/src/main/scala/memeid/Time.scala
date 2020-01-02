@@ -4,9 +4,6 @@ import java.util.concurrent.atomic.AtomicReference
 
 import scala.annotation.tailrec
 
-import cats.instances.long._
-import cats.syntax.eq._
-
 trait Time {
 
   /* A posix timestamp. */
@@ -17,6 +14,7 @@ trait Time {
 
 }
 
+@SuppressWarnings(Array("scalafix:DisableSyntax.!="))
 object Time {
 
   def current: Long = System.currentTimeMillis
@@ -35,17 +33,14 @@ object Time {
 
     /* Update the state with a new tick. */
     @tailrec
-    def update(newTs: Long): State = {
-      if (ts =!= newTs) {
+    def update(newTs: Long): State =
+      if (ts != newTs) {
         reset(newTs)
+      } else if (seq < resolution) {
+        next
       } else {
-        if (seq < resolution) {
-          next
-        } else {
-          update(current)
-        }
+        update(current)
       }
-    }
 
     /* Compute the gregorian time monotonic timestamp for this state. */
     def timestamp: Long =
