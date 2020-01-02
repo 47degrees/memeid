@@ -3,9 +3,6 @@ package memeid.digest
 import java.nio.charset.StandardCharsets
 import java.security.MessageDigest
 
-import memeid._
-import memeid.bits._
-
 sealed trait Algorithm {
   def digest: MessageDigest
 }
@@ -36,8 +33,6 @@ object Digestible {
   implicit val digestibleString: Digestible[String] =
     _.getBytes(StandardCharsets.UTF_8)
 
-  implicit val digestibleUuid: Digestible[UUID] =
-    (u: UUID) => toBytes(u.msb) ++ toBytes(u.lsb)
 }
 
 object Digest {

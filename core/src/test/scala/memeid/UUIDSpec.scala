@@ -1,10 +1,12 @@
 package memeid
 
+import java.nio.ByteBuffer
 import java.util.{UUID => JUUID}
 
 import cats._
 import cats.instances.uuid._
 
+import memeid.digest.Digestible
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
@@ -141,6 +143,21 @@ class UUIDSpec extends Specification with ScalaCheck {
 
     "have all 128 bits to 0" in {
       (UUID.Nil.msb must be equalTo 0L) and (UUID.Nil.lsb must be equalTo 0L)
+    }
+
+  }
+
+  "Digestible[UUID]" should {
+
+    def fromByteArray(bytes: Array[Byte]): UUID = {
+      val bb = ByteBuffer.wrap(bytes)
+      UUID.from(bb.getLong, bb.getLong)
+    }
+
+    "round-trip" in prop { (msb: Long, lsb: Long) =>
+      val uuid  = UUID.from(msb, lsb)
+      val bytes = Digestible[UUID].toByteArray(uuid)
+      fromByteArray(bytes) must be equalTo uuid
     }
 
   }
