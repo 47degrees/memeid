@@ -6,20 +6,22 @@ import scala.collection.JavaConverters._
 import scala.util.Random
 
 import cats.Eval
-import cats.effect.Sync
 
 import memeid.bits._
 import memeid.digest._
 
-trait Node[F[_]] {
+trait Node {
+
   // The 16-bit clock sequence for this node
-  def clockSequence: F[Short]
+  def clockSequence: Short
 
   // The node id
-  def nodeId: F[Long]
+  def nodeId: Long
+
 }
 
 object Node {
+
   // Clock sequence: https://tools.ietf.org/html/rfc4122#section-4.1.5
   //
   //   The clock sequence MUST be originally (i.e., once in the lifetime of
@@ -76,20 +78,20 @@ object Node {
     fromBytes(List(0: Byte, 0: Byte) ++ bytes)
   }
 
-  def fromClockSequence[F[_]](clkSeq: F[Short])(
-      implicit
-      S: Sync[F]
-  ): Node[F] = new Node[F] {
-    val clockSequence = clkSeq
+  def fromClockSequence(clkSeq: Short): Node = new Node {
 
-    val nodeId = S.pure({
+    val clockSequence: Short = clkSeq
+
+    val nodeId: Long = {
       val addresses  = Sys.getNetworkInterfaces ++ Sys.getLocalInterfaces
       val properties = Sys.getProperties
       makeNodeId(addresses, properties)
-    })
+    }
+
   }
 
-  implicit def apply[F[_]: Sync]: Node[F] = fromClockSequence(Sync[F].pure(clockSeq.value))
+  implicit def apply: Node = fromClockSequence(clockSeq.value)
+
 }
 
 @SuppressWarnings(Array("scalafix:Disable.toString"))

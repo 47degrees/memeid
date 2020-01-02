@@ -39,20 +39,17 @@ trait Constructors {
   def from(s: String): Either[Throwable, UUID] = Try(JUUID.fromString(s).asScala).toEither
 
   // Construct a v1 (time-based) UUID.
-  def v1[F[_]: Sync](implicit N: Node[F], T: Time[F]): F[UUID] =
-    T.monotonic.flatMap { ts =>
+  def v1[F[_]: Sync](implicit N: Node, T: Time[F]): F[UUID] =
+    T.monotonic.map { ts =>
       val low  = readByte(mask(32, 0), ts)
       val mid  = readByte(mask(16, 32), ts)
       val high = readByte(mask(12, 48), ts)
       val msb  = Mask.version(high, 1) | (low << 32) | (mid << 16)
-      (N.clockSequence, N.nodeId).mapN({
-        case (clkSeq, nodeId) => {
-          val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), nodeId), 0x2)
-          val clkLow  = readByte(mask(8, 0), clkSeq.toLong)
-          val lsb     = writeByte(mask(8, 56), writeByte(mask(8, 48), nodeId, clkLow), clkHigh)
-          new UUID.V1(new JUUID(msb, lsb))
-        }
-      })
+
+      val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), N.nodeId), 0x2)
+      val clkLow  = readByte(mask(8, 0), N.clockSequence.toLong)
+      val lsb     = writeByte(mask(8, 56), writeByte(mask(8, 48), N.nodeId, clkLow), clkHigh)
+      new UUID.V1(new JUUID(msb, lsb))
     }
 
   // Construct a v4 (random) UUID.
