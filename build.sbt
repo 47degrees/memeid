@@ -15,6 +15,17 @@ lazy val root = project
     )
   )
 
+lazy val literal = project
+  .dependsOn(root)
+  .settings(name := "memeid-literal")
+  .settings(
+    libraryDependencies ++= Seq(
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
+      "com.chuusai"    %% "shapeless"    % "2.3.3"            % Test,
+      "org.specs2"     %% "specs2-core"  % "4.8.1"            % Test
+    )
+  )
+
 lazy val doobie = project
   .dependsOn(root)
   .settings(name := "memeid-doobie")
