@@ -5,6 +5,9 @@ import java.util.{UUID => JUUID}
 
 import scala.reflect.ClassTag
 
+import memeid.bits.toBytes
+import memeid.digest.Digestible
+
 /**
  * A class that represents an immutable universally unique identifier (UUID).
  * A UUID represents a 128-bit value.
@@ -84,6 +87,9 @@ sealed trait UUID extends Comparable[UUID] {
 }
 
 object UUID extends Constructors with CatsInstances {
+
+  implicit val DigestibleUUIDInstance: Digestible[UUID] =
+    u => toBytes(u.msb) ++ toBytes(u.lsb)
 
   /**
    * The nil UUID is special form of UUID that is specified to have all 128 bits set to zero.

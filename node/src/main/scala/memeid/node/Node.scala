@@ -1,34 +1,29 @@
 package memeid.node
 
-import java.net.{InetAddress, NetworkInterface}
+import memeid.digest.Digest
+import memeid.bits.fromBytes
 
-import scala.collection.JavaConverters._
 import scala.util.Random
 
-import cats.effect._
-import cats.syntax.functor._
-import cats.syntax.show._
-import cats.{Eval, Show}
+trait Node {
 
-import memeid.bits._
-import memeid.digest._
-
-trait Node[F[_]] {
   // The 16-bit clock sequence for this node
-  def clockSequence: F[Short]
+  def clockSequence: Short
 
   // The node id
-  def nodeId: F[Long]
+  def id: Long
+
 }
 
 object Node {
+
   // Clock sequence: https://tools.ietf.org/html/rfc4122#section-4.1.5
   //
   //   The clock sequence MUST be originally (i.e., once in the lifetime of
   //   a system) initialized to a random 16-bit number to minimize the correlation
   //   across systems.
   //
-  private val clockSeq: Eval[Short] = Eval.now(new Random().nextInt(Short.MaxValue + 1).toShort)
+  private val clockSeq: Short = new Random().nextInt(Short.MaxValue + 1).toShort
 
   // System property data sources
   //
@@ -78,44 +73,19 @@ object Node {
     fromBytes(List(0: Byte, 0: Byte) ++ bytes)
   }
 
-  def fromClockSequence[F[_]](clkSeq: F[Short])(
-      implicit
-      S: Sync[F]
-  ): Node[F] = new Node[F] {
-    val clockSequence = clkSeq
+  def fromClockSequence(clkSeq: Short): Node = new Node {
 
-    val nodeId = S.pure({
+    val clockSequence: Short = clkSeq
+
+    val id: Long = {
       val addresses  = Sys.getNetworkInterfaces ++ Sys.getLocalInterfaces
       val properties = Sys.getProperties
       makeNodeId(addresses, properties)
-    })
+    }
+
   }
 
-  implicit def apply[F[_]: Sync]: Node[F] = fromClockSequence(Sync[F].pure(clockSeq.value))
+  implicit def apply: Node = fromClockSequence(clockSeq)
+
 }
 
-object Sys {
-  implicit val showInet: Show[InetAddress] = Show.fromToString
-
-  def getNetworkInterfaces: Set[String] = {
-    val localHost     = InetAddress.getLocalHost
-    val hostName      = localHost.getCanonicalHostName
-    val baseAddresses = Set(localHost.show, hostName)
-    NetworkInterface.getNetworkInterfaces.asScala.foldLeft(baseAddresses)({
-      case (addrs, ni) =>
-        addrs ++ ni.getInetAddresses.asScala.map(_.show).toSet
-    })
-  }
-
-  def getLocalInterfaces: Set[String] = {
-    val localHost = InetAddress.getLocalHost
-    val hostName  = localHost.getCanonicalHostName
-    InetAddress.getAllByName(hostName).map(_.show).toSet
-  }
-
-  def getProperties: Map[String, String] = {
-    val props = System.getProperties
-    val keys  = props.stringPropertyNames
-    keys.asScala.map(k => k -> props.getProperty(k)).toMap
-  }
-}

@@ -5,6 +5,7 @@ import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
 class BitsSpec extends Specification with ScalaCheck {
+
   "Bits.mask" should {
     "construct a bitmask correctly" in {
       mask(0, 0) must be equalTo (0)
@@ -114,4 +115,5 @@ class BitsSpec extends Specification with ScalaCheck {
       bytes.toList must be equalTo (disassembled.toList)
     }
   }
+
 }

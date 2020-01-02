@@ -4,9 +4,6 @@ import java.util.{UUID => JUUID}
 
 import scala.util.Try
 
-import cats.effect._
-import cats.implicits._
-
 import memeid.JavaConverters._
 import memeid.bits._
 import memeid.digest._
@@ -39,63 +36,60 @@ trait Constructors {
   def from(s: String): Either[Throwable, UUID] = Try(JUUID.fromString(s).asScala).toEither
 
   // Construct a v1 (time-based) UUID.
-  def v1[F[_]: Sync](implicit N: Node[F], T: Time[F]): F[UUID] =
-    T.monotonic.flatMap { ts =>
-      val low  = readByte(mask(32, 0), ts)
-      val mid  = readByte(mask(16, 32), ts)
-      val high = readByte(mask(12, 48), ts)
-      val msb  = Mask.version(high, 1) | (low << 32) | (mid << 16)
-      (N.clockSequence, N.nodeId).mapN({
-        case (clkSeq, nodeId) => {
-          val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), nodeId), 0x2)
-          val clkLow  = readByte(mask(8, 0), clkSeq.toLong)
-          val lsb     = writeByte(mask(8, 56), writeByte(mask(8, 48), nodeId, clkLow), clkHigh)
-          new UUID.V1(new JUUID(msb, lsb))
-        }
-      })
-    }
+  def v1(implicit N: Node, T: Time): UUID = {
+    val timestamp = T.monotonic
+    val low       = readByte(mask(32, 0), timestamp)
+    val mid       = readByte(mask(16, 32), timestamp)
+    val high      = readByte(mask(12, 48), timestamp)
+    val msb       = Mask.version(high, 1) | (low << 32) | (mid << 16)
+
+    val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), N.id), 0x2)
+    val clkLow  = readByte(mask(8, 0), N.clockSequence.toLong)
+    val lsb     = writeByte(mask(8, 56), writeByte(mask(8, 48), N.id, clkLow), clkHigh)
+    new UUID.V1(new JUUID(msb, lsb))
+  }
 
   // Construct a v4 (random) UUID.
-  def v4[F[_]: Sync]: F[UUID] = Sync[F].delay(new UUID.V4(JUUID.randomUUID))
-
-  def random[F[_]: Sync]: F[UUID] = v4
+  def v4: UUID = new UUID.V4(JUUID.randomUUID)
 
   // Construct a v4 (random) UUID from the given `msb` and `lsb`.
-  def v4[F[_]: Sync](msb: Long, lsb: Long): F[UUID] = Sync[F].delay {
+  def v4(msb: Long, lsb: Long): UUID = {
     val v4msb = writeByte(mask(4, 12), msb, 0x4)
     val v4lsb = writeByte(mask(2, 62), lsb, 0x2)
     new UUID.V4(new JUUID(v4msb, v4lsb))
   }
 
   // Construct a SQUUID (random, time-based) UUID.
-  def squuid[F[_]: Sync: Time]: F[UUID] =
-    (v4, Time[F].posix).mapN {
-      case (uuid, ts) => {
-        val timedMsb = (ts << 32) | (uuid.msb & Mask.UB32)
-        new UUID.V4(new JUUID(timedMsb, uuid.lsb))
-      }
-    }
+  def squuid(implicit T: Time): UUID = {
+    val uuid = v4
 
-  def v3[F[_]: Sync, A](namespace: UUID, local: A)(implicit D: Digestible[A]): F[UUID] =
-    hashed(MD5, 3, namespace, local)
+    val timedMsb = (T.posix << 32) | (uuid.msb & Mask.UB32)
 
-  def v5[F[_]: Sync, A](namespace: UUID, local: A)(implicit D: Digestible[A]): F[UUID] =
-    hashed(SHA1, 5, namespace, local)
+    new UUID.V4(new JUUID(timedMsb, uuid.lsb))
+  }
 
-  private def hashed[F[_]: Sync, A](algo: Algorithm, version: Long, namespace: UUID, local: A)(
-      implicit D: Digestible[A]
-  ): F[UUID] =
-    Sync[F].delay {
-      val digest = algo.digest
-      val ns     = Digestible[UUID].toByteArray(namespace)
-      digest.update(ns)
-      val name = D.toByteArray(local)
-      digest.update(name)
-      val bytes  = digest.digest
-      val rawMsb = fromBytes(bytes.take(8))
-      val rawLsb = fromBytes(bytes.drop(8))
-      val msb    = Mask.version(rawMsb, version)
-      val lsb    = writeByte(mask(2, 52), rawLsb, 0x2)
-      new UUID.V3(new JUUID(msb, lsb))
-    }
+  def v3[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
+    new UUID.V3(hashed(MD5, 3, namespace, local))
+
+  def v5[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
+    new UUID.V5(hashed(SHA1, 5, namespace, local))
+
+  private def hashed[A: Digestible](
+      algo: Algorithm,
+      version: Long,
+      namespace: UUID,
+      local: A
+  ): JUUID = {
+    val digest = algo.digest
+    val ns     = Digestible[UUID].toByteArray(namespace)
+    digest.update(ns)
+    val name = Digestible[A].toByteArray(local)
+    digest.update(name)
+    val bytes  = digest.digest
+    val rawMsb = fromBytes(bytes.take(8))
+    val rawLsb = fromBytes(bytes.drop(8))
+    val msb    = Mask.version(rawMsb, version)
+    val lsb    = writeByte(mask(2, 52), rawLsb, 0x2)
+    new JUUID(msb, lsb)
+  }
 }
