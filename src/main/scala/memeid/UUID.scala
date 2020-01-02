@@ -1,5 +1,6 @@
 package memeid
 
+import java.lang.Long.compareUnsigned
 import java.util.{UUID => JUUID}
 
 import scala.reflect.ClassTag
@@ -13,7 +14,7 @@ import cats.kernel._
  *
  * @see [[https://tools.ietf.org/html/rfc4122]]
  */
-sealed trait UUID {
+sealed trait UUID extends Comparable[UUID] {
 
   private[memeid] val juuid: JUUID
 
@@ -68,6 +69,13 @@ sealed trait UUID {
   override def equals(obj: Any): Boolean = obj match {
     case x: UUID => Order[UUID].eqv(this, x)
     case _       => false
+  }
+
+  override def compareTo(x: UUID): Int = {
+    compareUnsigned(msb, x.msb) match {
+      case 0     => compareUnsigned(lsb, x.lsb)
+      case other => other
+    }
   }
 
   @SuppressWarnings(Array("scalafix:Disable.hashCode"))
