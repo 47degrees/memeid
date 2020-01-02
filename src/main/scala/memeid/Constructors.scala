@@ -1,6 +1,5 @@
 package memeid
 
-import java.nio.ByteBuffer
 import java.util.{UUID => JUUID}
 
 import scala.util.Try
@@ -38,11 +37,6 @@ trait Constructors {
    * string standard representation.
    */
   def from(s: String): Either[Throwable, UUID] = Try(JUUID.fromString(s).asScala).toEither
-
-  protected[memeid] def fromByteArray(bytes: Array[Byte]): UUID = {
-    val bb = ByteBuffer.wrap(bytes)
-    new JUUID(bb.getLong, bb.getLong).asScala
-  }
 
   // Construct a v1 (time-based) UUID.
   def v1[F[_]: Sync](implicit N: Node[F], T: Time[F]): F[UUID] =
