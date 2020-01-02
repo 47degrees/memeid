@@ -5,6 +5,11 @@ ThisBuild / scalaVersion := "2.12.10"
 lazy val root = project
   .in(file("."))
   .settings(name := "memeid")
+  .aggregate(core, literal, doobie, circe)
+  .settings(skip in publish := true)
+
+lazy val core = project
+  .settings(name := "memeid")
   .settings(
     libraryDependencies ++= Seq(
       "org.typelevel" %% "cats-effect"       % "2.0.0",
@@ -16,7 +21,7 @@ lazy val root = project
   )
 
 lazy val literal = project
-  .dependsOn(root)
+  .dependsOn(core)
   .settings(name := "memeid-literal")
   .settings(
     libraryDependencies ++= Seq(
@@ -27,7 +32,7 @@ lazy val literal = project
   )
 
 lazy val doobie = project
-  .dependsOn(root)
+  .dependsOn(core)
   .settings(name := "memeid-doobie")
   .settings(
     libraryDependencies ++= Seq(
@@ -39,7 +44,7 @@ lazy val doobie = project
   )
 
 lazy val circe = project
-  .dependsOn(root)
+  .dependsOn(core)
   .settings(name := "memeid-circe")
   .settings(
     libraryDependencies ++= Seq(
