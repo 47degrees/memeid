@@ -1,46 +1,34 @@
 package memeid
 
-import cats.data._
-import cats.effect._
-import cats.syntax.parallel._
-
 import org.specs2.ScalaCheck
 import org.specs2.matcher.IOMatchers
 import org.specs2.mutable.Specification
 
+@SuppressWarnings(Array("scalafix:Disable.map", "scalafix:Disable.to"))
 class V4Spec extends Specification with ScalaCheck with IOMatchers {
 
   "V4 constructor" should {
 
     "create version 4 UUIDs" in {
-      @SuppressWarnings(Array("scalafix:Disable.get"))
-      def ids = NonEmptyList.fromList(List.range(1, 10)).get
+      val uuids = (1 to 10).par.map(_ => UUID.v4.version)
 
-      val io = for {
-        uuids <- ids.parTraverse(_ => UUID.v4[IO])
-        versions = uuids.map(_.version)
-      } yield versions.toList.toSet
-
-      io must returnValue[Set[Int]](Set(4))
+      uuids.to[Set] must contain(exactly(4))
     }
 
     "not generate the same UUID twice" in {
-      @SuppressWarnings(Array("scalafix:Disable.get"))
-      def ids = NonEmptyList.fromList(List.range(1, 10)).get
-      val io  = ids.parTraverse(_ => UUID.v4[IO]).map(_.toList.toSet.size)
-      io must returnValue(ids.size)
+      val uuids = (1 to 10).par.map(_ => UUID.v4)
+
+      uuids.to[Set].size must be equalTo 10
     }
 
     "be unable to create non-v4 values regardless of msb/lsb values provided" in {
-      val uuid: UUID = UUID.v4(0, 0)
-
-      uuid must not be equalTo(UUID.Nil)
+      val nonNull: UUID = UUID.v4(0, 0)
+      nonNull must not be equalTo(UUID.Nil)
     }
 
     "generate version 4 UUIDs regardless of msb/lsb values provided" in {
-      val uuid: UUID = UUID.v4(0, 0)
-
-      uuid.version must be equalTo 4
+      val nonNull: UUID = UUID.v4(0, 0)
+      nonNull.version must be equalTo 4
     }
 
   }

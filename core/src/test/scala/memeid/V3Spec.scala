@@ -16,7 +16,7 @@ class V3Spec extends Specification with ScalaCheck with IOMatchers {
     }
 
     "give the same bytes for the same UUID" in {
-      val uuid = UUID.v4[IO].unsafeRunSync
+      val uuid = UUID.v4
       Digestible[UUID].toByteArray(uuid) must be equalTo Digestible[UUID].toByteArray(uuid)
     }
   }

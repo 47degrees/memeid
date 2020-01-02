@@ -53,7 +53,7 @@ trait Constructors {
     }
 
   // Construct a v4 (random) UUID.
-  def v4[F[_]: Sync]: F[UUID] = Sync[F].delay(new UUID.V4(JUUID.randomUUID))
+  def v4: UUID = new UUID.V4(JUUID.randomUUID)
 
   // Construct a v4 (random) UUID from the given `msb` and `lsb`.
   def v4(msb: Long, lsb: Long): UUID = {
@@ -64,11 +64,10 @@ trait Constructors {
 
   // Construct a SQUUID (random, time-based) UUID.
   def squuid[F[_]: Sync: Time]: F[UUID] =
-    (v4, Time[F].posix).mapN {
-      case (uuid, ts) => {
-        val timedMsb = (ts << 32) | (uuid.msb & Mask.UB32)
-        new UUID.V4(new JUUID(timedMsb, uuid.lsb))
-      }
+    Time[F].posix.map { ts =>
+      val uuid     = v4
+      val timedMsb = (ts << 32) | (uuid.msb & Mask.UB32)
+      new UUID.V4(new JUUID(timedMsb, uuid.lsb))
     }
 
   def v3[F[_]: Sync, A](namespace: UUID, local: A)(implicit D: Digestible[A]): F[UUID] =
