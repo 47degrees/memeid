@@ -3,6 +3,8 @@ package memeid
 import java.nio.ByteBuffer
 import java.util.{UUID => JUUID}
 
+import scala.util.Try
+
 import cats.effect._
 import cats.implicits._
 
@@ -35,8 +37,7 @@ trait Constructors {
    * Returns [[scala.util.Left Left]] with the error in case the string doesn't follow the
    * string standard representation.
    */
-  def from(s: String): Either[Throwable, UUID] =
-    Either.catchNonFatal(JUUID.fromString(s).asScala)
+  def from(s: String): Either[Throwable, UUID] = Try(JUUID.fromString(s).asScala).toEither
 
   protected[memeid] def fromByteArray(bytes: Array[Byte]): UUID = {
     val bb = ByteBuffer.wrap(bytes)
