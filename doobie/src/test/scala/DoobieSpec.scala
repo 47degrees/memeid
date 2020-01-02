@@ -14,6 +14,7 @@ import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAll
 
 class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatchers {
+
   lazy val transactor: Transactor[IO] =
     Transactor.fromDriverManager[IO](
       driver = "org.h2.Driver",
