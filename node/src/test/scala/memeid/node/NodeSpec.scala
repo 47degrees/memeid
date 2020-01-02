@@ -24,10 +24,10 @@ class NodeSpec extends Specification with ScalaCheck {
       val node2 = implicitly[Node]
       val node3 = implicitly[Node]
 
-      val nodeId = node1.nodeId
+      val id = node1.id
 
-      node2.nodeId must be equalTo nodeId
-      node3.nodeId must be equalTo nodeId
+      node2.id must be equalTo id
+      node3.id must be equalTo id
     }
   }
 

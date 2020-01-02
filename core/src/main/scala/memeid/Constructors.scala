@@ -46,9 +46,9 @@ trait Constructors {
       val high = readByte(mask(12, 48), ts)
       val msb  = Mask.version(high, 1) | (low << 32) | (mid << 16)
 
-      val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), N.nodeId), 0x2)
+      val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), N.id), 0x2)
       val clkLow  = readByte(mask(8, 0), N.clockSequence.toLong)
-      val lsb     = writeByte(mask(8, 56), writeByte(mask(8, 48), N.nodeId, clkLow), clkHigh)
+      val lsb     = writeByte(mask(8, 56), writeByte(mask(8, 48), N.id, clkLow), clkHigh)
       new UUID.V1(new JUUID(msb, lsb))
     }
 

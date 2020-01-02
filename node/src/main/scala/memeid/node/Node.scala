@@ -11,7 +11,7 @@ trait Node {
   def clockSequence: Short
 
   // The node id
-  def nodeId: Long
+  def id: Long
 
 }
 
@@ -77,7 +77,7 @@ object Node {
 
     val clockSequence: Short = clkSeq
 
-    val nodeId: Long = {
+    val id: Long = {
       val addresses  = Sys.getNetworkInterfaces ++ Sys.getLocalInterfaces
       val properties = Sys.getProperties
       makeNodeId(addresses, properties)
