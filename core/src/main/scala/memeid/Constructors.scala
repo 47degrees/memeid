@@ -70,26 +70,28 @@ trait Constructors {
       new UUID.V4(new JUUID(timedMsb, uuid.lsb))
     }
 
-  def v3[F[_]: Sync, A](namespace: UUID, local: A)(implicit D: Digestible[A]): F[UUID] =
-    hashed(MD5, 3, namespace, local).map(new UUID.V3(_))
+  def v3[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
+    new UUID.V3(hashed(MD5, 3, namespace, local))
 
-  def v5[F[_]: Sync, A](namespace: UUID, local: A)(implicit D: Digestible[A]): F[UUID] =
-    hashed(SHA1, 5, namespace, local).map(new UUID.V5(_))
+  def v5[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
+    new UUID.V5(hashed(SHA1, 5, namespace, local))
 
-  private def hashed[F[_]: Sync, A](algo: Algorithm, version: Long, namespace: UUID, local: A)(
-      implicit D: Digestible[A]
-  ): F[JUUID] =
-    Sync[F].delay {
-      val digest = algo.digest
-      val ns     = Digestible[UUID].toByteArray(namespace)
-      digest.update(ns)
-      val name = D.toByteArray(local)
-      digest.update(name)
-      val bytes  = digest.digest
-      val rawMsb = fromBytes(bytes.take(8))
-      val rawLsb = fromBytes(bytes.drop(8))
-      val msb    = Mask.version(rawMsb, version)
-      val lsb    = writeByte(mask(2, 52), rawLsb, 0x2)
-      new JUUID(msb, lsb)
-    }
+  private def hashed[A: Digestible](
+      algo: Algorithm,
+      version: Long,
+      namespace: UUID,
+      local: A
+  ): JUUID = {
+    val digest = algo.digest
+    val ns     = Digestible[UUID].toByteArray(namespace)
+    digest.update(ns)
+    val name = Digestible[A].toByteArray(local)
+    digest.update(name)
+    val bytes  = digest.digest
+    val rawMsb = fromBytes(bytes.take(8))
+    val rawLsb = fromBytes(bytes.drop(8))
+    val msb    = Mask.version(rawMsb, version)
+    val lsb    = writeByte(mask(2, 52), rawLsb, 0x2)
+    new JUUID(msb, lsb)
+  }
 }

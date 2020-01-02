@@ -1,8 +1,5 @@
 package memeid
 
-import cats.effect._
-import cats.syntax.eq._
-
 import org.specs2.ScalaCheck
 import org.specs2.matcher.IOMatchers
 import org.specs2.mutable.Specification
@@ -12,39 +9,35 @@ class V3Spec extends Specification with ScalaCheck with IOMatchers {
   "V3 constructor" should {
 
     "create same UUID for the same namespace/name" in {
-      val test = for {
-        ns <- UUID.v1[IO]
-        name = "a-thing"
-        first <- UUID.v3[IO, String](ns, name)
-        last  <- UUID.v3[IO, String](ns, name)
-      } yield first === last
+      val namespace = UUID.v4
+      val name      = "a-thing"
 
-      test must returnValue(true)
+      val uuid1 = UUID.v3(namespace, name)
+      val uuid2 = UUID.v3(namespace, name)
+
+      uuid1 must be equalTo uuid2
     }
 
     "create different UUIDs for distinct name" in {
-      val test = for {
-        ns <- UUID.v1[IO]
-        name  = "a-thing"
-        name2 = "another-thing"
-        first <- UUID.v3[IO, String](ns, name)
-        last  <- UUID.v3[IO, String](ns, name2)
-      } yield first === last
+      val namespace = UUID.v4
+      val name1     = "a-thing"
+      val name2     = "b-thing"
 
-      test must returnValue(false)
+      val uuid1 = UUID.v3(namespace, name1)
+      val uuid2 = UUID.v3(namespace, name2)
+
+      uuid1 must not be equalTo(uuid2)
     }
 
     "create different UUIDs for distinct namespace" in {
-      val test = for {
-        ns  <- UUID.v1[IO]
-        ns2 <- UUID.v1[IO]
-        name  = "a-thing"
-        local = "foo"
-        first <- UUID.v3[IO, String](ns, name)
-        last  <- UUID.v3[IO, String](ns2, name)
-      } yield first === last
+      val namespace1 = UUID.v4
+      val namespace2 = UUID.v4
+      val name       = "a-thing"
 
-      test must returnValue(false)
+      val uuid1 = UUID.v3(namespace1, name)
+      val uuid2 = UUID.v3(namespace2, name)
+
+      uuid1 must not be equalTo(uuid2)
     }
 
   }
