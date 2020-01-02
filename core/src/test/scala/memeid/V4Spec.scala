@@ -9,7 +9,9 @@ import org.specs2.matcher.IOMatchers
 import org.specs2.mutable.Specification
 
 class V4Spec extends Specification with ScalaCheck with IOMatchers {
+
   "V4 constructor" should {
+
     "create version 4 UUIDs" in {
       @SuppressWarnings(Array("scalafix:Disable.get"))
       def ids = NonEmptyList.fromList(List.range(1, 10)).get
@@ -30,13 +32,17 @@ class V4Spec extends Specification with ScalaCheck with IOMatchers {
     }
 
     "be unable to create non-v4 values regardless of msb/lsb values provided" in {
-      val nonNull: UUID = UUID.v4[IO](0, 0).unsafeRunSync
-      nonNull must not be equalTo(UUID.Nil)
+      val uuid: UUID = UUID.v4(0, 0)
+
+      uuid must not be equalTo(UUID.Nil)
     }
 
     "generate version 4 UUIDs regardless of msb/lsb values provided" in {
-      val nonNull: IO[UUID] = UUID.v4[IO](0, 0)
-      nonNull.map(_.version) must returnValue(4)
+      val uuid: UUID = UUID.v4(0, 0)
+
+      uuid.version must be equalTo 4
     }
+
   }
+
 }

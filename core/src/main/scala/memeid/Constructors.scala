@@ -56,7 +56,7 @@ trait Constructors {
   def v4[F[_]: Sync]: F[UUID] = Sync[F].delay(new UUID.V4(JUUID.randomUUID))
 
   // Construct a v4 (random) UUID from the given `msb` and `lsb`.
-  def v4[F[_]: Sync](msb: Long, lsb: Long): F[UUID] = Sync[F].delay {
+  def v4(msb: Long, lsb: Long): UUID = {
     val v4msb = writeByte(mask(4, 12), msb, 0x4)
     val v4lsb = writeByte(mask(2, 62), lsb, 0x2)
     new UUID.V4(new JUUID(v4msb, v4lsb))
