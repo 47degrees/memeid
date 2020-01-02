@@ -5,8 +5,6 @@ import java.net.{InetAddress, NetworkInterface}
 import scala.collection.JavaConverters._
 import scala.util.Random
 
-import cats.Eval
-
 import memeid.bits._
 import memeid.digest._
 
@@ -28,7 +26,7 @@ object Node {
   //   a system) initialized to a random 16-bit number to minimize the correlation
   //   across systems.
   //
-  private val clockSeq: Eval[Short] = Eval.now(new Random().nextInt(Short.MaxValue + 1).toShort)
+  private val clockSeq: Short = new Random().nextInt(Short.MaxValue + 1).toShort
 
   // System property data sources
   //
@@ -90,7 +88,7 @@ object Node {
 
   }
 
-  implicit def apply: Node = fromClockSequence(clockSeq.value)
+  implicit def apply: Node = fromClockSequence(clockSeq)
 
 }
 
