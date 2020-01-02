@@ -5,10 +5,8 @@ import java.net.{InetAddress, NetworkInterface}
 import scala.collection.JavaConverters._
 import scala.util.Random
 
-import cats.effect._
-import cats.syntax.functor._
-import cats.syntax.show._
-import cats.{Eval, Show}
+import cats.Eval
+import cats.effect.Sync
 
 import memeid.bits._
 import memeid.digest._
@@ -94,23 +92,23 @@ object Node {
   implicit def apply[F[_]: Sync]: Node[F] = fromClockSequence(Sync[F].pure(clockSeq.value))
 }
 
+@SuppressWarnings(Array("scalafix:Disable.toString"))
 object Sys {
-  implicit val showInet: Show[InetAddress] = Show.fromToString
 
   def getNetworkInterfaces: Set[String] = {
     val localHost     = InetAddress.getLocalHost
     val hostName      = localHost.getCanonicalHostName
-    val baseAddresses = Set(localHost.show, hostName)
+    val baseAddresses = Set(localHost.toString, hostName)
     NetworkInterface.getNetworkInterfaces.asScala.foldLeft(baseAddresses)({
       case (addrs, ni) =>
-        addrs ++ ni.getInetAddresses.asScala.map(_.show).toSet
+        addrs ++ ni.getInetAddresses.asScala.map(_.toString).toSet
     })
   }
 
   def getLocalInterfaces: Set[String] = {
     val localHost = InetAddress.getLocalHost
     val hostName  = localHost.getCanonicalHostName
-    InetAddress.getAllByName(hostName).map(_.show).toSet
+    InetAddress.getAllByName(hostName).map(_.toString).toSet
   }
 
   def getProperties: Map[String, String] = {
