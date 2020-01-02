@@ -63,6 +63,4 @@ trait Constructors {
     val v4lsb = writeByte(mask(2, 62), lsb, 0x2)
     new UUID.V4(new JUUID(v4msb, v4lsb))
   }
-
-  def random[F[_]: Sync](msb: Long, lsb: Long): F[UUID] = v4(msb, lsb)
 }
