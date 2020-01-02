@@ -23,8 +23,6 @@ class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatc
       pass = ""
     )
 
-  val uuid: UUID = UUID.v1[IO].unsafeRunSync
-
   def beforeAll(): Unit =
     sql"CREATE TABLE test (id UUID NOT NULL)".update.run.transact(transactor).void.unsafeRunSync
 
@@ -35,10 +33,12 @@ class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatc
     sql"""insert into test (id) values ($uuid)""".update
 
   check(sql"SELECT id from test".query[UUID])
-  check(insert(uuid))
-  check(select(uuid))
+  check(insert(UUID.v1))
+  check(select(UUID.v1))
 
   "We can insert and select UUIDs" in {
+    val uuid = UUID.v1
+
     val io: IO[UUID] = for {
       _ <- insert(uuid).run.transact(transactor)
       u <- select(uuid).unique.transact(transactor)

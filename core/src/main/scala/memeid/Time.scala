@@ -4,22 +4,22 @@ import java.util.concurrent.atomic.AtomicReference
 
 import scala.annotation.tailrec
 
-import cats.effect._
 import cats.instances.long._
 import cats.syntax.eq._
 
-trait Time[F[_]] {
+trait Time {
+
   /* A posix timestamp. */
-  def posix: F[Long]
+  def posix: Long
 
   /* A gregorian time monotonic timestamp. */
-  def monotonic: F[Long]
+  def monotonic: Long
+
 }
 
 object Time {
 
-  def current: Long =
-    System.currentTimeMillis
+  def current: Long = System.currentTimeMillis
 
   /* Class to ensure unique gregorian timestamps for a given `resolution`. It works by keeping a sequence of
    * generated IDs and shifting the `ts` value adding the `seq`. Users of this class must ensure to
@@ -60,11 +60,12 @@ object Time {
    * us to stall timestamp generation if many concurrent timestamps are generated. */
   val state: AtomicReference[State] = new AtomicReference[State](State.empty)
 
-  implicit def apply[F[_]: Sync]: Time[F] = new Time[F] {
-    def posix: F[Long] = Sync[F].delay { current / 1000 }
+  implicit def apply: Time = new Time {
 
-    def monotonic: F[Long] = Sync[F].delay {
+    def posix: Long = current / 1000
+
+    def monotonic: Long =
       state.updateAndGet(_.update(current)).timestamp
-    }
+
   }
 }

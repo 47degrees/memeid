@@ -4,9 +4,6 @@ import java.util.{UUID => JUUID}
 
 import scala.util.Try
 
-import cats.effect._
-import cats.implicits._
-
 import memeid.JavaConverters._
 import memeid.bits._
 import memeid.digest._
@@ -39,18 +36,18 @@ trait Constructors {
   def from(s: String): Either[Throwable, UUID] = Try(JUUID.fromString(s).asScala).toEither
 
   // Construct a v1 (time-based) UUID.
-  def v1[F[_]: Sync](implicit N: Node, T: Time[F]): F[UUID] =
-    T.monotonic.map { ts =>
-      val low  = readByte(mask(32, 0), ts)
-      val mid  = readByte(mask(16, 32), ts)
-      val high = readByte(mask(12, 48), ts)
-      val msb  = Mask.version(high, 1) | (low << 32) | (mid << 16)
+  def v1(implicit N: Node, T: Time): UUID = {
+    val timestamp = T.monotonic
+    val low       = readByte(mask(32, 0), timestamp)
+    val mid       = readByte(mask(16, 32), timestamp)
+    val high      = readByte(mask(12, 48), timestamp)
+    val msb       = Mask.version(high, 1) | (low << 32) | (mid << 16)
 
-      val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), N.id), 0x2)
-      val clkLow  = readByte(mask(8, 0), N.clockSequence.toLong)
-      val lsb     = writeByte(mask(8, 56), writeByte(mask(8, 48), N.id, clkLow), clkHigh)
-      new UUID.V1(new JUUID(msb, lsb))
-    }
+    val clkHigh = writeByte(mask(2, 6), readByte(mask(6, 8), N.id), 0x2)
+    val clkLow  = readByte(mask(8, 0), N.clockSequence.toLong)
+    val lsb     = writeByte(mask(8, 56), writeByte(mask(8, 48), N.id, clkLow), clkHigh)
+    new UUID.V1(new JUUID(msb, lsb))
+  }
 
   // Construct a v4 (random) UUID.
   def v4: UUID = new UUID.V4(JUUID.randomUUID)
@@ -63,12 +60,13 @@ trait Constructors {
   }
 
   // Construct a SQUUID (random, time-based) UUID.
-  def squuid[F[_]: Sync: Time]: F[UUID] =
-    Time[F].posix.map { ts =>
-      val uuid     = v4
-      val timedMsb = (ts << 32) | (uuid.msb & Mask.UB32)
-      new UUID.V4(new JUUID(timedMsb, uuid.lsb))
-    }
+  def squuid(implicit T: Time): UUID = {
+    val uuid = v4
+
+    val timedMsb = (T.posix << 32) | (uuid.msb & Mask.UB32)
+
+    new UUID.V4(new JUUID(timedMsb, uuid.lsb))
+  }
 
   def v3[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
     new UUID.V3(hashed(MD5, 3, namespace, local))
