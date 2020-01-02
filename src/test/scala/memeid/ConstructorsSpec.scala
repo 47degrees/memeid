@@ -16,7 +16,7 @@ class ConstructorsSpec extends Specification with ScalaCheck {
 
     "return None on invalid string" in prop { s: String =>
       UUID.from(s) must beLeft().like {
-        case e: IllegalArgumentException => e.getMessage must be equalTo s"Invalid UUID string: $s"
+        case e: IllegalArgumentException => e.getMessage must contain("UUID string")
       }
     }.setGen(Gen.alphaNumStr)
 
