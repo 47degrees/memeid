@@ -19,5 +19,30 @@ class V5Spec extends Specification with ScalaCheck with IOMatchers {
 
       test must returnValue(true)
     }
+
+    "create different UUIDs for distinct name" in {
+      val test = for {
+        ns <- UUID.v1[IO]
+        name  = "a-thing"
+        name2 = "another-thing"
+        first <- UUID.v5[IO, String](ns, name)
+        last  <- UUID.v5[IO, String](ns, name2)
+      } yield first === last
+
+      test must returnValue(false)
+    }
+
+    "create different UUIDs for distinct namespace" in {
+      val test = for {
+        ns  <- UUID.v1[IO]
+        ns2 <- UUID.v1[IO]
+        name  = "a-thing"
+        local = "foo"
+        first <- UUID.v5[IO, String](ns, name)
+        last  <- UUID.v5[IO, String](ns2, name)
+      } yield first === last
+
+      test must returnValue(false)
+    }
   }
 }
