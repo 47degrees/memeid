@@ -1,16 +1,17 @@
-package memeid
+package memeid.cats
 
 import java.lang.Long.compareUnsigned
 
 import cats.Show
 import cats.instances.uuid.catsStdShowForUUID
-import cats.kernel.{Hash, LowerBounded, Order, PartialOrder, UpperBounded}
+import cats.kernel._
 import cats.syntax.contravariant._
 
-@SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))
-trait CatsInstances {
+import memeid.UUID
 
-  implicit val UUIDHashOrderInstances: Order[UUID] with Hash[UUID] =
+trait instances {
+
+  implicit def UUIDHashOrderInstances: Order[UUID] with Hash[UUID] =
     new Order[UUID] with Hash[UUID] {
 
       override def hash(x: UUID): Int = x.juuid.hashCode /* scalafix:ok */ ()
@@ -23,9 +24,9 @@ trait CatsInstances {
 
     }
 
-  implicit val UUIDShowInstance: Show[UUID] = catsStdShowForUUID.contramap(_.juuid)
+  implicit def UUIDShowInstance: Show[UUID] = catsStdShowForUUID.contramap(_.juuid)
 
-  implicit val UUIDBoundsInstances: LowerBounded[UUID] with UpperBounded[UUID] =
+  implicit def UUIDBoundsInstances: LowerBounded[UUID] with UpperBounded[UUID] =
     new LowerBounded[UUID] with UpperBounded[UUID] {
 
       override def minBound: UUID = UUID.Nil
@@ -36,3 +37,5 @@ trait CatsInstances {
     }
 
 }
+
+object instances extends instances

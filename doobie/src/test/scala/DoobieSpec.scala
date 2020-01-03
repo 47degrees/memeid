@@ -33,11 +33,11 @@ class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatc
     sql"""insert into test (id) values ($uuid)""".update
 
   check(sql"SELECT id from test".query[UUID])
-  check(insert(UUID.v1))
-  check(select(UUID.v1))
+  check(insert(UUID.V1.next))
+  check(select(UUID.V1.next))
 
   "We can insert and select UUIDs" in {
-    val uuid = UUID.v1
+    val uuid = UUID.V1.next
 
     val io: IO[UUID] = for {
       _ <- insert(uuid).run.transact(transactor)

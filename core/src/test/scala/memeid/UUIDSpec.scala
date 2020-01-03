@@ -1,34 +1,27 @@
 package memeid
 
 import java.nio.ByteBuffer
-import java.util.{UUID => JUUID}
-
-import cats._
-import cats.instances.uuid._
 
 import memeid.digest.Digestible
+import org.scalacheck.Gen
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
+@SuppressWarnings(Array("scalafix:Disable.toString"))
 class UUIDSpec extends Specification with ScalaCheck {
 
-  "Order[UUID]" should {
+  "UUID.from" should {
 
-    "compare using unsigned comparison" in prop { lsb: Long =>
-      // specifically chosen since they will not compare correctly unless using unsigned comparison
-      val uuid1 = UUID.from(0x20000000.toLong, lsb)
-      val uuid2 = UUID.from(0xE0000000.toLong, lsb)
-
-      (Order[UUID].compare(uuid1, uuid2) must be equalTo -1) and
-        (Order[JUUID].compare(uuid1.juuid, uuid2.juuid) must be equalTo 1)
+    "return Some on valid UUID" in prop { uuid: UUID =>
+      UUID.from(uuid.toString) should beRight(uuid)
     }
 
-  }
+    "return None on invalid string" in prop { s: String =>
+      UUID.from(s) must beLeft().like {
+        case e: IllegalArgumentException => e.getMessage must contain("UUID string")
+      }
+    }.setGen(Gen.alphaNumStr)
 
-  "Hash[UUID] returns hash code consistent with java.util.UUID" in prop { (msb: Long, lsb: Long) =>
-    val uuid = UUID.from(msb, lsb)
-
-    Hash[UUID].hash(uuid) must be equalTo Hash[JUUID].hash(uuid.juuid)
   }
 
   "UUID.as" should {
@@ -161,7 +154,7 @@ class UUIDSpec extends Specification with ScalaCheck {
     }
 
     "give the same bytes for the same UUID" in {
-      val uuid = UUID.v4
+      val uuid = UUID.V1.next
 
       Digestible[UUID].toByteArray(uuid) must be equalTo Digestible[UUID].toByteArray(uuid)
     }
