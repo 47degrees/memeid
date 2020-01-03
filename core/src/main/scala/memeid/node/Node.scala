@@ -1,9 +1,9 @@
 package memeid.node
 
-import memeid.digest.Digest
-import memeid.bits.fromBytes
-
 import scala.util.Random
+
+import memeid.bits.fromBytes
+import memeid.digest.Digest
 
 trait Node {
 
@@ -88,4 +88,3 @@ object Node {
   implicit def apply: Node = fromClockSequence(clockSeq)
 
 }
-

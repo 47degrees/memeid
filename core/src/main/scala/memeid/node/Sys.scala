@@ -1,6 +1,7 @@
 package memeid.node
 
 import java.net.{InetAddress, NetworkInterface}
+
 import scala.collection.JavaConverters._
 
 @SuppressWarnings(Array("scalafix:Disable.toString"))
