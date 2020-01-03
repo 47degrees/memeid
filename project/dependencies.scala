@@ -9,6 +9,7 @@ object dependencies {
     val circe               = "0.12.3"
     val `discipline-specs2` = "1.0.0"
     val doobie              = "0.8.8"
+    val http4s              = "0.21.0-M6"
     val specs               = "4.8.1"
     val shapeless           = "2.3.3"
 
@@ -39,6 +40,11 @@ object dependencies {
 
   val circe: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
     "io.circe" %% "circe-core" % V.circe
+  )
+
+  val http4s: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
+    "org.http4s" %% "http4s-core" % V.http4s,
+    "org.http4s" %% "http4s-dsl"  % V.http4s % Test
   )
 
 }
