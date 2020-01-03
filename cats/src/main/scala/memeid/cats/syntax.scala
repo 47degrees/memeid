@@ -1,11 +1,14 @@
 package memeid.cats
 
-import cats.effect.Sync
+import java.util.concurrent.TimeUnit.SECONDS
+
+import cats.effect.{Clock, Sync}
+import cats.syntax.functor._
 
 import memeid.UUID
 import memeid.digest.Digestible
 import memeid.node.Node
-import memeid.time.Time
+import memeid.time.{Posix, Time}
 
 trait syntax {
 
@@ -21,7 +24,16 @@ trait syntax {
 
     def random[F[_]: Sync]: F[UUID] = Sync[F].delay(UUID.V4.random)
 
-    def squuid[F[_]: Sync](implicit T: Time): F[UUID] = Sync[F].delay(UUID.V4.squuid(T))
+    def squuid[F[_]: Sync: Clock]: F[UUID] =
+      Clock[F]
+        .realTime(SECONDS)
+        .map { s =>
+          UUID.V4.squuid {
+            new Posix {
+              override def value: Long = s
+            }
+          }
+        }
 
   }
 

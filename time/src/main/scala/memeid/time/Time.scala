@@ -6,9 +6,6 @@ import scala.annotation.tailrec
 
 trait Time {
 
-  /* A posix timestamp. */
-  def posix: Long
-
   /* A gregorian time monotonic timestamp. */
   def monotonic: Long
 
@@ -57,9 +54,7 @@ object Time {
 
   implicit def apply: Time = new Time {
 
-    def posix: Long = current / 1000
-
-    def monotonic: Long =
+    override def monotonic: Long =
       state.updateAndGet(_.update(current)).timestamp
 
   }
