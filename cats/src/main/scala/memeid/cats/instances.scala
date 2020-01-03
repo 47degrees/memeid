@@ -2,14 +2,22 @@ package memeid.cats
 
 import java.lang.Long.compareUnsigned
 
-import cats.Show
 import cats.instances.uuid.catsStdShowForUUID
 import cats.kernel._
 import cats.syntax.contravariant._
+import cats.{Contravariant, Show}
 
 import memeid.UUID
+import memeid.digest.Digestible
 
 trait instances {
+
+  implicit def DigestibleContravariant: Contravariant[Digestible] = new Contravariant[Digestible] {
+
+    override def contramap[A, B](fa: Digestible[A])(f: B => A): Digestible[B] =
+      b => fa.toByteArray(f(b))
+
+  }
 
   implicit def UUIDHashOrderInstances: Order[UUID] with Hash[UUID] =
     new Order[UUID] with Hash[UUID] {

@@ -4,11 +4,6 @@ import java.nio.charset.StandardCharsets.UTF_8
 
 trait Digestible[A] { self =>
 
-  //TODO: Remove this and add ContravariantFunctor[Digestible] in `memeid-cats`
-  def contramap[B](f: B => A): Digestible[B] = { a: B =>
-    self.toByteArray(f(a))
-  }
-
   def toByteArray(a: A): Array[Byte]
 
 }

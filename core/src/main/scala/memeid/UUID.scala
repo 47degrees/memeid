@@ -10,7 +10,7 @@ import memeid.JavaConverters._
 import memeid.bits.{fromBytes, mask, readByte, toBytes, writeByte}
 import memeid.digest.{Algorithm, Digestible, MD5, SHA1}
 import memeid.node.Node
-import memeid.time.Time
+import memeid.time.{Posix, Time}
 
 /**
  * A class that represents an immutable universally unique identifier (UUID).
@@ -184,10 +184,10 @@ object UUID {
     def random: UUID = new UUID.V4(JUUID.randomUUID)
 
     // Construct a SQUUID (random, time-based) UUID.
-    def squuid(implicit T: Time): UUID = {
+    def squuid(implicit P: Posix): UUID = {
       val uuid = random
 
-      val timedMsb = (T.posix << 32) | (uuid.msb & Mask.UB32)
+      val timedMsb = (P.value << 32) | (uuid.msb & Mask.UB32)
 
       new UUID.V4(new JUUID(timedMsb, uuid.lsb))
     }
