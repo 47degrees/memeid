@@ -92,8 +92,9 @@ sealed trait UUID extends Comparable[UUID] {
 
 object UUID {
 
-  implicit val DigestibleUUIDInstance: Digestible[UUID] =
-    u => toBytes(u.msb) ++ toBytes(u.lsb)
+  def unapply(str: String): Option[UUID] =
+    if (!str.isEmpty) UUID.from(str).toOption
+    else None
 
   /**
    * Creates a valid [[UUID]] from two [[Long]] values representing
@@ -244,5 +245,8 @@ object UUID {
     def version(msb: Long, version: Long): Long =
       writeByte(VERSION, msb, version)
   }
+
+  implicit val DigestibleUUIDInstance: Digestible[UUID] =
+    u => toBytes(u.msb) ++ toBytes(u.lsb)
 
 }

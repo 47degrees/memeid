@@ -161,4 +161,16 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   }
 
+  "unapply" should {
+
+    "extract valid uuid string as UUID" in prop { uuid: UUID =>
+      UUID.unapply(uuid.toString) must be some uuid
+    }
+
+    "fail on invalid uuid string as UUID" in prop { string: String =>
+      UUID.unapply(string) must beNone
+    }.setGen(Gen.alphaNumStr)
+
+  }
+
 }
