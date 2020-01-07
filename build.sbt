@@ -52,3 +52,8 @@ lazy val circe = project
   .dependsOn(cats)
   .settings(name := "memeid-circe")
   .settings(dependencies.common, dependencies.circe)
+
+lazy val http4s = project
+  .dependsOn(cats)
+  .settings(name := "memeid-http4s")
+  .settings(dependencies.common, dependencies.http4s)
