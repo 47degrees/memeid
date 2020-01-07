@@ -45,7 +45,8 @@ sealed trait UUID extends Comparable[UUID] {
   @inline def lsb: Long = juuid.getLeastSignificantBits
 
   /**
-   * wraps this [[UUID]] into an [[scala.Option Option]]
+   * Returns this UUID as the provided type if versions match;
+   * otherwise, returns `None`.
    *
    * @tparam A must be subtype of [[UUID]]
    * @return this [[UUID]] as the provided type if versions match;
@@ -57,7 +58,8 @@ sealed trait UUID extends Comparable[UUID] {
   }
 
   /**
-   * checks if this [[UUID]] matches the provided type
+   * Returns `true` if this UUID matches the provided type;
+   * otherwise, returns `false`.
    *
    * @tparam A must be subtype of [[UUID]]
    * @return `true` if this [[UUID]] matches the provided type;
@@ -99,13 +101,13 @@ sealed trait UUID extends Comparable[UUID] {
    *
    * The version number has the following meaning:
    *
-   * - '''1''':    Time-based UUID
+   * - '''1''': Time-based UUID
    *
-   * - '''2''':     DCE security UUID
+   * - '''2''': DCE security UUID
    *
-   * - '''3''':    Name-based UUID
+   * - '''3''': Name-based UUID
    *
-   * - '''4''':   Randomly generated UUID
+   * - '''4''': Randomly generated UUID
    *
    * - '''5''': The name-based version that uses SHA-1 hashing
    *
@@ -114,24 +116,12 @@ sealed trait UUID extends Comparable[UUID] {
    */
   @inline def version: Int = juuid.version
 
-  /**
-   * Checks if an [[UUID]] passed as parameter is equal to this [[UUID]]
-   * @param obj object to be checked if it's equal to this [[UUID]]
-   * @return true if both are equals; false otherwise
-   */
   @SuppressWarnings(Array("scalafix:Disable.equals", "scalafix:Disable.Any"))
   override def equals(obj: Any): Boolean = obj match {
     case x: UUID if compareTo(x).equals(0) => true
     case _                                 => false
   }
 
-  /**
-   * Compares this [[UUID]] with another passed as parameter
-   * @param x [[UUID]] to be compared with this
-   * @return 0 if both are equals
-   *         a value less than 0 if this is lower than x
-   *         a value greater than 0 if this is higher than x
-   */
   override def compareTo(x: UUID): Int = {
     compareUnsigned(msb, x.msb) match {
       case 0     => compareUnsigned(lsb, x.lsb)
@@ -139,18 +129,9 @@ sealed trait UUID extends Comparable[UUID] {
     }
   }
 
-  /**
-   * Returns a hash code for this [[UUID]]
-   *
-   * @return A hash code value for this [[UUID]]
-   */
   @SuppressWarnings(Array("scalafix:Disable.hashCode"))
   override def hashCode(): Int = juuid.hashCode
 
-  /**
-   * Returns a string object representing this [[UUID]]
-   * @return A string representation of this [[UUID]]
-   */
   @SuppressWarnings(Array("scalafix:Disable.toString"))
   override def toString: String = juuid.toString
 
