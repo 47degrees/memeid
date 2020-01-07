@@ -1,6 +1,6 @@
 language: scala
 os: linux
-jdk: openjdk11
+jdk: openjdk8
 
 before_install:
   - git fetch --tags
