@@ -16,6 +16,7 @@ lazy val cats = project
   .dependsOn(core % "compile->compile;test->test")
   .settings(name := "memeid-cats")
   .settings(dependencies.common, dependencies.cats)
+  .settings(dependencies.compilerPlugins)
 
 lazy val literal = project
   .dependsOn(core)

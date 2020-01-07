@@ -1,4 +1,4 @@
-import sbt._
+import sbt.{Def, _}
 import sbt.Keys._
 
 object dependencies {
@@ -45,6 +45,10 @@ object dependencies {
   val http4s: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
     "org.http4s" %% "http4s-core" % V.http4s,
     "org.http4s" %% "http4s-dsl"  % V.http4s % Test
+  )
+
+  val compilerPlugins: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
+    compilerPlugin("org.augustjune" %% "context-applied" % "0.1.2")
   )
 
 }
