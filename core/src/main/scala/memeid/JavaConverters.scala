@@ -32,9 +32,16 @@ import memeid.UUID._
  */
 object JavaConverters {
 
+  /**
+   * [[java.util.UUID]] to [[memeid.UUID]] converter
+   * @param juuid [[java.util.UUID]] to be converted
+   */
   implicit final class JUUIDAsScala(private val juuid: JUUID) extends AnyVal {
 
-    /** Converts this `java.util.UUID` into a `memeid.UUID` */
+    /**
+     * Converts this [[java.util.UUID]] into a [[memeid.UUID]]
+     * @return the [[java.util.UUID]] converted into a [[memeid.UUID]]
+     */
     def asScala: UUID = juuid -> juuid.version() match {
       case (Nil.juuid, 0) => Nil
       case (_, 1)         => new V1(juuid)
@@ -47,9 +54,16 @@ object JavaConverters {
 
   }
 
+  /**
+   * [[memeid.UUID]] to [[java.util.UUID]] converter
+   * @param uuid [[memeid.UUID]] to be converted
+   */
   implicit final class UUIDAsJava(private val uuid: UUID) extends AnyVal {
 
-    /** Converts this `memeid.UUID` into a `java.util.UUID` */
+    /**
+     * Converts this [[memeid.UUID]] into a [[java.util.UUID]]
+     * @return this [[memeid.UUID]] converted into a [[java.util.UUID]]
+     */
     def asJava: JUUID = uuid.juuid
 
   }
