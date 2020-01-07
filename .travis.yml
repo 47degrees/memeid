@@ -15,6 +15,8 @@ jobs:
       script: sbt "all scalafmtCheckAll scalafmtSbtCheck"
     - name: "Scalafix"
       script: sbt "scalafixAll --check"
+    - name: "Headers"
+      script: sbt headerCheckAll
     - name: "Tests"
       script: sbt test
 

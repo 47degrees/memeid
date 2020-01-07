@@ -14,28 +14,20 @@
  * limitations under the License.
  */
 
-package memeid
+package memeid.digest
 
-import org.specs2.ScalaCheck
-import org.specs2.mutable.Specification
+import java.nio.charset.StandardCharsets.UTF_8
 
-@SuppressWarnings(Array("scalafix:Disable.map", "scalafix:Disable.to"))
-class SQUUIDSpec extends Specification with ScalaCheck {
+trait Digestible[A] { self =>
 
-  "SQUUID constructor" should {
+  def toByteArray(a: A): Array[Byte]
 
-    "create version 4 UUIDs" in {
-      val uuids = (1 to 10).par.map(_ => UUID.V4.squuid.version)
+}
 
-      uuids.to[Set] must contain(exactly(4))
-    }
+object Digestible {
 
-    "not generate the same UUID twice" in {
-      val uuids = (1 to 10).par.map(_ => UUID.V4.squuid)
+  def apply[A](implicit d: Digestible[A]): Digestible[A] = d
 
-      uuids.to[Set].size must be equalTo 10
-    }
-
-  }
+  implicit val DigestibleStringImplementation: Digestible[String] = _.getBytes(UTF_8)
 
 }

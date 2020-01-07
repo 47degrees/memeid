@@ -14,28 +14,24 @@
  * limitations under the License.
  */
 
-package memeid
+package memeid.digest
 
-import org.specs2.ScalaCheck
-import org.specs2.mutable.Specification
+import java.security.MessageDigest
 
-@SuppressWarnings(Array("scalafix:Disable.map", "scalafix:Disable.to"))
-class SQUUIDSpec extends Specification with ScalaCheck {
+sealed trait Algorithm {
 
-  "SQUUID constructor" should {
+  def digest: MessageDigest
 
-    "create version 4 UUIDs" in {
-      val uuids = (1 to 10).par.map(_ => UUID.V4.squuid.version)
+}
 
-      uuids.to[Set] must contain(exactly(4))
-    }
+case object MD5 extends Algorithm {
 
-    "not generate the same UUID twice" in {
-      val uuids = (1 to 10).par.map(_ => UUID.V4.squuid)
+  def digest: MessageDigest = MessageDigest.getInstance("MD5")
 
-      uuids.to[Set].size must be equalTo 10
-    }
+}
 
-  }
+case object SHA1 extends Algorithm {
+
+  def digest: MessageDigest = MessageDigest.getInstance("SHA1")
 
 }

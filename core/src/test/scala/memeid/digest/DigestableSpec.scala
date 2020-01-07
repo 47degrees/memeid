@@ -14,26 +14,18 @@
  * limitations under the License.
  */
 
-package memeid
+package memeid.digest
 
-import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:Disable.map", "scalafix:Disable.to"))
-class SQUUIDSpec extends Specification with ScalaCheck {
+class DigestableSpec extends Specification {
 
-  "SQUUID constructor" should {
+  "Digestible[String]" should {
 
-    "create version 4 UUIDs" in {
-      val uuids = (1 to 10).par.map(_ => UUID.V4.squuid.version)
+    "give the same bytes for the same string" in {
+      val str = "a-thing"
 
-      uuids.to[Set] must contain(exactly(4))
-    }
-
-    "not generate the same UUID twice" in {
-      val uuids = (1 to 10).par.map(_ => UUID.V4.squuid)
-
-      uuids.to[Set].size must be equalTo 10
+      Digestible[String].toByteArray(str) must be equalTo Digestible[String].toByteArray(str)
     }
 
   }
