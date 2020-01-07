@@ -94,8 +94,8 @@ sealed trait UUID extends Comparable[UUID] {
   @inline def variant: Int = juuid.variant
 
   /**
-   * The version number associated with this {@code UUID}.  The version
-   * number describes how this {@code UUID} was generated.
+   * The version number associated with this [[UUID]].  The version
+   * number describes how this [[UUID]] was generated.
    *
    * The version number has the following meaning:
    *
@@ -129,8 +129,8 @@ sealed trait UUID extends Comparable[UUID] {
    * Compares this [[UUID]] with another passed as parameter
    * @param x [[UUID]] to be compared with this
    * @return 0 if both are equals
-   *         a value less than 0 if this is lower than {@code x}
-   *         a value greater than 0 if this is higher than {@code x}
+   *         a value less than 0 if this is lower than x
+   *         a value greater than 0 if this is higher than x
    */
   override def compareTo(x: UUID): Int = {
     compareUnsigned(msb, x.msb) match {
@@ -148,8 +148,8 @@ sealed trait UUID extends Comparable[UUID] {
   override def hashCode(): Int = juuid.hashCode
 
   /**
-   * Returns a {@code String} object representing this {@code UUID}.
-   * @return A string representation of this { @code UUID}
+   * Returns a string object representing this [[UUID]]
+   * @return A string representation of this [[UUID]]
    */
   @SuppressWarnings(Array("scalafix:Disable.toString"))
   override def toString: String = juuid.toString
