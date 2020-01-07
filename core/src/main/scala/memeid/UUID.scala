@@ -247,6 +247,7 @@ object UUID {
    * Companion object for [[V3]]
    */
   object V3 {
+
     /**
      * Construct a namespace name-based v3 UUID. Uses MD5 as a hash algorithm
      * @param namespace [[UUID UUID]] used for the [[UUID.V3 V3]] generation
