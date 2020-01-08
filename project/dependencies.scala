@@ -10,7 +10,7 @@ object dependencies {
     val `discipline-specs2` = "1.0.0"
     val doobie              = "0.8.8"
     val http4s              = "0.21.0-M6"
-    val specs               = "4.8.1"
+    val specs               = "4.8.2"
     val shapeless           = "2.3.3"
 
   }
