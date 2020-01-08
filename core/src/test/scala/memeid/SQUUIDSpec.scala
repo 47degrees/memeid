@@ -19,7 +19,7 @@ package memeid
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:Disable.map", "scalafix:Disable.to"))
+@SuppressWarnings(Array("scalafix:Disable.scala.parallel"))
 class SQUUIDSpec extends Specification with ScalaCheck {
 
   "SQUUID constructor" should {
