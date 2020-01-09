@@ -48,8 +48,8 @@ object dependencies {
   )
 
   val docs: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.tpolecat" %% "doobie-h2" % V.doobie,
-    "org.http4s" %% "http4s-dsl"  % V.http4s
+    "org.tpolecat" %% "doobie-h2"  % V.doobie,
+    "org.http4s"   %% "http4s-dsl" % V.http4s
   )
 
   val compilerPlugins: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
