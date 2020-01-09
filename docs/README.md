@@ -63,7 +63,19 @@ UUID.V3(namespace, "my-secret-code")
 UUID.V5(namespace, "my-secret-code")
 ```
 
-// TODO: custom digestible instances
+If you want to hash a custom type, you must provide an implicit `memeid.digest.Digestible` instance. This instance is used to convert your type into a byte array for hashing.
+
+```scala mdoc
+import memeid.digest.Digestible
+
+case class User(firstName: String, lastName: String)
+
+implicit val digestibleUser: Digestible[User] =
+  (u: User) => u.firstName.getBytes ++ u.lastName.getBytes
+
+UUID.V3(namespace, User("Federico", "García Lorca"))
+UUID.V5(namespace, User("Federico", "García Lorca"))
+```
 
 ### Semi-sequential, random (SQUUID)
 
@@ -107,9 +119,44 @@ libraryDependencies += "com.47deg" % "memeid-doobie" % "@VERSION@"
 
 To have the [UUID mappings][https://tpolecat.github.io/doobie/docs/12-Custom-Mappings.html] available in scope you can import `memeid.doobie.implicits`.
 
-```scala
+```scala mdoc
+import cats.effect._
+
+import doobie._
+import doobie.implicits._
+import doobie.h2.implicits._
+
 import memeid.doobie.implicits._
-// TODO: h2 example
+
+import scala.concurrent.ExecutionContext
+
+implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
+
+val transactor: Transactor[IO] =
+  Transactor.fromDriverManager[IO](
+    driver = "org.h2.Driver",
+    url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
+    user = "",
+    pass = ""
+  )
+
+// Create table
+sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync
+
+def select(uuid: UUID): Query0[UUID] =
+  sql"""SELECT id from test where id = ${uuid}""".query[UUID]
+
+def insert(uuid: UUID): Update0 =
+  sql"""insert into test (id) values ($uuid)""".update
+
+val example = UUID.V1.next
+
+val program: IO[UUID] = for {
+  _ <- insert(example).run.transact(transactor)
+  u <- select(example).unique.transact(transactor)
+} yield u
+
+program.unsafeRunSync
 ```
 
 ### Circe
