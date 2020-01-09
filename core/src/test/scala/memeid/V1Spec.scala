@@ -21,8 +21,6 @@ import org.specs2.mutable.Specification
 
 @SuppressWarnings(
   Array(
-    "scalafix:Disable.map",
-    "scalafix:Disable.to",
     "scalafix:Disable.get",
     "scalafix:Disable.scala.parallel"
   )
