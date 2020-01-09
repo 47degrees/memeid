@@ -373,13 +373,13 @@ object UUID {
   }
 
   private object Mask {
-    val VERSION: Long = mask(4, 12)
-    val TIME_LOW: Long = mask(32, 0)
-    val TIME_MID: Long = mask(16, 32)
-    val TIME_HIGH: Long = mask(12, 48)
-    val CLOCK_SEQ_LOW: Long = mask(8, 0)
+    val VERSION: Long        = mask(4, 12)
+    val TIME_LOW: Long       = mask(32, 0)
+    val TIME_MID: Long       = mask(16, 32)
+    val TIME_HIGH: Long      = mask(12, 48)
+    val CLOCK_SEQ_LOW: Long  = mask(8, 0)
     val CLOCK_SEQ_HIGH: Long = mask(6, 8)
-    val UB32: Long    = 0x00000000FFFFFFFFL
+    val UB32: Long           = 0x00000000FFFFFFFFL
 
     def version(msb: Long, version: Long): Long =
       writeByte(VERSION, msb, version)
