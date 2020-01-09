@@ -57,13 +57,13 @@ class V1Spec extends Specification with ScalaCheck {
     }
 
     "check time components" in {
-      val uuid = UUID.from("1cbf0782-3209-11ea-978f-2e728ce88125")
-      val clockSeqLow = 0x8F.toLong
+      val uuid         = UUID.from("1cbf0782-3209-11ea-978f-2e728ce88125")
+      val clockSeqLow  = 0x8F.toLong
       val clockSeqHigh = 0x17.toLong // 0x97 - 0x80 (from variant)
-      val timeLow = 0x1cbf0782.toLong
-      val timeMid = 0x3209.toLong
-      val timeHigh = 0x1ea.toLong
-      val uuidV1 = uuid.toOption.get.as[UUID.V1].get
+      val timeLow      = 0x1cbf0782.toLong
+      val timeMid      = 0x3209.toLong
+      val timeHigh     = 0x1ea.toLong
+      val uuidV1       = uuid.toOption.get.as[UUID.V1].get
 
       uuidV1.clockSeqLow must be equalTo clockSeqLow
       uuidV1.clockSeqHigh must be equalTo clockSeqHigh
