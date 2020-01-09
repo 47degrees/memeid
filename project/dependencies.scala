@@ -47,6 +47,11 @@ object dependencies {
     "org.http4s" %% "http4s-dsl"  % V.http4s % Test
   )
 
+  val docs: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
+    "org.tpolecat" %% "doobie-h2" % V.doobie,
+    "org.http4s" %% "http4s-dsl"  % V.http4s
+  )
+
   val compilerPlugins: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
     compilerPlugin("org.augustjune" %% "context-applied" % "0.1.2")
   )
