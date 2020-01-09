@@ -111,13 +111,13 @@ u.asJava
 
 ### Doobie
 
-The [Doobie][https://github.com/tpolecat/doobie] integration allows you to use the `UUID` type mapped to your database's UUID type.
+The [Doobie](https://github.com/tpolecat/doobie) integration allows you to use the `UUID` type mapped to your database's UUID type.
 
 ```scala
 libraryDependencies += "com.47deg" % "memeid-doobie" % "@VERSION@"
 ```
 
-To have the [UUID mappings][https://tpolecat.github.io/doobie/docs/12-Custom-Mappings.html] available in scope you can import `memeid.doobie.implicits`.
+To have the [UUID mappings](https://tpolecat.github.io/doobie/docs/12-Custom-Mappings.html) available in scope you can import `memeid.doobie.implicits`.
 
 ```scala mdoc
 import cats.effect._
