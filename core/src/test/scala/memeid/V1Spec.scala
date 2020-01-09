@@ -19,7 +19,9 @@ package memeid
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:Disable.map", "scalafix:Disable.to", "scalafix:Disable.get"))
+@SuppressWarnings(
+  Array("scalafix:Disable.map", "scalafix:Disable.to", "scalafix:Disable.get")
+)
 class V1Spec extends Specification with ScalaCheck {
 
   "V1 constructor" should {

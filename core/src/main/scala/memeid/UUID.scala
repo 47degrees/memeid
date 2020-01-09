@@ -355,15 +355,13 @@ object UUID {
     * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.3]]
     */
   final class UnknownVersion private[memeid] (
-      override private[memeid] val juuid: JUUID
+    override private[memeid] val juuid: JUUID
   ) extends UUID
 
-  private def hashed[A: Digestible](
-      algo: Algorithm,
-      version: Long,
-      namespace: UUID,
-      local: A
-  ): JUUID = {
+  private def hashed[A: Digestible](algo: Algorithm,
+                                    version: Long,
+                                    namespace: UUID,
+                                    local: A): JUUID = {
     val digest = algo.digest
     val ns = Digestible[UUID].toByteArray(namespace)
     digest.update(ns)
