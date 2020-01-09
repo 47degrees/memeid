@@ -20,7 +20,12 @@ import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
 @SuppressWarnings(
-  Array("scalafix:Disable.map", "scalafix:Disable.to", "scalafix:Disable.get", "scalafix:Disable.scala.parallel")
+  Array(
+    "scalafix:Disable.map",
+    "scalafix:Disable.to",
+    "scalafix:Disable.get",
+    "scalafix:Disable.scala.parallel"
+  )
 )
 class V1Spec extends Specification with ScalaCheck {
 
