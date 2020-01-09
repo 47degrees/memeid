@@ -190,21 +190,21 @@ object UUID {
       * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.2]]
       * @return time_low component of the timestamp field
       */
-    def timeLow: Long = readByte(mask(32, 0), juuid.timestamp())
+    val timeLow: Long = readByte(mask(32, 0), juuid.timestamp())
 
     /**
       * Get the time_mid component of the timestamp field
       * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.2]]
       * @return time_mid component of the timestamp field
       */
-    def timeMid: Long = readByte(mask(16, 32), juuid.timestamp())
+    val timeMid: Long = readByte(mask(16, 32), juuid.timestamp())
 
     /**
       * Get the time_high component of the timestamp field
       * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.2]]
       * @return time_high component of the timestamp field
       */
-    def timeHigh: Long = readByte(mask(12, 48), juuid.timestamp())
+    val timeHigh: Long = readByte(mask(12, 48), juuid.timestamp())
 
     /**
       * Get the clock_seq_low component of the clock sequence field
@@ -218,7 +218,7 @@ object UUID {
       * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.2]]
       * @return clock_seq_high component of the clock sequence field
       */
-    def clockSeqHigh: Long = readByte(mask(6, 8), juuid.clockSequence().toLong)
+    val clockSeqHigh: Long = readByte(mask(6, 8), juuid.clockSequence().toLong)
   }
 
   /**
