@@ -105,6 +105,31 @@ j.asScala
 u.asJava
 ```
 
+## Literal syntax
+
+`memeid` provides literal syntax with compile-time verification for UUIDs with the `uuid` interpolator. To use it, add this to your `build.sbt`:
+
+
+```scala
+libraryDependencies += "com.47deg" % "memeid-literal" % "@VERSION@"
+```
+
+We can now create UUIDs with literal syntax by importing `memeid.literal._`
+
+```scala mdoc
+import memeid.literal._
+
+uuid"cb096727-6a82-4abd-bc79-fc92be8c5d88"
+```
+
+Invalid UUID literals will fail at compile time:
+
+```scala mdoc:fail
+import memeid.literal._
+
+uuid"not-a-uuid"
+```
+
 ## Integrations
 
 `memeid` provides several modules which integrate with popular third-party libraries. If you see something missing don't hesitate to open an issue or send a patch.

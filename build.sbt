@@ -40,7 +40,7 @@ lazy val http4s = project
 
 lazy val docs = project
   .in(file("memeid-docs"))
-  .dependsOn(doobie, circe, http4s)
+  .dependsOn(literal, doobie, circe, http4s)
   .enablePlugins(MdocPlugin)
   .settings(
     mdocOut := baseDirectory.value.getParentFile,
