@@ -37,3 +37,15 @@ lazy val http4s = project
   .dependsOn(cats)
   .settings(name := "memeid-http4s")
   .settings(dependencies.common, dependencies.http4s)
+
+lazy val docs = project
+  .in(file("memeid-docs"))
+  .dependsOn(literal, doobie, circe, http4s)
+  .enablePlugins(MdocPlugin)
+  .settings(
+    mdocOut := baseDirectory.value.getParentFile,
+    mdocVariables := Map(
+      "VERSION" -> version.value
+    )
+  )
+  .settings(dependencies.docs)
