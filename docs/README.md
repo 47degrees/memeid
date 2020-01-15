@@ -67,16 +67,20 @@ UUID.V3(namespace, "my-secret-code")
 UUID.V5(namespace, "my-secret-code")
 ```
 
-If you want to hash a custom type, you must provide an implicit `memeid.digest.Digestible` instance. This instance is used to convert your type into a byte array for hashing.
+If you want to hash a custom type, you must provide an implicit `memeid.digest.Digestible` instance.
 
-```scala mdoc
+```scala mdoc:silent
 import memeid.digest.Digestible
 
 case class User(firstName: String, lastName: String)
 
 implicit val digestibleUser: Digestible[User] =
   (u: User) => u.firstName.getBytes ++ u.lastName.getBytes
+```
 
+The implicit instance is used to convert your type into a byte array for hashing:
+
+```scala mdoc
 UUID.V3(namespace, User("Federico", "García Lorca"))
 UUID.V5(namespace, User("Federico", "García Lorca"))
 ```
