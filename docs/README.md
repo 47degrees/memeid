@@ -54,11 +54,15 @@ UUID.V4.random
 
 Namespaced UUIDs are generated from a UUID (namespace) and a hashed value (name), V3 uses MD5 and V5 uses SHA1 hash.
 
-```scala mdoc
+```scala mdoc:silent
 import memeid.UUID
 
 val namespace = UUID.V1.next
+```
 
+We can now create UUIDs with the namespace and an arbitrary value as the name. It automatically works with Strings and UUIDs:
+
+```scala mdoc
 UUID.V3(namespace, "my-secret-code")
 UUID.V5(namespace, "my-secret-code")
 ```
@@ -91,14 +95,13 @@ UUID.V4.squuid
 
 ## Java interoperability
 
-`memeid` proviedes conversion method between `UUID` and `java.util.UUID`
+`memeid` proviedes conversion method between `UUID` and `java.util.UUID` through `memeid.JavaConverters`:
 
 ```scala mdoc
-import memeid.UUID
 import memeid.JavaConverters._
-import java.util.{ UUID => JavaUUID }
 
-val j = JavaUUID.randomUUID
+
+val j = java.util.UUID.randomUUID
 val u = UUID.V4.random
 
 j.asScala
@@ -144,14 +147,12 @@ libraryDependencies += "com.47deg" % "memeid-doobie" % "@VERSION@"
 
 To have the [UUID mappings](https://tpolecat.github.io/doobie/docs/12-Custom-Mappings.html) available in scope you can import `memeid.doobie.implicits`.
 
-```scala mdoc
+```scala mdoc:invisible
 import cats.effect._
 
 import doobie._
-import doobie.implicits._
 import doobie.h2.implicits._
-
-import memeid.doobie.implicits._
+import doobie.implicits._
 
 import scala.concurrent.ExecutionContext
 
@@ -165,8 +166,11 @@ val transactor: Transactor[IO] =
     pass = ""
   )
 
-// Create table
 sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync
+```
+
+```scala mdoc:silent
+import memeid.doobie.implicits._
 
 def select(uuid: UUID): Query0[UUID] =
   sql"""SELECT id from test where id = ${uuid}""".query[UUID]
@@ -175,7 +179,9 @@ def insert(uuid: UUID): Update0 =
   sql"""insert into test (id) values ($uuid)""".update
 
 val example = UUID.V1.next
+```
 
+```scala mdoc
 val program: IO[UUID] = for {
   _ <- insert(example).run.transact(transactor)
   u <- select(example).unique.transact(transactor)
@@ -215,7 +221,7 @@ libraryDependencies += "com.47deg" % "memeid-http4s" % "@VERSION@"
 
 Using `UUID` companion object we can extract UUIDs from path parameters in URLs:
 
-```scala mdoc
+```scala mdoc:silent
 import cats.effect._
 
 import org.http4s._
@@ -232,7 +238,7 @@ HttpRoutes.of[IO] {
 
 The http4s integrations provides implicit instances for `QueryParamDecoder[UUID]` and `QueryParamEncoder[UUID]`, which you can use to derive matchers for query parameters or send UUID in request query parameters.
 
-```scala mdoc
+```scala mdoc:silent
 import cats.effect._
 
 import org.http4s._
@@ -256,13 +262,26 @@ libraryDependencies += "com.47deg" % "memeid-cats" % "@VERSION@"
 
 The cats integration provides typeclass implementation for `UUID`, as well as effectful constructors for UUIDs for integration with programs that use `cats-effect`.
 
+### Typeclasses
+
+```scala mdoc:silent
+import cats._
+import memeid.cats.implicits._
+
+Order[UUID]
+Hash[UUID]
+Eq[UUID]
+Show[UUID]
+```
+
+### Constructors
+
 ```scala mdoc
 import memeid.cats.implicits._
 
-val ns = UUID.v1[IO].unsafeRunSync
 UUID.random[IO].unsafeRunSync
-UUID.v3[IO, String](ns, "my-secret-code").unsafeRunSync
-UUID.v5[IO, String](ns, "my-secret-code").unsafeRunSync
+UUID.v3[IO, String](namespace, "my-secret-code").unsafeRunSync
+UUID.v5[IO, String](namespace, "my-secret-code").unsafeRunSync
 ```
 
 ## References

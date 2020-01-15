@@ -34,11 +34,11 @@ The time-based (V1) variant of UUIDs is the fastest to generate. It uses a monot
 import memeid.UUID
 
 UUID.V1.next
-// res0: UUID = d259be80-1805-1171-86d3-fa0787afc6eb
+// res0: UUID = 2d892e08-186a-1171-816b-34115d4b01c7
 UUID.V1.next
-// res1: UUID = d259ca38-1805-1171-86d3-fa0787afc6eb
+// res1: UUID = 2d8931f0-186a-1171-816b-34115d4b01c7
 UUID.V1.next
-// res2: UUID = d259d208-1805-1171-86d3-fa0787afc6eb
+// res2: UUID = 2d8935d8-186a-1171-816b-34115d4b01c7
 ```
 
 ### Random (v4)
@@ -49,11 +49,11 @@ The cryptographically random variant, equivalent to `java.util.UUID/randomUUID`.
 import memeid.UUID
 
 UUID.V4.random
-// res3: UUID = 4aea3286-e38d-409f-8a7b-b78e2b45ac59
+// res3: UUID = 136e125d-2920-4d2e-a4c8-05fa529e63ea
 UUID.V4.random
-// res4: UUID = b7c14cc5-337c-42ce-a7bc-2aa389c06c0a
+// res4: UUID = d7b81e3b-4a56-46fc-a38f-36f7ff7d5ad9
 UUID.V4.random
-// res5: UUID = 9fbeaf66-f058-4404-9233-3338fc07f55e
+// res5: UUID = 4dbc5afd-7cc8-4db0-82d1-b6984ec919a1
 ```
 
 ### Namespaced (v3, v5)
@@ -64,12 +64,15 @@ Namespaced UUIDs are generated from a UUID (namespace) and a hashed value (name)
 import memeid.UUID
 
 val namespace = UUID.V1.next
-// namespace: UUID = d259e590-1805-1171-86d3-fa0787afc6eb
+```
 
+We can now create UUIDs with the namespace and an arbitrary value as the name. It automatically works with Strings and UUIDs:
+
+```scala
 UUID.V3(namespace, "my-secret-code")
-// res6: UUID = 9702c5ec-943c-375a-dbe5-7096afb44f89
+// res6: UUID = 91247a75-624f-3b82-c869-0cc4b0fc42f6
 UUID.V5(namespace, "my-secret-code")
-// res7: UUID = cedf5542-4d1e-5b76-6e66-e7f43426c544
+// res7: UUID = 2d2f17c5-f606-5539-b223-c384d5d815e8
 ```
 
 If you want to hash a custom type, you must provide an implicit `memeid.digest.Digestible` instance. This instance is used to convert your type into a byte array for hashing.
@@ -81,12 +84,12 @@ case class User(firstName: String, lastName: String)
 
 implicit val digestibleUser: Digestible[User] =
   (u: User) => u.firstName.getBytes ++ u.lastName.getBytes
-// digestibleUser: Digestible[User] = repl.Session$App$$anonfun$10@3923b580
+// digestibleUser: Digestible[User] = repl.Session$App$$anonfun$10@55aebee0
 
 UUID.V3(namespace, User("Federico", "García Lorca"))
-// res8: UUID = c08a2c0b-8555-3163-2463-16a8a488d102
+// res8: UUID = e2a389b2-9bb2-3b95-912a-3b3bad344c9d
 UUID.V5(namespace, User("Federico", "García Lorca"))
-// res9: UUID = 2367ac01-0869-5385-ba61-545a77dd4e42
+// res9: UUID = 7c434b30-5042-5930-0ea2-895c2dcfaa47
 ```
 
 ### Semi-sequential, random (SQUUID)
@@ -97,31 +100,30 @@ SQUUIDs are a non-standard variaton of V4 UUIDs that are semi-sequential. They i
 import memeid.UUID
 
 UUID.V4.squuid
-// res10: UUID = 5e184d09-88d2-426f-9f50-101653850b69
+// res10: UUID = 5e1ee0bb-50ef-49df-a3fc-1514bdfda1f8
 UUID.V4.squuid
-// res11: UUID = 5e184d09-bdbb-4a5a-85b3-af51b00e89a0
+// res11: UUID = 5e1ee0bb-2ac1-47e2-b656-42e8070a56ed
 UUID.V4.squuid
-// res12: UUID = 5e184d09-f4a5-4998-b8e8-fcd50315e8af
+// res12: UUID = 5e1ee0bb-4edf-4069-b788-9aaafd995b90
 ```
 
 ## Java interoperability
 
-`memeid` proviedes conversion method between `UUID` and `java.util.UUID`
+`memeid` proviedes conversion method between `UUID` and `java.util.UUID` through `memeid.JavaConverters`:
 
 ```scala
-import memeid.UUID
 import memeid.JavaConverters._
-import java.util.{ UUID => JavaUUID }
 
-val j = JavaUUID.randomUUID
-// j: java.util.UUID = 8759f606-fec9-46bd-8474-c28060c54c7a
+
+val j = java.util.UUID.randomUUID
+// j: java.util.UUID = 2130dde5-a932-4483-8b0b-5116ece59d33
 val u = UUID.V4.random
-// u: UUID = 7b9e7900-68f7-408e-964e-9cbe8889623a
+// u: UUID = 587f33d2-fc9a-4352-b494-9b2c79cf3e97
 
 j.asScala
-// res13: UUID = 8759f606-fec9-46bd-8474-c28060c54c7a
+// res13: UUID = 2130dde5-a932-4483-8b0b-5116ece59d33
 u.asJava
-// res14: java.util.UUID = 7b9e7900-68f7-408e-964e-9cbe8889623a
+// res14: java.util.UUID = 587f33d2-fc9a-4352-b494-9b2c79cf3e97
 ```
 
 ## Literal syntax
@@ -167,32 +169,9 @@ libraryDependencies += "com.47deg" % "memeid-doobie" % "0.1.0-SNAPSHOT"
 
 To have the [UUID mappings](https://tpolecat.github.io/doobie/docs/12-Custom-Mappings.html) available in scope you can import `memeid.doobie.implicits`.
 
+
 ```scala
-import cats.effect._
-
-import doobie._
-import doobie.implicits._
-import doobie.h2.implicits._
-
 import memeid.doobie.implicits._
-
-import scala.concurrent.ExecutionContext
-
-implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
-// cs: ContextShift[IO] = cats.effect.internals.IOContextShift@7663a0de
-
-val transactor: Transactor[IO] =
-  Transactor.fromDriverManager[IO](
-    driver = "org.h2.Driver",
-    url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
-    user = "",
-    pass = ""
-  )
-// transactor: Transactor[IO] = doobie.util.transactor$Transactor$$anon$13@3946e595
-
-// Create table
-sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync
-// res17: Int = 0
 
 def select(uuid: UUID): Query0[UUID] =
   sql"""SELECT id from test where id = ${uuid}""".query[UUID]
@@ -201,22 +180,23 @@ def insert(uuid: UUID): Update0 =
   sql"""insert into test (id) values ($uuid)""".update
 
 val example = UUID.V1.next
-// example: UUID = d26cc980-1805-1171-86d3-fa0787afc6eb
+```
 
+```scala
 val program: IO[UUID] = for {
   _ <- insert(example).run.transact(transactor)
   u <- select(example).unique.transact(transactor)
 } yield u
 // program: IO[UUID] = Bind(
 //   Async(
-//     cats.effect.internals.IOBracket$$$Lambda$7538/0x00000008421ac040@13f97626,
+//     cats.effect.internals.IOBracket$$$Lambda$10299/0x0000000842b17840@69db5b29,
 //     false
 //   ),
 //   <function1>
 // )
 
 program.unsafeRunSync
-// res18: UUID = d26cc980-1805-1171-86d3-fa0787afc6eb
+// res18: UUID = 2d898010-186a-1171-816b-34115d4b01c7
 ```
 
 ### Circe
@@ -234,14 +214,14 @@ import memeid.UUID
 import memeid.circe.implicits._
 
 val uuid = UUID.V1.next
-// uuid: UUID = d26effe8-1805-1171-86d3-fa0787afc6eb
+// uuid: UUID = 2d89a338-186a-1171-816b-34115d4b01c7
 val json = Json.fromString(uuid.toString)
-// json: Json = JString("d26effe8-1805-1171-86d3-fa0787afc6eb")
+// json: Json = JString("2d89a338-186a-1171-816b-34115d4b01c7")
 
 Encoder[UUID].apply(uuid)
-// res19: Json = JString("d26effe8-1805-1171-86d3-fa0787afc6eb")
+// res19: Json = JString("2d89a338-186a-1171-816b-34115d4b01c7")
 Decoder[UUID].decodeJson(json)
-// res20: Decoder.Result[UUID] = Right(d26effe8-1805-1171-86d3-fa0787afc6eb)
+// res20: Decoder.Result[UUID] = Right(2d89a338-186a-1171-816b-34115d4b01c7)
 ```
 
 ### Http4s
@@ -265,9 +245,6 @@ import memeid.UUID
 HttpRoutes.of[IO] {
   case GET -> Root / "user" / UUID(uuid) => Ok(s"Hello, ${uuid}!")
 }
-// res21: HttpRoutes[IO] = Kleisli(
-//   org.http4s.HttpRoutes$$$Lambda$7671/0x0000000842296840@3c55a041
-// )
 ```
 
 ### Query parameters
@@ -288,9 +265,6 @@ object UUIDParamDecoder extends QueryParamDecoderMatcher[UUID]("uuid")
 HttpRoutes.of[IO] {
   case GET -> Root / "user" :? UUIDParamDecoder(uuid) => Ok(s"Hello, ${uuid}!")
 }
-// res22: HttpRoutes[IO] = Kleisli(
-//   org.http4s.HttpRoutes$$$Lambda$7671/0x0000000842296840@5910e692
-// )
 ```
 
 ## Cats & Cats-effect
@@ -301,17 +275,29 @@ libraryDependencies += "com.47deg" % "memeid-cats" % "0.1.0-SNAPSHOT"
 
 The cats integration provides typeclass implementation for `UUID`, as well as effectful constructors for UUIDs for integration with programs that use `cats-effect`.
 
+### Typeclasses
+
+```scala
+import cats._
+import memeid.cats.implicits._
+
+Order[UUID]
+Hash[UUID]
+Eq[UUID]
+Show[UUID]
+```
+
+### Constructors
+
 ```scala
 import memeid.cats.implicits._
 
-val ns = UUID.v1[IO].unsafeRunSync
-// ns: UUID = d2703c50-1805-1171-86d3-fa0787afc6eb
 UUID.random[IO].unsafeRunSync
-// res23: UUID = 58599345-d181-4c05-b4e2-3e0ce4e4ad2b
-UUID.v3[IO, String](ns, "my-secret-code").unsafeRunSync
-// res24: UUID = b8da7649-7620-30fe-712e-2c539b00699f
-UUID.v5[IO, String](ns, "my-secret-code").unsafeRunSync
-// res25: UUID = f753e7d1-2b6b-5882-9caf-1e3bf0813860
+// res27: UUID = b805a33e-f5eb-45f6-b63b-7533f7ae39d9
+UUID.v3[IO, String](namespace, "my-secret-code").unsafeRunSync
+// res28: UUID = 91247a75-624f-3b82-c869-0cc4b0fc42f6
+UUID.v5[IO, String](namespace, "my-secret-code").unsafeRunSync
+// res29: UUID = 2d2f17c5-f606-5539-b223-c384d5d815e8
 ```
 
 ## References
