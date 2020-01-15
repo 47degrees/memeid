@@ -186,12 +186,12 @@ val example = UUID.V1.next
 ```
 
 ```scala mdoc
-val program: IO[UUID] = for {
-  _ <- insert(example).run.transact(transactor)
-  u <- select(example).unique.transact(transactor)
-} yield u
-
-program.unsafeRunSync
+{
+  for {
+    _ <- insert(example).run.transact(transactor)
+    u <- select(example).unique.transact(transactor)
+  } yield u
+}.unsafeRunSync
 ```
 
 ### Circe
