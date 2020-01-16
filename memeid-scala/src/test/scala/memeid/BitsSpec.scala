@@ -132,4 +132,8 @@ class BitsSpec extends Specification with ScalaCheck {
     }
   }
 
+  object Cast {
+    def sb8(b: Long): Byte = (0x00000000000000ff & b).toByte
+  }
+
 }
