@@ -27,7 +27,9 @@ jobs:
       before_deploy: mv target/mdoc/* .
       deploy:
         provider: pages:git
-        commit_message: Update markdown files and add missing headers
+        commit_message: Update markdown files and add missing headers [ci skip]
+        name: 47 Degrees
+        email: hello@47deg.com
         edge: true
         token: $GITHUB_PERSONAL_ACCESS_TOKEN
         committer_from_gh: true
