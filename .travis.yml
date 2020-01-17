@@ -8,6 +8,8 @@ before_install:
 stages:
   - name: tests
     if: tag IS NOT present
+  - name: release
+    if: ((branch = master AND type = push) OR (tag IS present)) AND NOT fork
 
 jobs:
   include:
@@ -20,6 +22,20 @@ jobs:
       script: sbt headerCheckAll
     - name: "Tests"
       script: sbt test
+    - stage: release
+      name: "Release to Sonatype and update files"
+      env: RELEASE="true"
+      script: sbt mdoc
+      before_deploy: mv target/mdoc/* .
+      deploy:
+        provider: pages:git
+        commit_message: Update markdown files
+        edge: true
+        token: $GITHUB_PERSONAL_ACCESS_TOKEN
+        committer_from_gh: true
+        target_branch: master
+        on:
+          branch: master
 
 cache:
   directories:
