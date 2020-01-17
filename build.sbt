@@ -5,7 +5,7 @@ ThisBuild / scalaVersion := "2.12.10"
 lazy val root = project
   .in(file("."))
   .settings(name := "memeid")
-  .aggregate(core, cats, literal, doobie, circe)
+  .aggregate(core, cats, literal, doobie, circe, http4s)
   .settings(skip in publish := true)
 
 lazy val core = project
