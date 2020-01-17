@@ -34,11 +34,11 @@ The time-based (V1) variant of UUIDs is the fastest to generate. It uses a monot
 import memeid.UUID
 
 UUID.V1.next
-// res0: UUID = 07e1f828-186b-1171-811c-34115d4b01c7
+// res0: UUID = 01a70580-189c-1171-044d-39756f2cc4e5
 UUID.V1.next
-// res1: UUID = 07e203e0-186b-1171-811c-34115d4b01c7
+// res1: UUID = 01a71908-189c-1171-044d-39756f2cc4e5
 UUID.V1.next
-// res2: UUID = 07e207c8-186b-1171-811c-34115d4b01c7
+// res2: UUID = 01a720d8-189c-1171-044d-39756f2cc4e5
 ```
 
 ### Random (v4)
@@ -49,11 +49,11 @@ The cryptographically random variant, equivalent to `java.util.UUID/randomUUID`.
 import memeid.UUID
 
 UUID.V4.random
-// res3: UUID = b3d68c46-a88b-4b26-a95b-19a73a2330a2
+// res3: UUID = 8be21e8d-011d-473a-99f6-85f3d2d845fd
 UUID.V4.random
-// res4: UUID = 3a9f2568-437a-4768-a8be-6996bfac416e
+// res4: UUID = 5fadbc65-6c13-4f1a-b451-ae6111bc7b88
 UUID.V4.random
-// res5: UUID = c4bd29f5-836c-486b-8194-f4c230bbf68a
+// res5: UUID = 22e1fac2-8ed9-416d-a830-d77b200e9c3b
 ```
 
 ### Namespaced (v3, v5)
@@ -70,9 +70,9 @@ We can now create UUIDs with the namespace and an arbitrary value as the name. I
 
 ```scala
 UUID.V3(namespace, "my-secret-code")
-// res6: UUID = 18b33d47-de7e-355d-3ce2-f9c1d3613027
+// res6: UUID = 31f0b5be-641f-34f7-8f63-895c7b0c76bf
 UUID.V5(namespace, "my-secret-code")
-// res7: UUID = 215dbb4b-0cd6-5bb4-0ee5-7f8260febc07
+// res7: UUID = 97a663e2-2b5e-58c5-e423-9b4d22766481
 ```
 
 If you want to hash a custom type, you must provide an implicit `memeid.digest.Digestible` instance.
@@ -90,9 +90,9 @@ The implicit instance is used to convert your type into a byte array for hashing
 
 ```scala
 UUID.V3(namespace, User("Federico", "García Lorca"))
-// res8: UUID = 5746c0bd-b70d-3bc2-95ea-d1eab78e2492
+// res8: UUID = bfa35f8a-5ba8-36b5-28a1-34df5e08fab7
 UUID.V5(namespace, User("Federico", "García Lorca"))
-// res9: UUID = 41714d97-8db4-5560-7e20-9c41ae85b71a
+// res9: UUID = 20a1f865-5331-56c8-20e7-70062bab9bd1
 ```
 
 ### Semi-sequential, random (SQUUID)
@@ -103,11 +103,11 @@ SQUUIDs are a non-standard variaton of V4 UUIDs that are semi-sequential. They i
 import memeid.UUID
 
 UUID.V4.squuid
-// res10: UUID = 5e1eef0b-8a71-4183-b6ff-9cbdbb2266ca
+// res10: UUID = 5e2224b7-170e-4bf4-bfe5-ff00e093f964
 UUID.V4.squuid
-// res11: UUID = 5e1eef0b-8157-49a3-9d88-9ceed9b6f0b2
+// res11: UUID = 5e2224b7-a147-40e6-b2ad-13a3b2135bc1
 UUID.V4.squuid
-// res12: UUID = 5e1eef0b-dbda-4572-bcf1-479856523542
+// res12: UUID = 5e2224b7-ac97-4b67-85ab-73493962f24a
 ```
 
 ## Java interoperability
@@ -119,14 +119,14 @@ import memeid.JavaConverters._
 
 
 val j = java.util.UUID.randomUUID
-// j: java.util.UUID = 5ac741e7-7390-4025-baec-c8e9cdb50df0
+// j: java.util.UUID = 050ad56c-a112-422e-94ea-dadf862c124e
 val u = UUID.V4.random
-// u: UUID = 618ea533-a540-4e05-a3df-b760421c8f93
+// u: UUID = 927e57d1-1ea7-409c-87d7-9ad4100fe9c8
 
 j.asScala
-// res13: UUID = 5ac741e7-7390-4025-baec-c8e9cdb50df0
+// res13: UUID = 050ad56c-a112-422e-94ea-dadf862c124e
 u.asJava
-// res14: java.util.UUID = 618ea533-a540-4e05-a3df-b760421c8f93
+// res14: java.util.UUID = 927e57d1-1ea7-409c-87d7-9ad4100fe9c8
 ```
 
 ## Literal syntax
@@ -192,7 +192,7 @@ val example = UUID.V1.next
     u <- select(example).unique.transact(transactor)
   } yield u
 }.unsafeRunSync
-// res18: UUID = 07efee60-186b-1171-811c-34115d4b01c7
+// res18: UUID = 01c222e8-189c-1171-044d-39756f2cc4e5
 ```
 
 ### Circe
@@ -210,14 +210,14 @@ import memeid.UUID
 import memeid.circe.implicits._
 
 val uuid = UUID.V1.next
-// uuid: UUID = 07f13298-186b-1171-811c-34115d4b01c7
+// uuid: UUID = 01c4d268-189c-1171-044d-39756f2cc4e5
 val json = Json.fromString(uuid.toString)
-// json: Json = JString("07f13298-186b-1171-811c-34115d4b01c7")
+// json: Json = JString("01c4d268-189c-1171-044d-39756f2cc4e5")
 
 Encoder[UUID].apply(uuid)
-// res19: Json = JString("07f13298-186b-1171-811c-34115d4b01c7")
+// res19: Json = JString("01c4d268-189c-1171-044d-39756f2cc4e5")
 Decoder[UUID].decodeJson(json)
-// res20: Decoder.Result[UUID] = Right(07f13298-186b-1171-811c-34115d4b01c7)
+// res20: Decoder.Result[UUID] = Right(01c4d268-189c-1171-044d-39756f2cc4e5)
 ```
 
 ### Http4s
@@ -289,11 +289,11 @@ Show[UUID]
 import memeid.cats.implicits._
 
 UUID.random[IO].unsafeRunSync
-// res27: UUID = 1b1c4142-4c2d-45e6-ad72-8c6839d2cf2d
+// res27: UUID = e2fcb89d-b3ca-4c8d-83dc-85b397125eae
 UUID.v3[IO, String](namespace, "my-secret-code").unsafeRunSync
-// res28: UUID = 18b33d47-de7e-355d-3ce2-f9c1d3613027
+// res28: UUID = 31f0b5be-641f-34f7-8f63-895c7b0c76bf
 UUID.v5[IO, String](namespace, "my-secret-code").unsafeRunSync
-// res29: UUID = 215dbb4b-0cd6-5bb4-0ee5-7f8260febc07
+// res29: UUID = 97a663e2-2b5e-58c5-e423-9b4d22766481
 ```
 
 ## References
