@@ -15,7 +15,12 @@ lazy val root = project
     )
   )
 
+lazy val `memeid` = project
+  .settings(crossPaths := false)
+  .settings(autoScalaLibrary := false)
+
 lazy val `memeid-scala` = project
+  .dependsOn(`memeid`)
   .settings(dependencies.common)
 
 lazy val `memeid-cats` = project
@@ -40,6 +45,7 @@ lazy val `memeid-http4s` = project
   .settings(dependencies.common, dependencies.http4s)
 
 lazy val allProjects: Seq[ProjectReference] = Seq(
+  `memeid`,
   `memeid-scala`,
   `memeid-cats`,
   `memeid-literal`,
