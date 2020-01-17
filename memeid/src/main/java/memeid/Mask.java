@@ -1,7 +1,5 @@
 package memeid;
 
-import static memeid.Bits.writeByte;
-
 public final class Mask {
 
     public static final long MASKS_56 = 0xFF00000000000000L;
@@ -21,9 +19,4 @@ public final class Mask {
     public final static long V4_LSB = 0xC000000000000000L;
 
     public final static long VERSION = 0xF000L;
-
-    public static long version(long msb, long version) {
-        return writeByte(VERSION, msb, version);
-    }
-
 }

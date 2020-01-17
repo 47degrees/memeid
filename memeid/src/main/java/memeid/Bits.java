@@ -55,9 +55,18 @@ public final class Bits {
         return (bitmask >>> off) & (num >>> off);
     }
 
+    public static long readByte(final long bitmask, final long offset, final long num) {
+        return (bitmask >>> offset) & (num >>> offset);
+    }
+
     /* Write the byte(s) from `value` in `num` using the given `bitmask`. */
     public static long writeByte(final long bitmask, final long num, final long value) {
         return (num & ~bitmask) | (bitmask & value << maskOffset(bitmask));
+    }
+
+    /* Write the byte(s) from `value` in `num` using the given `bitmask`. */
+    public static long writeByte(final long bitmask, final long offset, final long num, final long value) {
+        return (num & ~bitmask) | (bitmask & value << offset);
     }
 
     /* Given a bitmask, retrieve its `offset`. */

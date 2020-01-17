@@ -25,6 +25,7 @@ import scala.util.Try
 import memeid.Bits.{fromBytes, readByte, toBytes, writeByte}
 import memeid.JavaConverters._
 import memeid.Mask.{MASKS_48, MASKS_56}
+import memeid.Offset.{OFFSET_48, OFFSET_56}
 import memeid.digest.{Algorithm, Digestible, MD5, SHA1}
 import memeid.node.Node
 import memeid.time.{Posix, Time}
@@ -190,35 +191,37 @@ object UUID {
      * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.2]]
      * @return time_low component of the timestamp field
      */
-    def timeLow: Long = readByte(Mask.TIME_LOW, juuid.timestamp())
+    def timeLow: Long = readByte(Mask.TIME_LOW, Offset.TIME_LOW, juuid.timestamp())
 
     /**
      * Get the time_mid component of the timestamp field
      * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.2]]
      * @return time_mid component of the timestamp field
      */
-    def timeMid: Long = readByte(Mask.TIME_MID, juuid.timestamp())
+    def timeMid: Long = readByte(Mask.TIME_MID, Offset.TIME_MID, juuid.timestamp())
 
     /**
      * Get the time_high component of the timestamp field
      * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.2]]
      * @return time_high component of the timestamp field
      */
-    def timeHigh: Long = readByte(Mask.TIME_HIGH, juuid.timestamp())
+    def timeHigh: Long = readByte(Mask.TIME_HIGH, Offset.TIME_HIGH, juuid.timestamp())
 
     /**
      * Get the clock_seq_low component of the clock sequence field
      * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.2]]
      * @return clock_seq_low component of the clock sequence field
      */
-    def clockSeqLow: Long = readByte(Mask.CLOCK_SEQ_LOW, juuid.clockSequence().toLong)
+    def clockSeqLow: Long =
+      readByte(Mask.CLOCK_SEQ_LOW, Offset.CLOCK_SEQ_LOW, juuid.clockSequence().toLong)
 
     /**
      * Get the clock_seq_high component of the clock sequence field
      * @see [[https://tools.ietf.org/html/rfc4122#section-4.1.2]]
      * @return clock_seq_high component of the clock sequence field
      */
-    def clockSeqHigh: Long = readByte(Mask.CLOCK_SEQ_HIGH, juuid.clockSequence().toLong)
+    def clockSeqHigh: Long =
+      readByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH, juuid.clockSequence().toLong)
   }
 
   /**
@@ -234,14 +237,27 @@ object UUID {
      */
     def next(implicit N: Node, T: Time): UUID = {
       val timestamp = T.monotonic
-      val low       = readByte(Mask.TIME_LOW, timestamp)
-      val mid       = readByte(Mask.TIME_MID, timestamp)
-      val high      = readByte(Mask.TIME_HIGH, timestamp)
-      val msb       = Mask.version(high, 1) | (low << 32) | (mid << 16)
+      val low       = readByte(Mask.TIME_LOW, Offset.TIME_LOW, timestamp)
+      val mid       = readByte(Mask.TIME_MID, Offset.TIME_MID, timestamp)
+      val high      = readByte(Mask.TIME_HIGH, Offset.TIME_HIGH, timestamp)
+      val msb       = writeByte(Mask.VERSION, Offset.VERSION, high, 1) | (low << 32) | (mid << 16)
 
-      val clkHigh = writeByte(Mask.CLOCK_SEQ_HIGH, readByte(Mask.CLOCK_SEQ_HIGH, N.id), 0x2)
-      val clkLow  = readByte(Mask.CLOCK_SEQ_LOW, N.clockSequence.toLong)
-      val lsb     = writeByte(MASKS_56, writeByte(MASKS_48, N.id, clkLow), clkHigh)
+      val clkHigh = writeByte(
+        Mask.CLOCK_SEQ_HIGH,
+        Offset.CLOCK_SEQ_HIGH,
+        readByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH, N.id),
+        0x2
+      )
+
+      val clkLow = readByte(Mask.CLOCK_SEQ_LOW, Offset.CLOCK_SEQ_LOW, N.clockSequence.toLong)
+
+      val lsb = writeByte(
+        MASKS_56,
+        OFFSET_56,
+        writeByte(MASKS_48, OFFSET_48, N.id, clkLow),
+        clkHigh
+      )
+
       new UUID.V1(new JUUID(msb, lsb))
     }
 
@@ -299,8 +315,8 @@ object UUID {
      * @return  [[UUID.V4 V4]]
      */
     def apply(msb: Long, lsb: Long): UUID = {
-      val v4msb = writeByte(Mask.VERSION, msb, 0x4)
-      val v4lsb = writeByte(Mask.V4_LSB, lsb, 0x2)
+      val v4msb = writeByte(Mask.VERSION, Offset.VERSION, msb, 0x4)
+      val v4lsb = writeByte(Mask.V4_LSB, Offset.V4_LSB, lsb, 0x2)
       new UUID.V4(new JUUID(v4msb, v4lsb))
     }
 
@@ -367,8 +383,8 @@ object UUID {
     val bytes  = digest.digest
     val rawMsb = fromBytes(bytes.take(8))
     val rawLsb = fromBytes(bytes.drop(8))
-    val msb    = Mask.version(rawMsb, version)
-    val lsb    = writeByte(Mask.HASHED, rawLsb, 0x2)
+    val msb    = writeByte(Mask.VERSION, Offset.VERSION, rawMsb, version)
+    val lsb    = writeByte(Mask.HASHED, Offset.HASHED, rawLsb, 0x2)
     new JUUID(msb, lsb)
   }
 
