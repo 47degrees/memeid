@@ -36,7 +36,7 @@ lazy val `memeid-circe` = project
   .settings(dependencies.common, dependencies.circe)
 
 lazy val `memeid-http4s` = project
-  .dependsOn(`memeid-cats`)
+  .dependsOn(`memeid-cats` % "compile->compile;test->test")
   .settings(dependencies.common, dependencies.http4s)
 
 lazy val allProjects: Seq[ProjectReference] =

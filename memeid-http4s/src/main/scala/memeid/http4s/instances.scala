@@ -1,11 +1,13 @@
 package memeid.http4s
 
-import memeid.cats.instances._
-import cats.syntax.show._
 import cats.syntax.either._
+import cats.syntax.show._
+
 import memeid.UUID
+import memeid.cats.instances._
 import org.http4s.{ParseFailure, QueryParamDecoder, QueryParamEncoder}
 
+@SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))
 trait instances {
 
   /** Allow reading UUIDs from a request's query params */
