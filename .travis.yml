@@ -18,18 +18,16 @@ jobs:
       script: sbt "all scalafmtCheckAll scalafmtSbtCheck"
     - name: "Scalafix"
       script: sbt "scalafixAll --check"
-    - name: "Headers"
-      script: sbt headerCheckAll
     - name: "Tests"
       script: sbt test
     - stage: release
       name: "Release to Sonatype and update files"
       env: RELEASE="true"
-      script: sbt mdoc
+      script: sbt headerCreateAll mdoc
       before_deploy: mv target/mdoc/* .
       deploy:
         provider: pages:git
-        commit_message: Update markdown files
+        commit_message: Update markdown files and add missing headers
         edge: true
         token: $GITHUB_PERSONAL_ACCESS_TOKEN
         committer_from_gh: true
