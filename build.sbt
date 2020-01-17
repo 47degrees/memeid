@@ -4,9 +4,17 @@ ThisBuild / scalaVersion := "2.12.10"
 
 lazy val root = project
   .in(file("."))
+  .enablePlugins(MdocPlugin)
   .settings(name := "memeid")
-  .aggregate(core, cats, literal, doobie, circe, http4s)
   .settings(skip in publish := true)
+  .settings(dependencies.docs)
+  .dependsOn(core, cats, literal, doobie, circe, http4s)
+  .aggregate(core, cats, literal, doobie, circe, http4s)
+  .settings(
+    mdocVariables := Map(
+      "VERSION" -> version.value
+    )
+  )
 
 lazy val core = project
   .settings(name := "memeid")
@@ -37,15 +45,3 @@ lazy val http4s = project
   .dependsOn(cats)
   .settings(name := "memeid-http4s")
   .settings(dependencies.common, dependencies.http4s)
-
-lazy val docs = project
-  .in(file("memeid-docs"))
-  .dependsOn(literal, doobie, circe, http4s)
-  .enablePlugins(MdocPlugin)
-  .settings(
-    mdocOut := baseDirectory.value.getParentFile,
-    mdocVariables := Map(
-      "VERSION" -> version.value
-    )
-  )
-  .settings(dependencies.docs)
