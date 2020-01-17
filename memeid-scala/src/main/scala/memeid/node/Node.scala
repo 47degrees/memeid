@@ -18,7 +18,7 @@ package memeid.node
 
 import scala.util.Random
 
-import memeid.bits.fromBytes
+import memeid.Bits.fromBytes
 import memeid.digest.Digest
 
 trait Node {
@@ -86,7 +86,7 @@ object Node {
       .map({
         case (d, b) => (d | b).toByte
       })
-    fromBytes(List(0: Byte, 0: Byte) ++ bytes)
+    fromBytes(Array(0: Byte, 0: Byte) ++ bytes)
   }
 
   def fromClockSequence(clkSeq: Short): Node = new Node {

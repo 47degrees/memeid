@@ -22,8 +22,9 @@ import java.util.{UUID => JUUID}
 import scala.reflect.ClassTag
 import scala.util.Try
 
+import memeid.Bits.{fromBytes, readByte, toBytes, writeByte}
 import memeid.JavaConverters._
-import memeid.bits.{fromBytes, mask, readByte, toBytes, writeByte}
+import memeid.Mask.{MASKS_48, MASKS_56}
 import memeid.digest.{Algorithm, Digestible, MD5, SHA1}
 import memeid.node.Node
 import memeid.time.{Posix, Time}
@@ -240,8 +241,7 @@ object UUID {
 
       val clkHigh = writeByte(Mask.CLOCK_SEQ_HIGH, readByte(Mask.CLOCK_SEQ_HIGH, N.id), 0x2)
       val clkLow  = readByte(Mask.CLOCK_SEQ_LOW, N.clockSequence.toLong)
-      val lsb =
-        writeByte(mask(8, 56), writeByte(mask(8, 48), N.id, clkLow), clkHigh)
+      val lsb     = writeByte(MASKS_56, writeByte(MASKS_48, N.id, clkLow), clkHigh)
       new UUID.V1(new JUUID(msb, lsb))
     }
 
@@ -299,8 +299,8 @@ object UUID {
      * @return  [[UUID.V4 V4]]
      */
     def apply(msb: Long, lsb: Long): UUID = {
-      val v4msb = writeByte(mask(4, 12), msb, 0x4)
-      val v4lsb = writeByte(mask(2, 62), lsb, 0x2)
+      val v4msb = writeByte(Mask.VERSION, msb, 0x4)
+      val v4lsb = writeByte(Mask.V4_LSB, lsb, 0x2)
       new UUID.V4(new JUUID(v4msb, v4lsb))
     }
 
@@ -368,21 +368,8 @@ object UUID {
     val rawMsb = fromBytes(bytes.take(8))
     val rawLsb = fromBytes(bytes.drop(8))
     val msb    = Mask.version(rawMsb, version)
-    val lsb    = writeByte(mask(2, 52), rawLsb, 0x2)
+    val lsb    = writeByte(Mask.HASHED, rawLsb, 0x2)
     new JUUID(msb, lsb)
-  }
-
-  private object Mask {
-    val VERSION: Long        = mask(4, 12)
-    val TIME_LOW: Long       = mask(32, 0)
-    val TIME_MID: Long       = mask(16, 32)
-    val TIME_HIGH: Long      = mask(12, 48)
-    val CLOCK_SEQ_LOW: Long  = mask(8, 0)
-    val CLOCK_SEQ_HIGH: Long = mask(6, 8)
-    val UB32: Long           = 0x00000000FFFFFFFFL
-
-    def version(msb: Long, version: Long): Long =
-      writeByte(VERSION, msb, version)
   }
 
   /**
