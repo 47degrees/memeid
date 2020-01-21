@@ -16,15 +16,20 @@ lazy val root = project
   )
 
 lazy val `memeid` = project
+  .settings(crossPaths := false)
+  .settings(autoScalaLibrary := false)
+
+lazy val `memeid-scala` = project
+  .dependsOn(`memeid`)
   .settings(dependencies.common)
 
 lazy val `memeid-cats` = project
-  .dependsOn(`memeid` % "compile->compile;test->test")
+  .dependsOn(`memeid-scala` % "compile->compile;test->test")
   .settings(dependencies.common, dependencies.cats)
   .settings(dependencies.compilerPlugins)
 
 lazy val `memeid-literal` = project
-  .dependsOn(`memeid`)
+  .dependsOn(`memeid-scala`)
   .settings(dependencies.common, dependencies.literal)
 
 lazy val `memeid-doobie` = project
@@ -39,5 +44,12 @@ lazy val `memeid-http4s` = project
   .dependsOn(`memeid-cats` % "compile->compile;test->test")
   .settings(dependencies.common, dependencies.http4s)
 
-lazy val allProjects: Seq[ProjectReference] =
-  Seq(`memeid`, `memeid-cats`, `memeid-literal`, `memeid-doobie`, `memeid-circe`, `memeid-http4s`)
+lazy val allProjects: Seq[ProjectReference] = Seq(
+  `memeid`,
+  `memeid-scala`,
+  `memeid-cats`,
+  `memeid-literal`,
+  `memeid-doobie`,
+  `memeid-circe`,
+  `memeid-http4s`
+)
