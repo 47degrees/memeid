@@ -17,6 +17,7 @@
 package memeid
 
 import Bits._
+import _root_.scala.util.Random
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
@@ -74,7 +75,7 @@ class BitsSpec extends Specification with ScalaCheck {
     "round-trip" in {
       val bytes =
         (0 to 7)
-          .map(_ => Cast.sb8(new scala.util.Random().nextInt(mask(8, 0).toInt).toLong))
+          .map(_ => Cast.sb8(new Random().nextInt(mask(8, 0).toInt).toLong))
           .toArray
       val assembled    = fromBytes(bytes)
       val disassembled = toBytes(assembled)

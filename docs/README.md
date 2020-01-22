@@ -31,7 +31,7 @@ libraryDependencies += "com.47deg" % "memeid" % "@VERSION@"
 The time-based (V1) variant of UUIDs is the fastest to generate. It uses a monotonic clock and node information to generate UUIDs.
 
 ```scala mdoc
-import memeid.UUID
+import memeid.scala.UUID
 
 UUID.V1.next
 UUID.V1.next
@@ -43,8 +43,6 @@ UUID.V1.next
 The cryptographically random variant, equivalent to `java.util.UUID/randomUUID`.
 
 ```scala mdoc
-import memeid.UUID
-
 UUID.V4.random
 UUID.V4.random
 UUID.V4.random
@@ -55,8 +53,6 @@ UUID.V4.random
 Namespaced UUIDs are generated from a UUID (namespace) and a hashed value (name), V3 uses MD5 and V5 uses SHA1 hash.
 
 ```scala mdoc:silent
-import memeid.UUID
-
 val namespace = UUID.V1.next
 ```
 
@@ -90,8 +86,6 @@ UUID.V5(namespace, User("Federico", "García Lorca"))
 SQUUIDs are a non-standard variaton of V4 UUIDs that are semi-sequential. They incorporate a time-component in their 32 most significant bits to generate UUIDs that don't fragment DB indexes.
 
 ```scala mdoc
-import memeid.UUID
-
 UUID.V4.squuid
 UUID.V4.squuid
 UUID.V4.squuid
@@ -99,16 +93,13 @@ UUID.V4.squuid
 
 ## Java interoperability
 
-`memeid` proviedes conversion method between `UUID` and `java.util.UUID` through `memeid.JavaConverters`:
+`memeid` provides conversion method between `UUID` and `java.util.UUID` through:
 
 ```scala mdoc
-import memeid.JavaConverters._
-
-
 val j = java.util.UUID.randomUUID
 val u = UUID.V4.random
 
-j.asScala
+UUID.fromUUID(j)
 u.asJava
 ```
 
@@ -205,7 +196,6 @@ You can import `memeid.circe.implicits` to have the `Encoder` and `Decoder` inst
 ```scala mdoc
 import io.circe.{ Json, Encoder, Decoder }
 
-import memeid.UUID
 import memeid.circe.implicits._
 
 val uuid = UUID.V1.next
@@ -231,8 +221,6 @@ import cats.effect._
 import org.http4s._
 import org.http4s.dsl.io._
 
-import memeid.UUID
-
 HttpRoutes.of[IO] {
   case GET -> Root / "user" / UUID(uuid) => Ok(s"Hello, ${uuid}!")
 }
@@ -248,7 +236,6 @@ import cats.effect._
 import org.http4s._
 import org.http4s.dsl.io._
 
-import memeid.UUID
 import memeid.http4s.implicits._
 
 object UUIDParamDecoder extends QueryParamDecoderMatcher[UUID]("uuid")

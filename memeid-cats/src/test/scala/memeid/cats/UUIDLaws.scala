@@ -19,8 +19,9 @@ package memeid.cats
 import cats.instances.option._
 import cats.kernel.laws.discipline.{HashTests, LowerBoundedTests, OrderTests, UpperBoundedTests}
 
-import memeid.UUID
+import memeid.arbitrary.instances._
 import memeid.cats.instances._
+import memeid.scala.UUID
 import org.specs2.mutable.Specification
 import org.typelevel.discipline.specs2.mutable.Discipline
 

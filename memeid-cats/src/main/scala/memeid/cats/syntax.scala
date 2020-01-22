@@ -21,9 +21,9 @@ import java.util.concurrent.TimeUnit.SECONDS
 import cats.effect.{Clock, Sync}
 import cats.syntax.functor._
 
-import memeid.UUID
 import memeid.digest.Digestible
 import memeid.node.Node
+import memeid.scala.UUID
 import memeid.time.{Posix, Time}
 
 trait syntax {

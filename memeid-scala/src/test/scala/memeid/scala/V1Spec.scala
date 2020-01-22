@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package memeid
+package memeid.scala
 
+import memeid.scala.UUID.RichUUID
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
