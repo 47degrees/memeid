@@ -24,7 +24,6 @@ import memeid.Bits.{readByte, toBytes, writeByte}
 import memeid.Mask.{MASKS_48, MASKS_56}
 import memeid.Offset.{OFFSET_48, OFFSET_56}
 import memeid.digest.Digestible
-import memeid.node.Node
 import memeid.scala.UUID.RichUUID
 import memeid.time.{Posix, Time}
 
@@ -55,7 +54,7 @@ package object scala {
        *
        * @tparam A must be subtype of [[UUID]]
        * @return this [[UUID]] as the provided type if versions match;
-       * otherwise, returns `None`
+       *         otherwise, returns `None`
        */
       def as[A <: UUID: ClassTag]: Option[A] = uuid match {
         case a: A => Some(a)
@@ -68,7 +67,7 @@ package object scala {
        *
        * @tparam A must be subtype of [[UUID]]
        * @return `true` if this [[UUID]] matches the provided type;
-       * otherwise, returns `false`
+       *         otherwise, returns `false`
        */
       def is[A <: UUID: ClassTag]: Boolean = uuid match {
         case _: A => true
@@ -108,7 +107,7 @@ package object scala {
      *
      * @param s String for the [[java.util.UUID UUID]] to be generated as an [[UUID]]
      * @return [[_root_.scala.util.Either Either]] with [[_root_.scala.util.Left Left]] with the error in case the string doesn't follow the
-     *        string standard representation or [[_root_.scala.util.Right Right]] with the [[UUID UUID]] representation.
+     *         string standard representation or [[_root_.scala.util.Right Right]] with the [[UUID UUID]] representation.
      */
     def from(s: String): Either[Throwable, UUID] =
       Try(memeid.UUID.fromString(s)).toEither
@@ -118,7 +117,7 @@ package object scala {
       /**
        * Construct a [[UUID.V1 V1]] (time-based) UUID.
        *
-       * @param N [[node.Node Node]] for the V1 UUID generation
+       * @param N [[Node Node]] for the V1 UUID generation
        * @param T [[time.Time Time]] which assures the V1 UUID time is unique
        * @return [[UUID.V1 V1]]
        */
@@ -202,6 +201,8 @@ package object scala {
     }
 
   }
+
+  implicit val node: Node = new Node()
 
   /**
    * Implicit [[memeid.digest.Digestible Digestible]] for converting an [[UUID]] to an Array of Bytes

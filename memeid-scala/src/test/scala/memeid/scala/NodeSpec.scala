@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
-package memeid.node
+package memeid.scala
 
+import memeid.Node
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
