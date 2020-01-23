@@ -18,7 +18,7 @@ package memeid.literal
 
 import scala.reflect.macros.blackbox
 
-import memeid.scala.UUID
+import memeid.UUID
 
 private[literal] class Macros(val c: blackbox.Context) {
   import c.universe._
@@ -30,13 +30,13 @@ private[literal] class Macros(val c: blackbox.Context) {
 
     c.prefix.tree match {
       case interpolate(s) if isUUID(s) =>
-        c.Expr[UUID](q"_root_.memeid.scala.UUID.from($s).right.get")
+        c.Expr[UUID](q"_root_.memeid.UUID.fromString($s)")
       case interpolate(s) => c.abort(c.enclosingPosition, s"invalid UUID: $s")
       case _              => c.abort(c.enclosingPosition, "should only be used on literals")
     }
   }
 
-  private def isUUID(s: String): Boolean = UUID.from(s).isRight
+  private def isUUID(s: String): Boolean = _root_.scala.util.Try(UUID.fromString(s)).isSuccess
 
   private object interpolate {
 
