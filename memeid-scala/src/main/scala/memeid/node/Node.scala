@@ -18,9 +18,11 @@ package memeid.node
 
 import java.security.MessageDigest
 
+import scala.collection.JavaConverters._
 import scala.util.Random
 
 import memeid.Bits.fromBytes
+import memeid.Sys
 
 trait Node {
 
@@ -62,12 +64,15 @@ object Node {
   //
   //  "Obtain a 47-bit cryptographic quality random number, with the least significant bit
   //   of the first octet of the Node-ID set to one."
-  def makeNodeId(addresses: Set[String], properties: Map[String, String]): Long = {
-    val dataForDigest = nodeIdDataSources.foldLeft(addresses)({
+  def makeNodeId(
+      addresses: java.util.Set[String],
+      properties: java.util.Map[String, String]
+  ): Long = {
+    val dataForDigest = nodeIdDataSources.foldLeft(addresses.asScala)({
       case (acc, key) =>
         properties.get(key) match {
-          case None    => acc
-          case Some(v) => acc + v
+          case null => acc
+          case v    => acc + v
         }
     })
     val messageDigest = MessageDigest.getInstance("MD5")
@@ -97,9 +102,7 @@ object Node {
     val clockSequence: Short = clkSeq
 
     val id: Long = {
-      val addresses  = Sys.getNetworkInterfaces ++ Sys.getLocalInterfaces
-      val properties = Sys.getProperties
-      makeNodeId(addresses, properties)
+      makeNodeId(Sys.getAddresses, Sys.getProperties)
     }
 
   }
