@@ -18,9 +18,10 @@ package memeid.http4s
 
 import cats.syntax.show._
 
-import memeid.UUID
+import memeid.arbitrary.instances._
 import memeid.cats.instances._
 import memeid.http4s.instances._
+import memeid.scala.UUID
 import org.http4s.dsl.impl.QueryParamDecoderMatcher
 import org.http4s.{QueryParamEncoder, QueryParameterValue}
 import org.scalacheck.Gen

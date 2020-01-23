@@ -21,8 +21,8 @@ import java.util.{UUID => JUUID}
 import cats.instances.uuid._
 import cats.kernel.{Hash, Order}
 
-import memeid.UUID
 import memeid.cats.instances._
+import memeid.scala.UUID
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
@@ -36,7 +36,7 @@ class InstancesSpec extends Specification with ScalaCheck {
       val uuid2 = UUID.from(0xE0000000.toLong, lsb)
 
       (Order[UUID].compare(uuid1, uuid2) must be equalTo -1) and
-        (Order[JUUID].compare(uuid1.juuid, uuid2.juuid) must be equalTo 1)
+        (Order[JUUID].compare(uuid1.asJava, uuid2.asJava) must be equalTo 1)
     }
 
   }
@@ -44,7 +44,7 @@ class InstancesSpec extends Specification with ScalaCheck {
   "Hash[UUID] returns hash code consistent with java.util.UUID" in prop { (msb: Long, lsb: Long) =>
     val uuid = UUID.from(msb, lsb)
 
-    Hash[UUID].hash(uuid) must be equalTo Hash[JUUID].hash(uuid.juuid)
+    Hash[UUID].hash(uuid) must be equalTo Hash[JUUID].hash(uuid.asJava)
   }
 
 }

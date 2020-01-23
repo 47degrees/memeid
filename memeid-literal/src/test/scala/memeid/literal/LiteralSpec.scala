@@ -16,7 +16,7 @@
 
 package memeid.literal
 
-import memeid.UUID
+import memeid.scala.UUID
 import org.specs2.mutable.Specification
 import shapeless.test.illTyped
 

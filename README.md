@@ -31,14 +31,14 @@ libraryDependencies += "com.47deg" % "memeid" % "0.1.0-SNAPSHOT"
 The time-based (V1) variant of UUIDs is the fastest to generate. It uses a monotonic clock and node information to generate UUIDs.
 
 ```scala
-import memeid.UUID
+import memeid.scala.UUID
 
 UUID.V1.next
-// res0: UUID = 01a70580-189c-1171-044d-39756f2cc4e5
+// res0: UUID = d52aec98-18f4-1171-0acf-4f8704f64aad
 UUID.V1.next
-// res1: UUID = 01a71908-189c-1171-044d-39756f2cc4e5
+// res1: UUID = d52b0020-18f4-1171-0acf-4f8704f64aad
 UUID.V1.next
-// res2: UUID = 01a720d8-189c-1171-044d-39756f2cc4e5
+// res2: UUID = d52b0bd8-18f4-1171-0acf-4f8704f64aad
 ```
 
 ### Random (v4)
@@ -46,14 +46,12 @@ UUID.V1.next
 The cryptographically random variant, equivalent to `java.util.UUID/randomUUID`.
 
 ```scala
-import memeid.UUID
-
 UUID.V4.random
-// res3: UUID = 8be21e8d-011d-473a-99f6-85f3d2d845fd
+// res3: memeid.UUID.V4 = 94aa1d00-52d9-44f5-8478-2b754bdb41c3
 UUID.V4.random
-// res4: UUID = 5fadbc65-6c13-4f1a-b451-ae6111bc7b88
+// res4: memeid.UUID.V4 = 73c2bf7e-d7f5-4680-bc31-560fd918c8bf
 UUID.V4.random
-// res5: UUID = 22e1fac2-8ed9-416d-a830-d77b200e9c3b
+// res5: memeid.UUID.V4 = 85f458b4-0854-455b-a127-43d04f956573
 ```
 
 ### Namespaced (v3, v5)
@@ -61,8 +59,6 @@ UUID.V4.random
 Namespaced UUIDs are generated from a UUID (namespace) and a hashed value (name), V3 uses MD5 and V5 uses SHA1 hash.
 
 ```scala
-import memeid.UUID
-
 val namespace = UUID.V1.next
 ```
 
@@ -70,9 +66,9 @@ We can now create UUIDs with the namespace and an arbitrary value as the name. I
 
 ```scala
 UUID.V3(namespace, "my-secret-code")
-// res6: UUID = 31f0b5be-641f-34f7-8f63-895c7b0c76bf
+// res6: memeid.UUID.V3 = c81f866d-aca6-3ffe-b4ea-3a4c30c3a1c3
 UUID.V5(namespace, "my-secret-code")
-// res7: UUID = 97a663e2-2b5e-58c5-e423-9b4d22766481
+// res7: memeid.UUID.V5 = 5cbc5c82-67de-5756-86a2-45e32b524c7f
 ```
 
 If you want to hash a custom type, you must provide an implicit `memeid.digest.Digestible` instance.
@@ -90,9 +86,9 @@ The implicit instance is used to convert your type into a byte array for hashing
 
 ```scala
 UUID.V3(namespace, User("Federico", "García Lorca"))
-// res8: UUID = bfa35f8a-5ba8-36b5-28a1-34df5e08fab7
+// res8: memeid.UUID.V3 = c470704a-68c1-3c27-452c-098fabd96d72
 UUID.V5(namespace, User("Federico", "García Lorca"))
-// res9: UUID = 20a1f865-5331-56c8-20e7-70062bab9bd1
+// res9: memeid.UUID.V5 = 933d17f3-6c34-53b8-df2d-f3172d640d72
 ```
 
 ### Semi-sequential, random (SQUUID)
@@ -100,33 +96,28 @@ UUID.V5(namespace, User("Federico", "García Lorca"))
 SQUUIDs are a non-standard variaton of V4 UUIDs that are semi-sequential. They incorporate a time-component in their 32 most significant bits to generate UUIDs that don't fragment DB indexes.
 
 ```scala
-import memeid.UUID
-
 UUID.V4.squuid
-// res10: UUID = 5e2224b7-170e-4bf4-bfe5-ff00e093f964
+// res10: UUID = 5e27f6f9-afe2-42bd-8e9d-0e96eec181b1
 UUID.V4.squuid
-// res11: UUID = 5e2224b7-a147-40e6-b2ad-13a3b2135bc1
+// res11: UUID = 5e27f6f9-af2a-40a2-a903-74e3a3c6cf4a
 UUID.V4.squuid
-// res12: UUID = 5e2224b7-ac97-4b67-85ab-73493962f24a
+// res12: UUID = 5e27f6f9-9db6-442c-b3b9-1b5f8b31970a
 ```
 
 ## Java interoperability
 
-`memeid` proviedes conversion method between `UUID` and `java.util.UUID` through `memeid.JavaConverters`:
+`memeid` provides conversion method between `UUID` and `java.util.UUID` through:
 
 ```scala
-import memeid.JavaConverters._
-
-
 val j = java.util.UUID.randomUUID
-// j: java.util.UUID = 050ad56c-a112-422e-94ea-dadf862c124e
+// j: java.util.UUID = c4652757-0aa8-4e6a-aa9a-2fa619842a5b
 val u = UUID.V4.random
-// u: UUID = 927e57d1-1ea7-409c-87d7-9ad4100fe9c8
+// u: memeid.UUID.V4 = fca13cb5-4b7b-4a4b-aa14-0d3338efd439
 
-j.asScala
-// res13: UUID = 050ad56c-a112-422e-94ea-dadf862c124e
+UUID.fromUUID(j)
+// res13: UUID = c4652757-0aa8-4e6a-aa9a-2fa619842a5b
 u.asJava
-// res14: java.util.UUID = 927e57d1-1ea7-409c-87d7-9ad4100fe9c8
+// res14: java.util.UUID = fca13cb5-4b7b-4a4b-aa14-0d3338efd439
 ```
 
 ## Literal syntax
@@ -192,7 +183,7 @@ val example = UUID.V1.next
     u <- select(example).unique.transact(transactor)
   } yield u
 }.unsafeRunSync
-// res18: UUID = 01c222e8-189c-1171-044d-39756f2cc4e5
+// res18: UUID = d538f270-18f4-1171-0acf-4f8704f64aad
 ```
 
 ### Circe
@@ -206,18 +197,17 @@ You can import `memeid.circe.implicits` to have the `Encoder` and `Decoder` inst
 ```scala
 import io.circe.{ Json, Encoder, Decoder }
 
-import memeid.UUID
 import memeid.circe.implicits._
 
 val uuid = UUID.V1.next
-// uuid: UUID = 01c4d268-189c-1171-044d-39756f2cc4e5
+// uuid: UUID = d53aa7f0-18f4-1171-0acf-4f8704f64aad
 val json = Json.fromString(uuid.toString)
-// json: Json = JString("01c4d268-189c-1171-044d-39756f2cc4e5")
+// json: Json = JString("d53aa7f0-18f4-1171-0acf-4f8704f64aad")
 
 Encoder[UUID].apply(uuid)
-// res19: Json = JString("01c4d268-189c-1171-044d-39756f2cc4e5")
+// res19: Json = JString("d53aa7f0-18f4-1171-0acf-4f8704f64aad")
 Decoder[UUID].decodeJson(json)
-// res20: Decoder.Result[UUID] = Right(01c4d268-189c-1171-044d-39756f2cc4e5)
+// res20: Decoder.Result[UUID] = Right(d53aa7f0-18f4-1171-0acf-4f8704f64aad)
 ```
 
 ### Http4s
@@ -236,8 +226,6 @@ import cats.effect._
 import org.http4s._
 import org.http4s.dsl.io._
 
-import memeid.UUID
-
 HttpRoutes.of[IO] {
   case GET -> Root / "user" / UUID(uuid) => Ok(s"Hello, ${uuid}!")
 }
@@ -253,7 +241,6 @@ import cats.effect._
 import org.http4s._
 import org.http4s.dsl.io._
 
-import memeid.UUID
 import memeid.http4s.implicits._
 
 object UUIDParamDecoder extends QueryParamDecoderMatcher[UUID]("uuid")
@@ -289,11 +276,11 @@ Show[UUID]
 import memeid.cats.implicits._
 
 UUID.random[IO].unsafeRunSync
-// res27: UUID = e2fcb89d-b3ca-4c8d-83dc-85b397125eae
+// res27: UUID = 3a99c186-8b3f-4acb-aafe-4f7f1ae8a58b
 UUID.v3[IO, String](namespace, "my-secret-code").unsafeRunSync
-// res28: UUID = 31f0b5be-641f-34f7-8f63-895c7b0c76bf
+// res28: UUID = c81f866d-aca6-3ffe-b4ea-3a4c30c3a1c3
 UUID.v5[IO, String](namespace, "my-secret-code").unsafeRunSync
-// res29: UUID = 97a663e2-2b5e-58c5-e423-9b4d22766481
+// res29: UUID = 5cbc5c82-67de-5756-86a2-45e32b524c7f
 ```
 
 ## References

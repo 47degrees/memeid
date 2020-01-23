@@ -18,13 +18,12 @@ package memeid.cats
 
 import java.lang.Long.compareUnsigned
 
-import cats.instances.uuid.catsStdShowForUUID
 import cats.kernel._
-import cats.syntax.contravariant._
 import cats.{Contravariant, Show}
 
-import memeid.UUID
 import memeid.digest.Digestible
+import memeid.scala.UUID
+import memeid.scala.UUID.RichUUID
 
 trait instances {
 
@@ -38,7 +37,7 @@ trait instances {
   implicit def UUIDHashOrderInstances: Order[UUID] with Hash[UUID] =
     new Order[UUID] with Hash[UUID] {
 
-      override def hash(x: UUID): Int = x.juuid.hashCode /* scalafix:ok */ ()
+      override def hash(x: UUID): Int = x.hashCode() /* scalafix:ok */
 
       override def compare(x: UUID, y: UUID): Int =
         compareUnsigned(x.msb, y.msb) match {
@@ -48,7 +47,7 @@ trait instances {
 
     }
 
-  implicit def UUIDShowInstance: Show[UUID] = catsStdShowForUUID.contramap(_.juuid)
+  implicit def UUIDShowInstance: Show[UUID] = Show.fromToString[UUID]
 
   implicit def UUIDBoundsInstances: LowerBounded[UUID] with UpperBounded[UUID] =
     new LowerBounded[UUID] with UpperBounded[UUID] {

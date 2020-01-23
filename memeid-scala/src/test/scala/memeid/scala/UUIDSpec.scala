@@ -14,11 +14,13 @@
  * limitations under the License.
  */
 
-package memeid
+package memeid.scala
 
 import java.nio.ByteBuffer
 
+import memeid.arbitrary.instances._
 import memeid.digest.Digestible
+import memeid.scala.UUID.RichUUID
 import org.scalacheck.Gen
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification

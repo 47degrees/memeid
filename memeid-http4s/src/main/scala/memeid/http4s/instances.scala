@@ -19,8 +19,8 @@ package memeid.http4s
 import cats.syntax.either._
 import cats.syntax.show._
 
-import memeid.UUID
 import memeid.cats.instances._
+import memeid.scala.UUID
 import org.http4s.{ParseFailure, QueryParamDecoder, QueryParamEncoder}
 
 @SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))

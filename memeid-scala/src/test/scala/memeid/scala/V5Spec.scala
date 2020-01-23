@@ -14,14 +14,14 @@
  * limitations under the License.
  */
 
-package memeid
+package memeid.scala
 
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-class V3Spec extends Specification with ScalaCheck {
+class V5Spec extends Specification with ScalaCheck {
 
-  "V3 constructor" should {
+  "V5 constructor" should {
 
     "create same UUID for the same namespace/name" in {
       val namespace = UUID.V4.random
