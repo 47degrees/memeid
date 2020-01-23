@@ -2,6 +2,9 @@ package memeid;
 
 import java.util.Optional;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static memeid.Bits.writeByte;
+
 /**
  * A class that represents an immutable universally unique identifier (UUID).
  * A UUID represents a 128-bit value.
@@ -407,6 +410,51 @@ public class UUID implements Comparable<UUID> {
      * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.3">RFC-4122</a>
      */
     public final static class V4 extends UUID {
+
+        /**
+         * Construct a {@link V4} (random) UUID from the given `msb` and `lsb`.
+         *
+         * @param msb Most significant bit in long representation
+         * @param lsb Least significant bit in long representation
+         */
+        public V4(long msb, long lsb) {
+            this(new java.util.UUID(
+                    writeByte(Mask.VERSION, Offset.VERSION, msb, 0x4),
+                    writeByte(Mask.V4_LSB, Offset.V4_LSB, lsb, 0x2)));
+        }
+
+        /**
+         * Construct a {@link V4} random UUID.
+         *
+         * @return the {@link V4} random UUID
+         */
+        public static UUID random() {
+            return new V4(java.util.UUID.randomUUID());
+        }
+
+        /**
+         * Constructs a SQUUID (random, time-based) {@link V4} UUID.
+         *
+         * @param posix the posix timestamp to be used to construct the UUID
+         * @return a {@link V4} SQUUID.
+         */
+        public static UUID squuid(long posix) {
+            final UUID uuid = random();
+
+            final long msb = (posix << 32) | (uuid.getMostSignificantBits() & Mask.UB32);
+
+            return new UUID.V4(new java.util.UUID(msb, uuid.getLeastSignificantBits()));
+        }
+
+        /**
+         * Constructs a SQUUID (random, time-based) {@link V4} UUID using
+         * the result of {@link System#currentTimeMillis()} as posix timestamp.
+         *
+         * @return a {@link V4} SQUUID.
+         */
+        public static UUID squuid() {
+            return squuid(MILLISECONDS.toSeconds(System.currentTimeMillis()));
+        }
 
         public V4(java.util.UUID uuid) {
             super(uuid);

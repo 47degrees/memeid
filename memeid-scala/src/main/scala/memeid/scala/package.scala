@@ -175,23 +175,13 @@ package object scala {
        * @param lsb Least significant bit in [[_root_.scala.Long Long]] representation
        * @return [[UUID.V4 V4]]
        */
-      def apply(msb: Long, lsb: Long): UUID = {
-        val v4msb = writeByte(Mask.VERSION, Offset.VERSION, msb, 0x4)
-        val v4lsb = writeByte(Mask.V4_LSB, Offset.V4_LSB, lsb, 0x2)
-        new UUID.V4(new JUUID(v4msb, v4lsb))
-      }
+      def apply(msb: Long, lsb: Long): UUID = new memeid.UUID.V4(msb, lsb)
 
       // Construct a v4 (random) UUID.
-      def random = new UUID.V4(JUUID.randomUUID)
+      def random: UUID = memeid.UUID.V4.random
 
       // Construct a SQUUID (random, time-based) UUID.
-      def squuid(implicit P: Posix): UUID = {
-        val uuid = random
-
-        val timedMsb = (P.value << 32) | (uuid.msb & Mask.UB32)
-
-        new UUID.V4(new JUUID(timedMsb, uuid.lsb))
-      }
+      def squuid(implicit P: Posix): UUID = memeid.UUID.V4.squuid(P.value)
 
     }
 
