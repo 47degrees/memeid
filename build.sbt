@@ -29,7 +29,7 @@ lazy val `memeid-cats` = project
   .settings(dependencies.compilerPlugins)
 
 lazy val `memeid-literal` = project
-  .dependsOn(`memeid-scala`)
+  .dependsOn(memeid)
   .settings(dependencies.common, dependencies.literal)
 
 lazy val `memeid-doobie` = project
