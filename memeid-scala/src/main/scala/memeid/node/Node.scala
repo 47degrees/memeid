@@ -16,10 +16,11 @@
 
 package memeid.node
 
+import java.security.MessageDigest
+
 import scala.util.Random
 
 import memeid.Bits.fromBytes
-import memeid.digest.Digest
 
 trait Node {
 
@@ -69,7 +70,9 @@ object Node {
           case Some(v) => acc + v
         }
     })
-    val digest = Digest.md5(dataForDigest.toList.map(_.getBytes))
+    val messageDigest = MessageDigest.getInstance("MD5")
+    dataForDigest.foreach(s => messageDigest.update(s.getBytes))
+    val digest = messageDigest.digest
     // "A better solution is to obtain a 47-bit cryptographic quality random
     //  number and use it as the low 47-bits of the Node-ID, with the least
     //  significant bit of the first octet of the Node-ID set to one.

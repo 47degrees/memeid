@@ -20,10 +20,10 @@ import java.util.{UUID => JUUID}
 
 import _root_.scala.reflect.ClassTag
 import _root_.scala.util.Try
-import memeid.Bits.{fromBytes, readByte, toBytes, writeByte}
+import memeid.Bits.{readByte, toBytes, writeByte}
 import memeid.Mask.{MASKS_48, MASKS_56}
 import memeid.Offset.{OFFSET_48, OFFSET_56}
-import memeid.digest.{Algorithm, Digestible, MD5, SHA1}
+import memeid.digest.Digestible
 import memeid.node.Node
 import memeid.scala.UUID.RichUUID
 import memeid.time.{Posix, Time}
@@ -161,8 +161,8 @@ package object scala {
        * @tparam A Sets the type for the local and Digestible parameters
        * @return [[UUID.V3 V3]]
        */
-      def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]) =
-        new UUID.V3(hashed(MD5, 3, namespace, local))
+      def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
+        memeid.UUID.V3.from(namespace, local, D.toByteArray)
 
     }
 
@@ -175,23 +175,13 @@ package object scala {
        * @param lsb Least significant bit in [[_root_.scala.Long Long]] representation
        * @return [[UUID.V4 V4]]
        */
-      def apply(msb: Long, lsb: Long): UUID = {
-        val v4msb = writeByte(Mask.VERSION, Offset.VERSION, msb, 0x4)
-        val v4lsb = writeByte(Mask.V4_LSB, Offset.V4_LSB, lsb, 0x2)
-        new UUID.V4(new JUUID(v4msb, v4lsb))
-      }
+      def apply(msb: Long, lsb: Long): UUID = new memeid.UUID.V4(msb, lsb)
 
       // Construct a v4 (random) UUID.
-      def random = new UUID.V4(JUUID.randomUUID)
+      def random: UUID = memeid.UUID.V4.random
 
       // Construct a SQUUID (random, time-based) UUID.
-      def squuid(implicit P: Posix): UUID = {
-        val uuid = random
-
-        val timedMsb = (P.value << 32) | (uuid.msb & Mask.UB32)
-
-        new UUID.V4(new JUUID(timedMsb, uuid.lsb))
-      }
+      def squuid(implicit P: Posix): UUID = memeid.UUID.V4.squuid(P.value)
 
     }
 
@@ -206,30 +196,11 @@ package object scala {
        * @tparam A Sets the type for the local and Digestible parameters
        * @return [[UUID.V5 V5]]
        */
-      def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]) =
-        new UUID.V5(hashed(SHA1, 5, namespace, local))
+      def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
+        memeid.UUID.V5.from(namespace, local, D.toByteArray)
 
     }
 
-  }
-
-  private def hashed[A: Digestible](
-      algo: Algorithm,
-      version: Long,
-      namespace: UUID,
-      local: A
-  ): JUUID = {
-    val digest = algo.digest
-    val ns     = Digestible[UUID].toByteArray(namespace)
-    digest.update(ns)
-    val name = Digestible[A].toByteArray(local)
-    digest.update(name)
-    val bytes  = digest.digest
-    val rawMsb = fromBytes(bytes.take(8))
-    val rawLsb = fromBytes(bytes.drop(8))
-    val msb    = writeByte(Mask.VERSION, Offset.VERSION, rawMsb, version)
-    val lsb    = writeByte(Mask.HASHED, Offset.HASHED, rawLsb, 0x2)
-    new JUUID(msb, lsb)
   }
 
   /**

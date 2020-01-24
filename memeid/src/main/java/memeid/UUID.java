@@ -1,6 +1,13 @@
 package memeid;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.function.Function;
+
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static memeid.Bits.*;
 
 /**
  * A class that represents an immutable universally unique identifier (UUID).
@@ -394,6 +401,30 @@ public class UUID implements Comparable<UUID> {
      */
     public final static class V3 extends UUID {
 
+        /**
+         * Construct a namespace name-based {@link V3} UUID. Uses MD5 as a hash algorithm
+         *
+         * @param namespace   {@link UUID} used for the {@link V3} generation
+         * @param name        name used for the {@link V3} generation
+         * @param nameToBytes function used to convert the name to a byte array
+         * @return a {@link V3} UUID
+         */
+        public static <A> UUID from(UUID namespace, A name, Function<A, byte[]> nameToBytes) throws NoSuchAlgorithmException {
+            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
+            messageDigest.update(toBytes(namespace.getMostSignificantBits()));
+            messageDigest.update(toBytes(namespace.getLeastSignificantBits()));
+            messageDigest.update(nameToBytes.apply(name));
+            byte[] bytes = messageDigest.digest();
+
+            long rawMsb = fromBytes(Arrays.copyOfRange(bytes, 0, 8));
+            long rawLsb = fromBytes(Arrays.copyOfRange(bytes, 8, 16));
+
+            long msb = writeByte(Mask.VERSION, Offset.VERSION, rawMsb, 3);
+            long lsb = writeByte(Mask.HASHED, Offset.HASHED, rawLsb, 0x2);
+
+            return new V3(new java.util.UUID(msb, lsb));
+        }
+
         public V3(java.util.UUID uuid) {
             super(uuid);
         }
@@ -407,6 +438,51 @@ public class UUID implements Comparable<UUID> {
      * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.3">RFC-4122</a>
      */
     public final static class V4 extends UUID {
+
+        /**
+         * Construct a {@link V4} (random) UUID from the given `msb` and `lsb`.
+         *
+         * @param msb Most significant bit in long representation
+         * @param lsb Least significant bit in long representation
+         */
+        public V4(long msb, long lsb) {
+            this(new java.util.UUID(
+                    writeByte(Mask.VERSION, Offset.VERSION, msb, 0x4),
+                    writeByte(Mask.V4_LSB, Offset.V4_LSB, lsb, 0x2)));
+        }
+
+        /**
+         * Construct a {@link V4} random UUID.
+         *
+         * @return the {@link V4} random UUID
+         */
+        public static UUID random() {
+            return new V4(java.util.UUID.randomUUID());
+        }
+
+        /**
+         * Constructs a SQUUID (random, time-based) {@link V4} UUID.
+         *
+         * @param posix the posix timestamp to be used to construct the UUID
+         * @return a {@link V4} SQUUID.
+         */
+        public static UUID squuid(long posix) {
+            final UUID uuid = random();
+
+            final long msb = (posix << 32) | (uuid.getMostSignificantBits() & Mask.UB32);
+
+            return new UUID.V4(new java.util.UUID(msb, uuid.getLeastSignificantBits()));
+        }
+
+        /**
+         * Constructs a SQUUID (random, time-based) {@link V4} UUID using
+         * the result of {@link System#currentTimeMillis()} as posix timestamp.
+         *
+         * @return a {@link V4} SQUUID.
+         */
+        public static UUID squuid() {
+            return squuid(MILLISECONDS.toSeconds(System.currentTimeMillis()));
+        }
 
         public V4(java.util.UUID uuid) {
             super(uuid);
@@ -422,6 +498,30 @@ public class UUID implements Comparable<UUID> {
      * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.3">RFC-4122</a>
      */
     public final static class V5 extends UUID {
+
+        /**
+         * Construct a namespace name-based {@link V5} UUID. Uses MD5 as a hash algorithm
+         *
+         * @param namespace   {@link UUID} used for the {@link V5} generation
+         * @param name        name used for the {@link V5} generation
+         * @param nameToBytes function used to convert the name to a byte array
+         * @return a {@link V5} UUID
+         */
+        public static <A> UUID from(UUID namespace, A name, Function<A, byte[]> nameToBytes) throws NoSuchAlgorithmException {
+            MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
+            messageDigest.update(toBytes(namespace.getMostSignificantBits()));
+            messageDigest.update(toBytes(namespace.getLeastSignificantBits()));
+            messageDigest.update(nameToBytes.apply(name));
+            byte[] bytes = messageDigest.digest();
+
+            long rawMsb = fromBytes(Arrays.copyOfRange(bytes, 0, 8));
+            long rawLsb = fromBytes(Arrays.copyOfRange(bytes, 8, 16));
+
+            long msb = writeByte(Mask.VERSION, Offset.VERSION, rawMsb, 5);
+            long lsb = writeByte(Mask.HASHED, Offset.HASHED, rawLsb, 0x2);
+
+            return new V5(new java.util.UUID(msb, lsb));
+        }
 
         public V5(java.util.UUID uuid) {
             super(uuid);
