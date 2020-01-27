@@ -143,11 +143,29 @@ public class UUID implements Comparable<UUID> {
 
     @Override
     public int compareTo(UUID o) {
-        int comparison = Long.compareUnsigned(getMostSignificantBits(), o.getMostSignificantBits());
+        // When versions differ, we sort UUIDs by version
+        int v = this.version();
+        int maybeDifferentVersions = v - o.version();
+        if (maybeDifferentVersions != 0) {
+            return maybeDifferentVersions;
+        }
+        // For V1 UUIDs, we sort them by their fields
+        if (v == 1) {
+            // first, compare the the 60-bit timestamp
+            int timeComparison = Long.compareUnsigned(this.juuid.timestamp(), o.juuid.timestamp());
 
-        if (comparison == 0) {
-            return Long.compareUnsigned(getLeastSignificantBits(), o.getLeastSignificantBits());
-        } else return comparison;
+            // the rest of the fields (clock sequence & node ID) are in the LSB so we just compare that
+            if (timeComparison == 0) {
+                return Long.compareUnsigned(getLeastSignificantBits(), o.getLeastSignificantBits());
+            } else return timeComparison;
+        } else {
+            // For any other UUID we order lexicographically
+            int comparison = Long.compareUnsigned(getMostSignificantBits(), o.getMostSignificantBits());
+
+            if (comparison == 0) {
+                return Long.compareUnsigned(getLeastSignificantBits(), o.getLeastSignificantBits());
+            } else return comparison;
+        }
     }
 
     @Override
