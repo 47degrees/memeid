@@ -5,7 +5,7 @@ object dependencies {
 
   val V = new {
 
-    val cats                = "2.0.0"
+    val cats                = "2.1.0"
     val circe               = "0.12.3"
     val `discipline-specs2` = "1.0.0"
     val doobie              = "0.8.8"
