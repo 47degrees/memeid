@@ -6,10 +6,10 @@ object dependencies {
   val V = new {
 
     val cats                = "2.1.1"
-    val circe               = "0.12.3"
+    val circe               = "0.13.0"
     val `discipline-specs2` = "1.0.0"
     val doobie              = "0.8.8"
-    val http4s              = "0.21.0-RC4"
+    val http4s              = "0.21.0"
     val specs               = "4.8.3"
     val shapeless           = "2.3.3"
 
