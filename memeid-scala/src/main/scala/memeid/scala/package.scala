@@ -20,9 +20,7 @@ import java.util.{UUID => JUUID}
 
 import _root_.scala.reflect.ClassTag
 import _root_.scala.util.Try
-import memeid.Bits.{readByte, toBytes, writeByte}
-import memeid.Mask.{MASKS_48, MASKS_56}
-import memeid.Offset.{OFFSET_48, OFFSET_56}
+import memeid.Bits.toBytes
 import memeid.digest.Digestible
 import memeid.scala.UUID.RichUUID
 import memeid.time.{Posix, Time}
@@ -121,31 +119,8 @@ package object scala {
        * @param T [[time.Time Time]] which assures the V1 UUID time is unique
        * @return [[UUID.V1 V1]]
        */
-      def next(implicit N: Node, T: Time): UUID = {
-        val timestamp = T.monotonic
-        val low       = readByte(Mask.TIME_LOW, Offset.TIME_LOW, timestamp)
-        val mid       = readByte(Mask.TIME_MID, Offset.TIME_MID, timestamp)
-        val high      = readByte(Mask.TIME_HIGH, Offset.TIME_HIGH, timestamp)
-        val msb       = writeByte(Mask.VERSION, Offset.VERSION, high, 1) | (low << 32) | (mid << 16)
-
-        val clkHigh = writeByte(
-          Mask.CLOCK_SEQ_HIGH,
-          Offset.CLOCK_SEQ_HIGH,
-          readByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH, N.id),
-          0x2
-        )
-
-        val clkLow = readByte(Mask.CLOCK_SEQ_LOW, Offset.CLOCK_SEQ_LOW, N.clockSequence.toLong)
-
-        val lsb = writeByte(
-          MASKS_56,
-          OFFSET_56,
-          writeByte(MASKS_48, OFFSET_48, N.id, clkLow),
-          clkHigh
-        )
-
-        new UUID.V1(new JUUID(msb, lsb))
-      }
+      def next(implicit N: Node, T: Time): UUID =
+        memeid.UUID.V1.next(N, () => T.monotonic)
 
     }
 
