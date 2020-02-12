@@ -5,7 +5,8 @@ object dependencies {
 
   val V = new {
 
-    val cats                = "2.1.0"
+    val cats                = "2.1.1"
+    val `cats-laws`         = "2.1.0"
     val circe               = "0.13.0"
     val `discipline-specs2` = "1.0.0"
     val doobie              = "0.8.8"
@@ -21,7 +22,7 @@ object dependencies {
 
   val cats: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
     "org.typelevel" %% "cats-effect"       % V.cats,
-    "org.typelevel" %% "cats-laws"         % V.cats % Test,
+    "org.typelevel" %% "cats-laws"         % V.`cats-laws` % Test,
     "org.typelevel" %% "discipline-specs2" % V.`discipline-specs2` % Test,
     "org.specs2"    %% "specs2-cats"       % V.specs % Test
   )
