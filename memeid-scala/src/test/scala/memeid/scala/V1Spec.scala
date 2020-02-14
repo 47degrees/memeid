@@ -39,13 +39,13 @@ class V1Spec extends Specification with ScalaCheck {
     }
 
     "not generate the same UUID twice" in {
-      val ids = (1 to 10).par.map(_ => UUID.V1.next)
+      val ids = (1 to 10).par.map(_ => UUID.V1.next).toSet
 
       ids.size must be equalTo 10
     }
 
     "not generate the same UUID twice with high concurrency" in {
-      val ids = (1 to 999).par.map(_ => UUID.V1.next)
+      val ids = (1 to 999).par.map(_ => UUID.V1.next).toSet
 
       ids.size must be equalTo 999
     }

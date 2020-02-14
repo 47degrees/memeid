@@ -1,10 +1,14 @@
 package memeid;
 
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.function.LongSupplier;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static memeid.Bits.*;
@@ -391,8 +395,66 @@ public class UUID implements Comparable<UUID> {
             return Bits.readByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH, this.asJava().clockSequence());
         }
 
+        private static Node defaultNode = null;
+
         public V1(java.util.UUID uuid) {
             super(uuid);
+        }
+
+        /**
+         * Constructs a time-based {@link V1} UUID using the default {@link Node}
+         * and {@link Timestamp#monotonic()} as the monotonic timestamp supplier.
+         *
+         * @return a {@link V1} UUID
+         */
+        public static V1 next() throws NoSuchAlgorithmException, SocketException, UnknownHostException {
+            if (defaultNode == null) {
+                defaultNode = new Node();
+            }
+
+            return next(defaultNode);
+        }
+
+        /**
+         * Constructs a time-based {@link V1} UUID using the provided {@link Node}
+         * and {@link Timestamp#monotonic()} as the monotonic timestamp supplier.
+         *
+         * @param node Node for the V1 UUID generation
+         * @return a {@link V1} UUID
+         */
+        public static V1 next(Node node) {
+            return next(node, Timestamp::monotonic);
+        }
+
+        /**
+         * Constructs a time-based {@link V1} UUID using the provided {@link Node} and
+         * monotonic timestamp supplier.
+         *
+         * @param node              node for the V1 UUID generation
+         * @param monotonicSupplier monotonic timestamp which assures the V1 UUID time is unique
+         * @return a {@link V1} UUID
+         */
+        public static V1 next(Node node, LongSupplier monotonicSupplier) {
+            final long timestamp = monotonicSupplier.getAsLong();
+            final long low = readByte(Mask.TIME_LOW, Offset.TIME_LOW, timestamp);
+            final long mid = readByte(Mask.TIME_MID, Offset.TIME_MID, timestamp);
+            final long high = readByte(Mask.TIME_HIGH, Offset.TIME_HIGH, timestamp);
+            final long msb = writeByte(Mask.VERSION, Offset.VERSION, high, 1) | (low << 32) | (mid << 16);
+
+            final long clkHigh = writeByte(
+                    Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH,
+                    readByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH, node.id), 0x2);
+
+            final long clkLow = readByte(Mask.CLOCK_SEQ_LOW, Offset.CLOCK_SEQ_LOW, node.clockSequence);
+
+            final long lsb = writeByte(
+                    Mask.MASKS_56,
+                    Offset.OFFSET_56,
+                    writeByte(Mask.MASKS_48, Offset.OFFSET_48, node.id, clkLow),
+                    clkHigh
+            );
+
+            return new UUID.V1(new java.util.UUID(msb, lsb));
         }
 
     }

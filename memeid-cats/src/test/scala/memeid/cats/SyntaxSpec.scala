@@ -20,6 +20,7 @@ import cats.effect.IO
 
 import memeid.cats.syntax._
 import memeid.scala.UUID
+import memeid.scala.node
 import org.specs2.matcher.IOMatchers
 import org.specs2.mutable.Specification
 
