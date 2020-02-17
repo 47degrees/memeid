@@ -33,11 +33,9 @@ libraryDependencies += "com.47deg" % "memeid" % "@VERSION@"
 
 The time-based (V1) variant of UUIDs is the fastest to generate. It uses a monotonic clock and node information to generate UUIDs.
 
-```scala mdoc
+```scala mdoc:silent
 import memeid.scala.UUID
 
-UUID.V1.next
-UUID.V1.next
 UUID.V1.next
 ```
 
@@ -45,9 +43,7 @@ UUID.V1.next
 
 The cryptographically random variant, equivalent to `java.util.UUID/randomUUID`.
 
-```scala mdoc
-UUID.V4.random
-UUID.V4.random
+```scala mdoc:silent
 UUID.V4.random
 ```
 
@@ -61,9 +57,8 @@ val namespace = UUID.V1.next
 
 We can now create UUIDs with the namespace and an arbitrary value as the name. It automatically works with Strings and UUIDs:
 
-```scala mdoc
+```scala mdoc:silent
 UUID.V3(namespace, "my-secret-code")
-UUID.V5(namespace, "my-secret-code")
 ```
 
 If you want to hash a custom type, you must provide an implicit `memeid.digest.Digestible` instance.
@@ -79,18 +74,15 @@ implicit val digestibleUser: Digestible[User] =
 
 The implicit instance is used to convert your type into a byte array for hashing:
 
-```scala mdoc
+```scala mdoc:silent
 UUID.V3(namespace, User("Federico", "García Lorca"))
-UUID.V5(namespace, User("Federico", "García Lorca"))
 ```
 
 ### Semi-sequential, random (SQUUID)
 
 SQUUIDs are a non-standard variaton of V4 UUIDs that are semi-sequential. They incorporate a time-component in their 32 most significant bits to generate UUIDs that don't fragment DB indexes.
 
-```scala mdoc
-UUID.V4.squuid
-UUID.V4.squuid
+```scala mdoc:silent
 UUID.V4.squuid
 ```
 
@@ -98,10 +90,12 @@ UUID.V4.squuid
 
 `memeid` provides conversion method between `UUID` and `java.util.UUID` through:
 
-```scala mdoc
-val j = java.util.UUID.randomUUID
-val u = UUID.V4.random
+```scala mdoc:silent
+val j = java.util.UUID.fromString("a5fa7934-501c-46eb-9ea7-16de3086e6d8")
+val u = memeid.UUID.fromString("8b4d1529-5fd0-4a91-8f4f-ceee10d1c060")
+```
 
+```scala mdoc
 UUID.fromUUID(j)
 u.asJava
 ```
@@ -176,7 +170,7 @@ def select(uuid: UUID): Query0[UUID] =
 def insert(uuid: UUID): Update0 =
   sql"""insert into test (id) values ($uuid)""".update
 
-val example = UUID.V1.next
+val example = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
 ```
 
 ```scala mdoc
@@ -196,14 +190,16 @@ libraryDependencies += "com.47deg" % "memeid-circe" % "@VERSION@"
 
 You can import `memeid.circe.implicits` to have the `Encoder` and `Decoder` instances for `UUID` in scope.
 
-```scala mdoc
+```scala mdoc:silent
 import io.circe.{ Json, Encoder, Decoder }
 
 import memeid.circe.implicits._
 
-val uuid = UUID.V1.next
+val uuid = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
 val json = Json.fromString(uuid.toString)
+```
 
+```scala mdoc
 Encoder[UUID].apply(uuid)
 Decoder[UUID].decodeJson(json)
 ```
@@ -270,12 +266,12 @@ Show[UUID]
 
 ### Constructors
 
-```scala mdoc
+```scala mdoc:silent
 import memeid.cats.implicits._
 
-UUID.random[IO].unsafeRunSync
-UUID.v3[IO, String](namespace, "my-secret-code").unsafeRunSync
-UUID.v5[IO, String](namespace, "my-secret-code").unsafeRunSync
+UUID.random[IO]
+UUID.v3[IO, String](namespace, "my-secret-code")
+UUID.v5[IO, String](namespace, "my-secret-code")
 ```
 
 ## References
