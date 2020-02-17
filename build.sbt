@@ -10,11 +10,8 @@ lazy val root = project
   .settings(dependencies.docs)
   .aggregate(allProjects: _*)
   .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
-  .settings(
-    mdocVariables := Map(
-      "VERSION" -> version.value
-    )
-  )
+  .settings(mdocOut := file("."))
+  .settings(name := "memeid")
 
 lazy val `memeid` = project
   .settings(crossPaths := false)
