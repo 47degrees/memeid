@@ -3,6 +3,9 @@ ThisBuild / organization := "com.47deg"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
+addCommandAlias("ci-test", "fix --check; mdoc; test")
+addCommandAlias("ci-docs", "mdoc; headerCreateAll")
+
 lazy val root = project
   .in(file("."))
   .enablePlugins(MdocPlugin)
