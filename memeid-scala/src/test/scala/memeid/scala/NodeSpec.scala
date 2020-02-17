@@ -16,7 +16,6 @@
 
 package memeid.scala
 
-import memeid.Node
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
@@ -28,10 +27,10 @@ class NodeSpec extends Specification with ScalaCheck {
       val node2 = implicitly[Node]
       val node3 = implicitly[Node]
 
-      val clockSeq = node1.clockSequence
+      val clockSeq = node1.value.clockSequence
 
-      node2.clockSequence must be equalTo clockSeq
-      node3.clockSequence must be equalTo clockSeq
+      node2.value.clockSequence must be equalTo clockSeq
+      node3.value.clockSequence must be equalTo clockSeq
     }
   }
 
@@ -41,10 +40,10 @@ class NodeSpec extends Specification with ScalaCheck {
       val node2 = implicitly[Node]
       val node3 = implicitly[Node]
 
-      val id = node1.id
+      val id = node1.value.id
 
-      node2.id must be equalTo id
-      node3.id must be equalTo id
+      node2.value.id must be equalTo id
+      node3.value.id must be equalTo id
     }
   }
 

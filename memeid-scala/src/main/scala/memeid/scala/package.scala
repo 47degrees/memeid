@@ -118,7 +118,7 @@ package object scala {
        * @return [[UUID.V1 V1]]
        */
       def next(implicit N: Node, T: Time): UUID =
-        memeid.UUID.V1.next(N, () => T.monotonic)
+        memeid.UUID.V1.next(N.value, () => T.monotonic)
 
     }
 
@@ -174,7 +174,5 @@ package object scala {
     }
 
   }
-
-  implicit val node: Node = new Node()
 
 }

@@ -25,7 +25,6 @@ import doobie.implicits._
 import doobie.specs2._
 import memeid.doobie.implicits._
 import memeid.scala.UUID
-import memeid.scala.node
 import org.specs2.matcher.IOMatchers
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAll
