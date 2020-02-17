@@ -18,6 +18,10 @@ package memeid.digest
 
 import java.nio.charset.StandardCharsets.UTF_8
 
+import memeid.Bits.toBytes
+import memeid.scala.UUID
+import memeid.scala.UUID.RichUUID
+
 trait Digestible[A] { self =>
 
   def toByteArray(a: A): Array[Byte]
@@ -29,5 +33,6 @@ object Digestible {
   def apply[A](implicit d: Digestible[A]): Digestible[A] = d
 
   implicit val DigestibleStringImplementation: Digestible[String] = _.getBytes(UTF_8)
+  implicit val DigestibleUUIDInstance: Digestible[UUID]           = u => toBytes(u.msb) ++ toBytes(u.lsb)
 
 }

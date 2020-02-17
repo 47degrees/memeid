@@ -20,9 +20,7 @@ import java.util.{UUID => JUUID}
 
 import _root_.scala.reflect.ClassTag
 import _root_.scala.util.Try
-import memeid.Bits.toBytes
 import memeid.digest.Digestible
-import memeid.scala.UUID.RichUUID
 import memeid.time.{Posix, Time}
 
 package object scala {
@@ -178,11 +176,5 @@ package object scala {
   }
 
   implicit val node: Node = new Node()
-
-  /**
-   * Implicit [[memeid.digest.Digestible Digestible]] for converting an [[UUID]] to an Array of Bytes
-   */
-  implicit val DigestibleUUIDInstance: Digestible[UUID] =
-    u => toBytes(u.msb) ++ toBytes(u.lsb)
 
 }
