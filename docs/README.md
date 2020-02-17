@@ -7,6 +7,9 @@
 > When generated according to the standard methods, UUIDs are for practical purposes unique. Their uniqueness does not depend on a central registration authority or coordination between the parties generating them, unlike most other numbering schemes.
 -- [Wikipedia article on UUIDs](https://en.wikipedia.org/wiki/Universally_unique_identifier)
 
+```scala mdoc:toc
+```
+
 ## Rationale
 
 The UUID type that ships with the JVM `java.util.UUID` has a number of problems, namely:
