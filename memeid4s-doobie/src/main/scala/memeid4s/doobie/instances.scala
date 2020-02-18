@@ -14,18 +14,21 @@
  * limitations under the License.
  */
 
-package memeid4s.circe
+package memeid4s.doobie
 
 import java.util.{UUID => JUUID}
 
-import io.circe.{Decoder, Encoder}
+import doobie.util.{Get, Put}
 import memeid4s.UUID
 
-object implicits {
+trait instances {
 
-  implicit def memeidEncoder(implicit E: Encoder[JUUID]): Encoder[UUID] =
-    E.contramap(_.asJava)
+  implicit def UUIDGetInstance(implicit G: Get[JUUID]): Get[UUID] =
+    G.tmap(UUID.fromUUID)
 
-  implicit def memeidDecoder(implicit D: Decoder[JUUID]): Decoder[UUID] =
-    D.map(UUID.fromUUID)
+  implicit def UUIDPutInstance(implicit G: Put[JUUID]): Put[UUID] =
+    G.tcontramap(_.asJava)
+
 }
+
+object instances extends instances
