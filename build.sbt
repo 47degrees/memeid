@@ -1,5 +1,6 @@
-ThisBuild / scalaVersion := "2.12.10"
-ThisBuild / organization := "com.47deg"
+ThisBuild / scalaVersion       := "2.12.10"
+ThisBuild / organization       := "com.47deg"
+ThisBuild / extraCollaborators += Collaborator.github("47degdev")
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
