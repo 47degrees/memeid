@@ -16,8 +16,8 @@
 
 package memeid4s
 
-import memeid.Bits._
 import _root_.scala.util.Random
+import memeid.Bits._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 

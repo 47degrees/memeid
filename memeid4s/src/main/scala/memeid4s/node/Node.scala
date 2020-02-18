@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package memeid4s.scala
+package memeid4s.node
 
 final case class Node(value: memeid.Node)
 

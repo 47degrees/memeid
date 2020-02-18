@@ -21,6 +21,7 @@ import java.util.{UUID => JUUID}
 import _root_.scala.reflect.ClassTag
 import _root_.scala.util.Try
 import memeid4s.digest.Digestible
+import memeid4s.node.Node
 import memeid4s.time.{Posix, Time}
 
 package object scala {
