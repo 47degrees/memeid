@@ -23,8 +23,8 @@ import doobie._
 import doobie.h2.implicits._
 import doobie.implicits._
 import doobie.specs2._
+import memeid4s.UUID
 import memeid4s.doobie.implicits._
-import memeid4s.scala.UUID
 import org.specs2.matcher.IOMatchers
 import org.specs2.mutable.Specification
 import org.specs2.specification.BeforeAll

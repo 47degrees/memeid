@@ -21,9 +21,9 @@ import java.lang.Long.compareUnsigned
 import cats.kernel._
 import cats.{Contravariant, Show}
 
+import memeid4s.UUID
+import memeid4s.UUID.RichUUID
 import memeid4s.digest.Digestible
-import memeid4s.scala.UUID
-import memeid4s.scala.UUID.RichUUID
 
 trait instances {
 

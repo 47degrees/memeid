@@ -18,8 +18,8 @@ package memeid4s.cats
 
 import cats.effect.IO
 
+import memeid4s.UUID
 import memeid4s.cats.syntax._
-import memeid4s.scala.UUID
 import org.specs2.matcher.IOMatchers
 import org.specs2.mutable.Specification
 

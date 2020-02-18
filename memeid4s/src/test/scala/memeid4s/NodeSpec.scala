@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package memeid4s.scala
+package memeid4s
 
 import memeid4s.node.Node
 import org.specs2.ScalaCheck

@@ -19,7 +19,7 @@ package memeid4s.doobie
 import java.util.{UUID => JUUID}
 
 import doobie.util.{Get, Put}
-import memeid4s.scala.UUID
+import memeid4s.UUID
 
 object implicits {
 

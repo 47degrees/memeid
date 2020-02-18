@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-package memeid4s
-
 import java.util.{UUID => JUUID}
 
 import _root_.scala.reflect.ClassTag
@@ -24,7 +22,7 @@ import memeid4s.digest.Digestible
 import memeid4s.node.Node
 import memeid4s.time.{Posix, Time}
 
-package object scala {
+package object memeid4s {
 
   type UUID = memeid.UUID
 

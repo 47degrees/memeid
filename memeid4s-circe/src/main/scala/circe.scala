@@ -19,7 +19,7 @@ package memeid4s.circe
 import java.util.{UUID => JUUID}
 
 import io.circe.{Decoder, Encoder}
-import memeid4s.scala.UUID
+import memeid4s.UUID
 
 object implicits {
 

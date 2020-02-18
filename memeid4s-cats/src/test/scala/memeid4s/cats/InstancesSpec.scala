@@ -21,8 +21,8 @@ import java.util.{UUID => JUUID}
 import cats.instances.uuid._
 import cats.kernel.{Hash, Order}
 
+import memeid4s.UUID
 import memeid4s.cats.instances._
-import memeid4s.scala.UUID
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
