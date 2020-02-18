@@ -1,0 +1,38 @@
+name: Update changelog
+
+on:
+  push:
+    tags: v**
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout project
+        uses: actions/checkout@v2
+        with:
+          ref: master
+          fetch-depth: 0
+      - name: Fetch tags
+        run: git fetch --tags
+      - name: Generate changelog
+        uses: charmixer/auto-changelog-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          exclude_labels: duplicate,question,invalid,wontfix,auto-update
+      - name: Create Changelog Pull Request
+        uses: peter-evans/create-pull-request@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Update CHANGELOG.md
+          title: 'Update CHANGELOG.md'
+          labels: auto-update
+          branch: auto-update-changelog
+          body: Update CHANGELOG.md with information from latest release
+      - name: Merge Changelog Pull Request
+        if: env.PULL_REQUEST_NUMBER != null
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ env.PULL_REQUEST_NUMBER }}
+          method: merge

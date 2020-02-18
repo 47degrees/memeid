@@ -1,6 +1,10 @@
+ThisBuild / scalaVersion := "2.12.10"
+ThisBuild / organization := "com.47deg"
+
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-ThisBuild / scalaVersion := "2.12.10"
+addCommandAlias("ci-test", "fix --check; mdoc; test")
+addCommandAlias("ci-docs", "mdoc; headerCreateAll")
 
 lazy val root = project
   .in(file("."))
@@ -9,11 +13,8 @@ lazy val root = project
   .settings(dependencies.docs)
   .aggregate(allProjects: _*)
   .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
-  .settings(
-    mdocVariables := Map(
-      "VERSION" -> version.value
-    )
-  )
+  .settings(mdocOut := file("."))
+  .settings(name := "memeid")
 
 lazy val `memeid` = project
   .settings(crossPaths := false)
