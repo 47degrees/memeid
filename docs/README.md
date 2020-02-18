@@ -34,7 +34,7 @@ libraryDependencies += "com.47deg" % "memeid" % "@VERSION@"
 The time-based (V1) variant of UUIDs is the fastest to generate. It uses a monotonic clock and node information to generate UUIDs.
 
 ```scala mdoc:silent
-import memeid.scala.UUID
+import memeid4s.UUID
 
 UUID.V1.next
 ```
@@ -61,10 +61,10 @@ We can now create UUIDs with the namespace and an arbitrary value as the name. I
 UUID.V3(namespace, "my-secret-code")
 ```
 
-If you want to hash a custom type, you must provide an implicit `memeid.digest.Digestible` instance.
+If you want to hash a custom type, you must provide an implicit `memeid4s.digest.Digestible` instance.
 
 ```scala mdoc:silent
-import memeid.digest.Digestible
+import memeid4s.digest.Digestible
 
 case class User(firstName: String, lastName: String)
 
@@ -112,7 +112,7 @@ libraryDependencies += "com.47deg" % "memeid-literal" % "@VERSION@"
 We can now create UUIDs with literal syntax by importing `memeid.literal._`
 
 ```scala mdoc
-import memeid.literal._
+import memeid4s.literal._
 
 uuid"cb096727-6a82-4abd-bc79-fc92be8c5d88"
 ```
@@ -120,8 +120,6 @@ uuid"cb096727-6a82-4abd-bc79-fc92be8c5d88"
 Invalid UUID literals will fail at compile time:
 
 ```scala mdoc:fail
-import memeid.literal._
-
 uuid"not-a-uuid"
 ```
 
@@ -162,7 +160,7 @@ sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(tran
 ```
 
 ```scala mdoc:silent
-import memeid.doobie.implicits._
+import memeid4s.doobie.implicits._
 
 def select(uuid: UUID): Query0[UUID] =
   sql"""SELECT id from test where id = ${uuid}""".query[UUID]
@@ -193,7 +191,7 @@ You can import `memeid.circe.implicits` to have the `Encoder` and `Decoder` inst
 ```scala mdoc:silent
 import io.circe.{ Json, Encoder, Decoder }
 
-import memeid.circe.implicits._
+import memeid4s.circe.implicits._
 
 val uuid = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
 val json = Json.fromString(uuid.toString)
@@ -235,7 +233,7 @@ import cats.effect._
 import org.http4s._
 import org.http4s.dsl.io._
 
-import memeid.http4s.implicits._
+import memeid4s.http4s.implicits._
 
 object UUIDParamDecoder extends QueryParamDecoderMatcher[UUID]("uuid")
 
@@ -256,7 +254,7 @@ The cats integration provides typeclass implementation for `UUID`, as well as ef
 
 ```scala mdoc:silent
 import cats._
-import memeid.cats.implicits._
+import memeid4s.cats.implicits._
 
 Order[UUID]
 Hash[UUID]
@@ -267,8 +265,6 @@ Show[UUID]
 ### Constructors
 
 ```scala mdoc:silent
-import memeid.cats.implicits._
-
 UUID.random[IO]
 UUID.v3[IO, String](namespace, "my-secret-code")
 UUID.v5[IO, String](namespace, "my-secret-code")
