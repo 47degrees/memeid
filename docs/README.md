@@ -44,7 +44,7 @@ compile group: 'com.47deg', name: 'memeid', version: '@VERSION@'
 Add this to your `build.sbt` file:
 
 ```scala
-libraryDependencies += "com.47deg" % "memeid4s" % "@VERSION@"
+libraryDependencies += "com.47deg" %% "memeid4s" % "@VERSION@"
 ```
 
 ## Usage
@@ -130,7 +130,7 @@ u.asJava
 
 
 ```scala
-libraryDependencies += "com.47deg" % "memeid-literal" % "@VERSION@"
+libraryDependencies += "com.47deg" %% "memeid4s-literal" % "@VERSION@"
 ```
 
 We can now create UUIDs with literal syntax by importing `memeid.literal._`
@@ -156,7 +156,7 @@ uuid"not-a-uuid"
 The [Doobie](https://github.com/tpolecat/doobie) integration allows you to use the `UUID` type mapped to your database's UUID type.
 
 ```scala
-libraryDependencies += "com.47deg" % "memeid-doobie" % "@VERSION@"
+libraryDependencies += "com.47deg" %% "memeid4s-doobie" % "@VERSION@"
 ```
 
 To have the [UUID mappings](https://tpolecat.github.io/doobie/docs/12-Custom-Mappings.html) available in scope you can import `memeid.doobie.implicits`.
@@ -207,7 +207,7 @@ val example = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
 ##### Circe
 
 ```scala
-libraryDependencies += "com.47deg" % "memeid-circe" % "@VERSION@"
+libraryDependencies += "com.47deg" %% "memeid4s-circe" % "@VERSION@"
 ```
 
 You can import `memeid.circe.implicits` to have the `Encoder` and `Decoder` instances for `UUID` in scope.
@@ -229,7 +229,7 @@ Decoder[UUID].decodeJson(json)
 ##### Http4s
 
 ```scala
-libraryDependencies += "com.47deg" % "memeid-http4s" % "@VERSION@"
+libraryDependencies += "com.47deg" %% "memeid4s-http4s" % "@VERSION@"
 ```
 
 ###### Path parameters
@@ -269,7 +269,7 @@ HttpRoutes.of[IO] {
 ##### Cats & Cats-effect
 
 ```scala
-libraryDependencies += "com.47deg" % "memeid-cats" % "@VERSION@"
+libraryDependencies += "com.47deg" %% "memeid4s-cats" % "@VERSION@"
 ```
 
 The cats integration provides typeclass implementation for `UUID`, as well as effectful constructors for UUIDs for integration with programs that use `cats-effect`.

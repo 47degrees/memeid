@@ -112,7 +112,7 @@ package object memeid4s {
       /**
        * Construct a [[UUID.V1 V1]] (time-based) UUID.
        *
-       * @param N [[Node Node]] for the V1 UUID generation
+       * @param N [[node.Node Node]] for the V1 UUID generation
        * @param T [[time.Time Time]] which assures the V1 UUID time is unique
        * @return [[UUID.V1 V1]]
        */
