@@ -494,14 +494,23 @@ public class UUID implements Comparable<UUID> {
          * @param namespace   {@link UUID} used for the {@link V3} generation
          * @param name        name used for the {@link V3} generation
          * @param nameToBytes function used to convert the name to a byte array
+         * @param <A>         the type of the name parameter
          * @return a {@link V3} UUID
          */
-        public static <A> UUID from(UUID namespace, A name, Function<A, byte[]> nameToBytes) throws NoSuchAlgorithmException {
-            MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-            messageDigest.update(toBytes(namespace.getMostSignificantBits()));
-            messageDigest.update(toBytes(namespace.getLeastSignificantBits()));
-            messageDigest.update(nameToBytes.apply(name));
-            byte[] bytes = messageDigest.digest();
+        public static <A> UUID from(UUID namespace, A name, Function<A, byte[]> nameToBytes) {
+            MessageDigest md;
+
+            try {
+                md = MessageDigest.getInstance("MD5");
+            } catch (NoSuchAlgorithmException nsae) {
+                throw new InternalError("MD5 not supported", nsae);
+            }
+
+            md.update(toBytes(namespace.getMostSignificantBits()));
+            md.update(toBytes(namespace.getLeastSignificantBits()));
+            md.update(nameToBytes.apply(name));
+
+            byte[] bytes = md.digest();
 
             long rawMsb = fromBytes(Arrays.copyOfRange(bytes, 0, 8));
             long rawLsb = fromBytes(Arrays.copyOfRange(bytes, 8, 16));
@@ -592,14 +601,22 @@ public class UUID implements Comparable<UUID> {
          * @param namespace   {@link UUID} used for the {@link V5} generation
          * @param name        name used for the {@link V5} generation
          * @param nameToBytes function used to convert the name to a byte array
+         * @param <A>         the type of the name parameter
          * @return a {@link V5} UUID
          */
-        public static <A> UUID from(UUID namespace, A name, Function<A, byte[]> nameToBytes) throws NoSuchAlgorithmException {
-            MessageDigest messageDigest = MessageDigest.getInstance("SHA1");
-            messageDigest.update(toBytes(namespace.getMostSignificantBits()));
-            messageDigest.update(toBytes(namespace.getLeastSignificantBits()));
-            messageDigest.update(nameToBytes.apply(name));
-            byte[] bytes = messageDigest.digest();
+        public static <A> UUID from(UUID namespace, A name, Function<A, byte[]> nameToBytes) {
+            MessageDigest md;
+
+            try {
+                md = MessageDigest.getInstance("SHA1");
+            } catch (NoSuchAlgorithmException nsae) {
+                throw new InternalError("SHA1 not supported", nsae);
+            }
+
+            md.update(toBytes(namespace.getMostSignificantBits()));
+            md.update(toBytes(namespace.getLeastSignificantBits()));
+            md.update(nameToBytes.apply(name));
+            byte[] bytes = md.digest();
 
             long rawMsb = fromBytes(Arrays.copyOfRange(bytes, 0, 8));
             long rawLsb = fromBytes(Arrays.copyOfRange(bytes, 8, 16));
