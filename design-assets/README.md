@@ -5,8 +5,8 @@
 
 ![](other-file-formats/memeid-assets.png)
 
-* [Download png](other-file-formats/memeid-logo.png)
-* [Download png](other-file-formats/memeid-logo.svg)
+* [:arrow_down: Download png](other-file-formats/memeid-logo.png)
+* [:arrow_down: Download png](other-file-formats/memeid-logo.svg)
 
 
 ## :orange_book: Color
