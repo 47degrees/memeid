@@ -9,7 +9,7 @@
 * [Download png](other-file-formats/memeid-logo.svg)
 
 
-## :rainbow: Color
+## :orange_book: Color
 
 - Brand-primary    `#543565`
 - Brand-secondary  `#543565`
