@@ -2,7 +2,6 @@
 
 ## :triangular_ruler: Assets
 
-
 ![](other-file-formats/memeid-assets.png)
 
 `.png` [Download logo](other-file-formats/memeid-logo.png) 
