@@ -1,20 +1,22 @@
-# Memeid guideline
+## Memeid guideline
 
-## :pencil2: Assets
+### :pencil2: Assets
 
 
 ![](other-file-formats/memeid-assets.png)
 
-[:arrow_down: Logo png](other-file-formats/memeid-logo.png)
-
-[:arrow_down: Logo svg](other-file-formats/memeid-logo.svg)
-
-[:arrow_down: Card](other-file-formats/memeid-logo.svg)
+- [:arrow_down: Download Logo png](other-file-formats/memeid-logo.png)
+- [:arrow_down: Download Logo svg](other-file-formats/memeid-logo.svg)
+- [:arrow_down: Download card](other-file-formats/memeid-logo.svg)
 
 
-## :orange_book: Color
+### :orange_book: Color
 
-- Brand-primary    `#543565`
-- Brand-secondary  `#543565`
-- Brand-tertiary   `#543565`
-- Brand-quaternary `#543565`
+![#FF0000](https://via.placeholder.com/11/8ED5CD/8ED5CD) `#8ED5CD` Brand-primary 
+
+![#FF0000](https://via.placeholder.com/11/FFCC80/FFCC80) `#FFCC80` Brand-secondary
+
+![#FF0000](https://via.placeholder.com/11/F9759D/F9759D) `#F9759D` Brand-tertiary
+
+![#FF0000](https://via.placeholder.com/11/455A64/455A64) `#455A64` Brand-gray   
+### :orange_book: Fonts
