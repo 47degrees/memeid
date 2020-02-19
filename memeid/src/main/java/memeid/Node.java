@@ -29,6 +29,20 @@ import static memeid.Bits.fromBytes;
 
 public class Node {
 
+    private static Node instance;
+
+    public static Node getInstance() {
+        if (instance == null) {
+            try {
+                instance = new Node();
+            } catch (SocketException | UnknownHostException | NoSuchAlgorithmException e) {
+                throw new RuntimeException("Unable to instantiate Node", e);
+            }
+        }
+
+        return instance;
+    }
+
     /**
      * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.5">RFC-4122</a>
      */

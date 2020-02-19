@@ -16,8 +16,6 @@
 
 package memeid;
 
-import java.net.SocketException;
-import java.net.UnknownHostException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -410,8 +408,6 @@ public class UUID implements Comparable<UUID> {
             return Bits.readByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH, this.asJava().clockSequence());
         }
 
-        private static Node defaultNode = null;
-
         public V1(java.util.UUID uuid) {
             super(uuid);
         }
@@ -422,12 +418,8 @@ public class UUID implements Comparable<UUID> {
          *
          * @return a {@link V1} UUID
          */
-        public static V1 next() throws NoSuchAlgorithmException, SocketException, UnknownHostException {
-            if (defaultNode == null) {
-                defaultNode = new Node();
-            }
-
-            return next(defaultNode);
+        public static V1 next() {
+            return next(Node.getInstance());
         }
 
         /**
