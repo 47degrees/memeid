@@ -1,16 +1,18 @@
-## Memeid guideline
+# Memeid guideline
 
-### :pencil2: Assets
+## :triangular_ruler: Assets
 
 
 ![](other-file-formats/memeid-assets.png)
 
-- [:arrow_down: Download Logo png](other-file-formats/memeid-logo.png)
-- [:arrow_down: Download Logo svg](other-file-formats/memeid-logo.svg)
-- [:arrow_down: Download card](other-file-formats/memeid-logo.svg)
+[:arrow_down: Download Logo png](other-file-formats/memeid-logo.png)
+
+[:arrow_down: Download Logo svg](other-file-formats/memeid-logo.svg)
+
+[:arrow_down: Download card](other-file-formats/memeid-card.png)
 
 
-### :orange_book: Color
+## :clipboard: Color
 
 ![#FF0000](https://via.placeholder.com/11/8ED5CD/8ED5CD) `#8ED5CD` Brand-primary 
 
@@ -18,5 +20,8 @@
 
 ![#FF0000](https://via.placeholder.com/11/F9759D/F9759D) `#F9759D` Brand-tertiary
 
-![#FF0000](https://via.placeholder.com/11/455A64/455A64) `#455A64` Brand-gray   
-### :orange_book: Fonts
+![#FF0000](https://via.placeholder.com/11/455A64/455A64) `#455A64` Brand-gray
+   
+## :notebook_with_decorative_cover: Fonts
+
+**Montserrat font**. Open source license [https://fonts.google.com/specimen/Montserrat]()
