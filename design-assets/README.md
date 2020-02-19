@@ -5,9 +5,9 @@
 
 ![](other-file-formats/memeid-assets.png)
 
-`.png` [Download Logo](other-file-formats/memeid-logo.png) 
+`.png` [Download logo](other-file-formats/memeid-logo.png) 
 
-`.svg` [Download Logo](other-file-formats/memeid-logo.svg) 
+`.svg` [Download logo](other-file-formats/memeid-logo.svg) 
 
 `.png` [Download card](other-file-formats/memeid-card.png) 
 
