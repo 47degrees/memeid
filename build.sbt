@@ -8,49 +8,49 @@ addCommandAlias("ci-docs", "mdoc; headerCreateAll")
 
 lazy val root = project
   .in(file("."))
-  .enablePlugins(MdocPlugin)
-  .settings(skip in publish := true)
-  .settings(dependencies.docs)
   .aggregate(allProjects: _*)
   .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
-  .settings(mdocOut := file("."))
+  .enablePlugins(MdocPlugin)
   .settings(name := "memeid")
+  .settings(skip in publish := true)
+  .settings(mdocOut := file("."))
+  .settings(dependencies.docs)
 
 lazy val `memeid` = project
   .settings(crossPaths := false)
   .settings(autoScalaLibrary := false)
 
-lazy val `memeid-scala` = project
+lazy val memeid4s = project
   .dependsOn(`memeid`)
   .settings(dependencies.common)
 
-lazy val `memeid-cats` = project
-  .dependsOn(`memeid-scala` % "compile->compile;test->test")
+lazy val `memeid4s-cats` = project
+  .dependsOn(memeid4s % "compile->compile;test->test")
   .settings(dependencies.common, dependencies.cats)
   .settings(dependencies.compilerPlugins)
 
-lazy val `memeid-literal` = project
+lazy val `memeid4s-literal` = project
   .dependsOn(memeid)
   .settings(dependencies.common, dependencies.literal)
 
-lazy val `memeid-doobie` = project
-  .dependsOn(`memeid-cats`)
+lazy val `memeid4s-doobie` = project
+  .dependsOn(`memeid4s-cats`)
   .settings(dependencies.common, dependencies.doobie)
 
-lazy val `memeid-circe` = project
-  .dependsOn(`memeid-cats`)
+lazy val `memeid4s-circe` = project
+  .dependsOn(`memeid4s-cats`)
   .settings(dependencies.common, dependencies.circe)
 
-lazy val `memeid-http4s` = project
-  .dependsOn(`memeid-cats` % "compile->compile;test->test")
+lazy val `memeid4s-http4s` = project
+  .dependsOn(`memeid4s-cats` % "compile->compile;test->test")
   .settings(dependencies.common, dependencies.http4s)
 
 lazy val allProjects: Seq[ProjectReference] = Seq(
   `memeid`,
-  `memeid-scala`,
-  `memeid-cats`,
-  `memeid-literal`,
-  `memeid-doobie`,
-  `memeid-circe`,
-  `memeid-http4s`
+  memeid4s,
+  `memeid4s-cats`,
+  `memeid4s-literal`,
+  `memeid4s-doobie`,
+  `memeid4s-circe`,
+  `memeid4s-http4s`
 )

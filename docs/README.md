@@ -1,6 +1,6 @@
 # memeid
 
-`memeid` is a Scala library for generating [RFC-compliant](https://www.ietf.org/rfc/rfc4122.txt) Universal Unique Identifiers (UUIDs).
+`memeid` is a JVM library for generating [RFC-compliant](https://www.ietf.org/rfc/rfc4122.txt) Universal Unique Identifiers (UUIDs).
 
 > A universally unique identifier (UUID) is a 128-bit number used to identify information in computer systems.
 >
@@ -14,32 +14,56 @@
 
 The UUID type that ships with the JVM `java.util.UUID` has a number of problems, namely:
 
- - A bug in the comparison function that will never be fixed https://bugs.java.com/bugdatabase/view_bug.do?bug_id=7025832
+ - [A bug in the comparison function that will never be fixed](https://bugs.java.com/bugdatabase/view_bug.do?bug_id=7025832) 
  - Only provides UUID generation for random (V4) and non-namespaced pseudo-V3 UUIDs
 
 This library aims to solve the aforementioned issues and provide an RFC-compliant `UUID` type with coherent comparison, a rich API to get its different fields and constructors for the UUID variants.
 
 ## Install
 
+### Java
+
+#### Using maven
+
+```xml
+<dependency>
+    <groupId>com.47deg</groupId>
+    <artifactId>memeid</artifactId>
+    <version>@VERSION@</version>
+</dependency>
+```
+
+#### Using gradle
+
+```groovy
+compile group: 'com.47deg', name: 'memeid', version: '@VERSION@'
+```
+
+### Scala
+
 Add this to your `build.sbt` file:
 
 ```scala
-libraryDependencies += "com.47deg" % "memeid" % "@VERSION@"
+libraryDependencies += "com.47deg" % "memeid4s" % "@VERSION@"
 ```
 
-## UUID construction
+## Usage
 
-### Time-based (v1)
+### Scala
+
+#### UUID construction
+
+##### Time-based (v1)
 
 The time-based (V1) variant of UUIDs is the fastest to generate. It uses a monotonic clock and node information to generate UUIDs.
 
 ```scala mdoc:silent
-import memeid.scala.UUID
+import memeid4s.UUID
 
 UUID.V1.next
 ```
 
-### Random (v4)
+##### Random (v4)
 
 The cryptographically random variant, equivalent to `java.util.UUID/randomUUID`.
 
@@ -47,7 +71,7 @@ The cryptographically random variant, equivalent to `java.util.UUID/randomUUID`.
 UUID.V4.random
 ```
 
-### Namespaced (v3, v5)
+##### Namespaced (v3, v5)
 
 Namespaced UUIDs are generated from a UUID (namespace) and a hashed value (name), V3 uses MD5 and V5 uses SHA1 hash.
 
@@ -61,10 +85,10 @@ We can now create UUIDs with the namespace and an arbitrary value as the name. I
 UUID.V3(namespace, "my-secret-code")
 ```
 
-If you want to hash a custom type, you must provide an implicit `memeid.digest.Digestible` instance.
+If you want to hash a custom type, you must provide an implicit `memeid4s.digest.Digestible` instance.
 
 ```scala mdoc:silent
-import memeid.digest.Digestible
+import memeid4s.digest.Digestible
 
 case class User(firstName: String, lastName: String)
 
@@ -78,7 +102,7 @@ The implicit instance is used to convert your type into a byte array for hashing
 UUID.V3(namespace, User("Federico", "García Lorca"))
 ```
 
-### Semi-sequential, random (SQUUID)
+##### Semi-sequential, random (SQUUID)
 
 SQUUIDs are a non-standard variaton of V4 UUIDs that are semi-sequential. They incorporate a time-component in their 32 most significant bits to generate UUIDs that don't fragment DB indexes.
 
@@ -86,7 +110,7 @@ SQUUIDs are a non-standard variaton of V4 UUIDs that are semi-sequential. They i
 UUID.V4.squuid
 ```
 
-## Java interoperability
+#### Java interoperability
 
 `memeid` provides conversion method between `UUID` and `java.util.UUID` through:
 
@@ -100,7 +124,7 @@ UUID.fromUUID(j)
 u.asJava
 ```
 
-## Literal syntax
+#### Literal syntax
 
 `memeid` provides literal syntax with compile-time verification for UUIDs with the `uuid` interpolator. To use it, add this to your `build.sbt`:
 
@@ -112,7 +136,7 @@ libraryDependencies += "com.47deg" % "memeid-literal" % "@VERSION@"
 We can now create UUIDs with literal syntax by importing `memeid.literal._`
 
 ```scala mdoc
-import memeid.literal._
+import memeid4s.literal._
 
 uuid"cb096727-6a82-4abd-bc79-fc92be8c5d88"
 ```
@@ -120,16 +144,14 @@ uuid"cb096727-6a82-4abd-bc79-fc92be8c5d88"
 Invalid UUID literals will fail at compile time:
 
 ```scala mdoc:fail
-import memeid.literal._
-
 uuid"not-a-uuid"
 ```
 
-## Integrations
+#### Integrations
 
 `memeid` provides several modules which integrate with popular third-party libraries. If you see something missing don't hesitate to open an issue or send a patch.
 
-### Doobie
+##### Doobie
 
 The [Doobie](https://github.com/tpolecat/doobie) integration allows you to use the `UUID` type mapped to your database's UUID type.
 
@@ -162,7 +184,7 @@ sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(tran
 ```
 
 ```scala mdoc:silent
-import memeid.doobie.implicits._
+import memeid4s.doobie.implicits._
 
 def select(uuid: UUID): Query0[UUID] =
   sql"""SELECT id from test where id = ${uuid}""".query[UUID]
@@ -182,7 +204,7 @@ val example = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
 }.unsafeRunSync
 ```
 
-### Circe
+##### Circe
 
 ```scala
 libraryDependencies += "com.47deg" % "memeid-circe" % "@VERSION@"
@@ -193,7 +215,7 @@ You can import `memeid.circe.implicits` to have the `Encoder` and `Decoder` inst
 ```scala mdoc:silent
 import io.circe.{ Json, Encoder, Decoder }
 
-import memeid.circe.implicits._
+import memeid4s.circe.implicits._
 
 val uuid = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
 val json = Json.fromString(uuid.toString)
@@ -204,13 +226,13 @@ Encoder[UUID].apply(uuid)
 Decoder[UUID].decodeJson(json)
 ```
 
-### Http4s
+##### Http4s
 
 ```scala
 libraryDependencies += "com.47deg" % "memeid-http4s" % "@VERSION@"
 ```
 
-### Path parameters
+###### Path parameters
 
 Using `UUID` companion object we can extract UUIDs from path parameters in URLs:
 
@@ -225,7 +247,7 @@ HttpRoutes.of[IO] {
 }
 ```
 
-### Query parameters
+###### Query parameters
 
 The http4s integrations provides implicit instances for `QueryParamDecoder[UUID]` and `QueryParamEncoder[UUID]`, which you can use to derive matchers for query parameters or send UUID in request query parameters.
 
@@ -235,7 +257,7 @@ import cats.effect._
 import org.http4s._
 import org.http4s.dsl.io._
 
-import memeid.http4s.implicits._
+import memeid4s.http4s.implicits._
 
 object UUIDParamDecoder extends QueryParamDecoderMatcher[UUID]("uuid")
 
@@ -244,7 +266,7 @@ HttpRoutes.of[IO] {
 }
 ```
 
-## Cats & Cats-effect
+##### Cats & Cats-effect
 
 ```scala
 libraryDependencies += "com.47deg" % "memeid-cats" % "@VERSION@"
@@ -252,11 +274,11 @@ libraryDependencies += "com.47deg" % "memeid-cats" % "@VERSION@"
 
 The cats integration provides typeclass implementation for `UUID`, as well as effectful constructors for UUIDs for integration with programs that use `cats-effect`.
 
-### Typeclasses
+###### Typeclasses
 
 ```scala mdoc:silent
 import cats._
-import memeid.cats.implicits._
+import memeid4s.cats.implicits._
 
 Order[UUID]
 Hash[UUID]
@@ -264,11 +286,9 @@ Eq[UUID]
 Show[UUID]
 ```
 
-### Constructors
+###### Constructors
 
 ```scala mdoc:silent
-import memeid.cats.implicits._
-
 UUID.random[IO]
 UUID.v3[IO, String](namespace, "my-secret-code")
 UUID.v5[IO, String](namespace, "my-secret-code")
