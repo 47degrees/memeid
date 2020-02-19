@@ -1,15 +1,15 @@
-# Memeid guideline
+# Memeid brand resources
 
 ## :triangular_ruler: Assets
 
 
 ![](other-file-formats/memeid-assets.png)
 
-[:arrow_down: Download Logo png](other-file-formats/memeid-logo.png)
+[Download Logo png](other-file-formats/memeid-logo.png)
 
-[:arrow_down: Download Logo svg](other-file-formats/memeid-logo.svg)
+[Download Logo svg](other-file-formats/memeid-logo.svg)
 
-[:arrow_down: Download card](other-file-formats/memeid-card.png)
+[ownload card](other-file-formats/memeid-card.png)
 
 
 ## :clipboard: Color
