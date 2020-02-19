@@ -626,7 +626,7 @@ public class UUID implements Comparable<UUID> {
 
 
     /**
-     * Not standard-version UUIDs. Includes the extracted version from the most significant bits.
+     * Not standard-version UUIDs.
      *
      * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.3">RFC-4122</a>
      */
