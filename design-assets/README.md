@@ -1,12 +1,15 @@
 # Memeid guideline
 
-## :pencil2: Logo
+## :pencil2: Assets
 
 
 ![](other-file-formats/memeid-assets.png)
 
-* [:arrow_down: Download png](other-file-formats/memeid-logo.png)
-* [:arrow_down: Download png](other-file-formats/memeid-logo.svg)
+[:arrow_down: Logo png](other-file-formats/memeid-logo.png)
+
+[:arrow_down: Logo svg](other-file-formats/memeid-logo.svg)
+
+[:arrow_down: Card](other-file-formats/memeid-logo.svg)
 
 
 ## :orange_book: Color
