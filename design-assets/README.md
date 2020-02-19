@@ -3,7 +3,7 @@
 ## Logo
 
 
-![](47deg-os/memeid/design-assets/other-file-formats/memeid-logo.png)
+![](/47degrees/memeid/design-assets/other-file-formats/memeid-logo.png)
 
 - [Download png]()
 - Download svg
