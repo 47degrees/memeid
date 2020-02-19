@@ -1,12 +1,12 @@
 # Memeid guideline
 
-## Logo
+## :pencil2: Logo
 
 
-![](/47degrees/memeid/design-assets/other-file-formats/memeid-logo.png)
+![](other-file-formats/memeid-assets.png)
 
-- [Download png]()
-- Download svg
+* [Download png](other-file-formats/memeid-logo.png)
+* [Download png](other-file-formats/memeid-logo.svg)
 
 
 ## Color
