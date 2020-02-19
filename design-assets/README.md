@@ -5,11 +5,11 @@
 
 ![](other-file-formats/memeid-assets.png)
 
-[Download Logo png](other-file-formats/memeid-logo.png)
+`.png` [Download Logo](other-file-formats/memeid-logo.png) 
 
-[Download Logo svg](other-file-formats/memeid-logo.svg)
+`.svg` [Download Logo](other-file-formats/memeid-logo.svg) 
 
-[ownload card](other-file-formats/memeid-card.png)
+`.png` [Download card](other-file-formats/memeid-card.png) 
 
 
 ## :clipboard: Color
