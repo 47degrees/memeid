@@ -44,7 +44,7 @@ compile group: 'com.47deg', name: 'memeid', version: '@VERSION@'
 Add this to your `build.sbt` file:
 
 ```scala
-libraryDependencies += "com.47deg" %% "memeid4s4s" % "@VERSION@"
+libraryDependencies += "com.47deg" %% "memeid4s" % "@VERSION@"
 ```
 
 ## Usage
