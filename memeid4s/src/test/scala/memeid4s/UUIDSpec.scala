@@ -16,8 +16,8 @@
 
 package memeid4s
 
-import memeid4s.UUID.RichUUID
 import memeid.arbitrary.instances._
+import memeid4s.UUID.RichUUID
 import org.scalacheck.Gen
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
@@ -27,11 +27,11 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "UUID.from" should {
 
-    "return Some on valid UUID" in prop { uuid: UUID =>
+    "return Right on valid UUID" in prop { uuid: UUID =>
       UUID.from(uuid.toString) should beRight(uuid)
     }
 
-    "return None on invalid string" in prop { s: String =>
+    "return Left on invalid string" in prop { s: String =>
       UUID.from(s) must beLeft().like {
         case e: IllegalArgumentException => e.getMessage must contain("UUID string")
       }
@@ -123,6 +123,22 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.is[UUID.V3] must beFalse) and
         (uuid.is[UUID.V4] must beFalse) and
         (uuid.is[UUID.V5] must beTrue)
+    }
+
+  }
+
+  "uuid.msb" should {
+
+    "be an alias for uuid.getMostSignificantBits()" in prop { uuid: UUID =>
+      uuid.msb must be equalTo uuid.getMostSignificantBits
+    }
+
+  }
+
+  "uuid.lsb" should {
+
+    "be an alias for uuid.getLeastSignificantBits()" in prop { uuid: UUID =>
+      uuid.lsb must be equalTo uuid.getLeastSignificantBits
     }
 
   }
