@@ -22,7 +22,7 @@ lazy val `memeid` = project
   .settings(dependencies.common)
 
 lazy val memeid4s = project
-  .dependsOn(`memeid`)
+  .dependsOn(`memeid` % "compile->compile;test->test")
   .settings(dependencies.common)
 
 lazy val `memeid4s-cats` = project
