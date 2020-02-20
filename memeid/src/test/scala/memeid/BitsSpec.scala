@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package memeid4s
+package memeid
 
 import _root_.scala.util.Random
 import memeid.Bits._

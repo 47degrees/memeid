@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package memeid4s
+package memeid
 
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
@@ -37,12 +37,12 @@ class V4Spec extends Specification with ScalaCheck {
     }
 
     "be unable to create non-v4 values regardless of msb/lsb values provided" in {
-      val nonNull: UUID = UUID.V4(0, 0)
-      nonNull must not be equalTo(UUID.Nil)
+      val nonNull: UUID = new UUID.V4(0, 0)
+      nonNull must not be equalTo(UUID.NIL)
     }
 
     "generate version 4 UUIDs regardless of msb/lsb values provided" in {
-      val nonNull: UUID = UUID.V4(0, 0)
+      val nonNull: UUID = new UUID.V4(0, 0)
       nonNull.version must be equalTo 4
     }
 

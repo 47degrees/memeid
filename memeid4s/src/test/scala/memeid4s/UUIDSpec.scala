@@ -19,7 +19,7 @@ package memeid4s
 import java.nio.ByteBuffer
 
 import memeid4s.UUID.RichUUID
-import memeid4s.arbitrary.instances._
+import memeid.arbitrary.instances._
 import memeid4s.digest.Digestible
 import org.scalacheck.Gen
 import org.specs2.ScalaCheck

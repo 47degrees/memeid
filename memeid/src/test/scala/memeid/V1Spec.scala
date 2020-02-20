@@ -14,13 +14,12 @@
  * limitations under the License.
  */
 
-package memeid4s
+package memeid
 
-import memeid4s.UUID.RichUUID
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:Disable.get", "scalafix:Disable.scala.parallel"))
+@SuppressWarnings(Array("scalafix:Disable.scala.parallel"))
 class V1Spec extends Specification with ScalaCheck {
 
   "V1 constructor" should {
@@ -32,8 +31,8 @@ class V1Spec extends Specification with ScalaCheck {
     }
 
     "create monotonically increasing UUIDs" in {
-      val uuid1 = UUID.V1.next
-      val uuid2 = UUID.V1.next
+      val uuid1: UUID = UUID.V1.next
+      val uuid2: UUID = UUID.V1.next
 
       uuid1 must be lessThan uuid2
     }
@@ -51,13 +50,13 @@ class V1Spec extends Specification with ScalaCheck {
     }
 
     "check time components" in {
-      val uuid         = UUID.from("1cbf0782-3209-11ea-978f-2e728ce88125")
+      val uuid         = UUID.fromString("1cbf0782-3209-11ea-978f-2e728ce88125")
       val clockSeqLow  = 0x8F.toLong
       val clockSeqHigh = 0x17.toLong // 0x97 - 0x80 (from variant)
       val timeLow      = 0x1cbf0782.toLong
       val timeMid      = 0x3209.toLong
       val timeHigh     = 0x1ea.toLong
-      val uuidV1       = uuid.toOption.get.as[UUID.V1].get
+      val uuidV1       = uuid.asV1.get
 
       uuidV1.clockSeqLow must be equalTo clockSeqLow
       uuidV1.clockSeqHigh must be equalTo clockSeqHigh
