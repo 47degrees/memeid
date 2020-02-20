@@ -27,8 +27,8 @@ class V5Spec extends Specification with ScalaCheck {
       val namespace = UUID.V4.random
       val name      = "a-thing"
 
-      val uuid1 = UUID.V3.from(namespace, name)
-      val uuid2 = UUID.V3.from(namespace, name)
+      val uuid1 = UUID.V5.from(namespace, name)
+      val uuid2 = UUID.V5.from(namespace, name)
 
       uuid1 must be equalTo uuid2
     }
@@ -38,8 +38,8 @@ class V5Spec extends Specification with ScalaCheck {
       val name1     = "a-thing"
       val name2     = "b-thing"
 
-      val uuid1 = UUID.V3.from(namespace, name1)
-      val uuid2 = UUID.V3.from(namespace, name2)
+      val uuid1 = UUID.V5.from(namespace, name1)
+      val uuid2 = UUID.V5.from(namespace, name2)
 
       uuid1 must not be equalTo(uuid2)
     }
@@ -49,8 +49,8 @@ class V5Spec extends Specification with ScalaCheck {
       val namespace2 = UUID.V4.random
       val name       = "a-thing"
 
-      val uuid1 = UUID.V3.from(namespace1, name)
-      val uuid2 = UUID.V3.from(namespace2, name)
+      val uuid1 = UUID.V5.from(namespace1, name)
+      val uuid2 = UUID.V5.from(namespace2, name)
 
       uuid1 must not be equalTo(uuid2)
     }
