@@ -18,6 +18,7 @@ lazy val root = project
 
 lazy val `memeid` = project
   .settings(crossPaths := false)
+  .settings(publishMavenStyle := true)
   .settings(autoScalaLibrary := false)
 
 lazy val memeid4s = project
