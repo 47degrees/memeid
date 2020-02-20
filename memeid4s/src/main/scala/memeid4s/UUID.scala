@@ -81,7 +81,7 @@ object UUID {
    * @param lsb Least significant bit in [[_root_.scala.Long Long]] representation
    * @return a new [[UUID]] constructed from msb and lsb
    */
-  def from(msb: Long, lsb: Long): UUID = memeid.UUID.from(msb, lsb)
+  @inline def from(msb: Long, lsb: Long): UUID = memeid.UUID.from(msb, lsb)
 
   /**
    * Creates a valid [[UUID]] from a [[UUID]].
@@ -89,7 +89,7 @@ object UUID {
    * @param juuid the { @link java.util.UUID}
    * @return a valid { @link UUID} created from a { @link java.util.UUID}
    */
-  def fromUUID(juuid: JUUID): UUID = memeid.UUID.fromUUID(juuid)
+  @inline def fromUUID(juuid: JUUID): UUID = memeid.UUID.fromUUID(juuid)
 
   /**
    * Creates a [[UUID UUID]] from the [[java.util.UUID#toString string standard representation]]
@@ -114,7 +114,7 @@ object UUID {
      * @param T [[time.Time Time]] which assures the V1 UUID time is unique
      * @return [[UUID.V1 V1]]
      */
-    def next(implicit N: Node, T: Time): UUID =
+    @inline def next(implicit N: Node, T: Time): UUID =
       memeid.UUID.V1.next(N.value, () => T.monotonic)
 
   }
@@ -130,7 +130,7 @@ object UUID {
      * @tparam A Sets the type for the local and Digestible parameters
      * @return [[UUID.V3 V3]]
      */
-    def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
+    @inline def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
       memeid.UUID.V3.from(namespace, local, D.toByteArray)
 
   }
@@ -144,13 +144,13 @@ object UUID {
      * @param lsb Least significant bit in [[_root_.scala.Long Long]] representation
      * @return [[UUID.V4 V4]]
      */
-    def apply(msb: Long, lsb: Long): UUID = new memeid.UUID.V4(msb, lsb)
+    @inline def apply(msb: Long, lsb: Long): UUID = new memeid.UUID.V4(msb, lsb)
 
     // Construct a v4 (random) UUID.
-    def random: UUID = memeid.UUID.V4.random
+    @inline def random: UUID = memeid.UUID.V4.random
 
     // Construct a SQUUID (random, time-based) UUID.
-    def squuid(implicit P: Posix): UUID = memeid.UUID.V4.squuid(P.value)
+    @inline def squuid(implicit P: Posix): UUID = memeid.UUID.V4.squuid(P.value)
 
   }
 
@@ -165,7 +165,7 @@ object UUID {
      * @tparam A Sets the type for the local and Digestible parameters
      * @return [[UUID.V5 V5]]
      */
-    def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
+    @inline def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
       memeid.UUID.V5.from(namespace, local, D.toByteArray)
 
   }
