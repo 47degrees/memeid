@@ -18,10 +18,9 @@ package memeid
 
 import _root_.scala.util.Random
 import memeid.Bits._
-import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-class BitsSpec extends Specification with ScalaCheck {
+class BitsSpec extends Specification {
 
   "Bits.readByte" should {
     "read the bytes specified by the bitmask" in {

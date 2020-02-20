@@ -17,10 +17,9 @@
 package memeid4s
 
 import memeid4s.node.Node
-import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-class NodeSpec extends Specification with ScalaCheck {
+class NodeSpec extends Specification {
 
   "Node.clockSequence" should {
     "be initialized once per system lifetime" in {

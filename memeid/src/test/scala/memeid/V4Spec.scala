@@ -16,11 +16,10 @@
 
 package memeid
 
-import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
 @SuppressWarnings(Array("scalafix:Disable.scala.parallel"))
-class V4Spec extends Specification with ScalaCheck {
+class V4Spec extends Specification {
 
   "V4 constructor" should {
 

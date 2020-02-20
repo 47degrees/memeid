@@ -16,11 +16,10 @@
 
 package memeid4s
 
-import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
 @SuppressWarnings(Array("scalafix:Disable.scala.parallel"))
-class SQUUIDSpec extends Specification with ScalaCheck {
+class SQUUIDSpec extends Specification {
 
   "SQUUID constructor" should {
 

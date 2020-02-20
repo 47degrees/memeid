@@ -16,10 +16,9 @@
 
 package memeid
 
-import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-class V3Spec extends Specification with ScalaCheck {
+class V3Spec extends Specification {
 
   "V3 constructor" should {
 
