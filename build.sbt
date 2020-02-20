@@ -19,6 +19,7 @@ lazy val `memeid` = project
   .settings(crossPaths := false)
   .settings(publishMavenStyle := true)
   .settings(autoScalaLibrary := false)
+  .settings(dependencies.common)
 
 lazy val memeid4s = project
   .dependsOn(`memeid`)
