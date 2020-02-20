@@ -492,6 +492,17 @@ public class UUID implements Comparable<UUID> {
          * Construct a namespace name-based {@link V3} UUID. Uses MD5 as a hash algorithm
          *
          * @param namespace   {@link UUID} used for the {@link V3} generation
+         * @param name        name used for the {@link V3} generation in string format
+         * @return a {@link V3} UUID
+         */
+        public static UUID from(UUID namespace, String name) {
+            return from(namespace, name, String::getBytes);
+        }
+
+        /**
+         * Construct a namespace name-based {@link V3} UUID. Uses MD5 as a hash algorithm
+         *
+         * @param namespace   {@link UUID} used for the {@link V3} generation
          * @param name        name used for the {@link V3} generation
          * @param nameToBytes function used to convert the name to a byte array
          * @param <A>         the type of the name parameter
@@ -594,6 +605,17 @@ public class UUID implements Comparable<UUID> {
      * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.3">RFC-4122</a>
      */
     public final static class V5 extends UUID {
+
+        /**
+         * Construct a namespace name-based {@link V5} UUID. Uses SHA1 as a hash algorithm
+         *
+         * @param namespace   {@link UUID} used for the {@link V5} generation
+         * @param name        name used for the {@link V5} generation in string format
+         * @return a {@link V5} UUID
+         */
+        public static UUID from(UUID namespace, String name) {
+            return from(namespace, name, String::getBytes);
+        }
 
         /**
          * Construct a namespace name-based {@link V5} UUID. Uses MD5 as a hash algorithm
