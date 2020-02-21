@@ -40,7 +40,9 @@ object dependencies {
   )
 
   val circe: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "io.circe" %% "circe-core" % V.circe
+    "io.circe"      %% "circe-core"        % V.circe,
+    "org.typelevel" %% "discipline-specs2" % V.`discipline-specs2` % Test,
+    "io.circe"      %% "circe-testing"     % V.circe % Test
   )
 
   val http4s: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(

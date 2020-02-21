@@ -43,7 +43,7 @@ lazy val `memeid4s-doobie` = project
   .settings(dependencies.common, dependencies.doobie)
 
 lazy val `memeid4s-circe` = project
-  .dependsOn(`memeid4s-cats`)
+  .dependsOn(`memeid4s-cats` % "compile->compile;test->test")
   .settings(dependencies.common, dependencies.circe)
 
 lazy val `memeid4s-http4s` = project
