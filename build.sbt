@@ -26,16 +26,18 @@ lazy val `memeid` = project
   .settings(dependencies.common)
 
 lazy val memeid4s = project
-  .dependsOn(`memeid` % "compile->compile;test->test")
+  .dependsOn(`memeid`)
+  .dependsOn(`memeid4s-scalacheck` % "test->test")
   .settings(dependencies.common)
 
 lazy val `memeid4s-cats` = project
-  .dependsOn(memeid4s % "compile->compile;test->test")
+  .dependsOn(`memeid4s`)
+  .dependsOn(`memeid4s-scalacheck` % "test->test")
   .settings(dependencies.common, dependencies.cats)
   .settings(dependencies.compilerPlugins)
 
 lazy val `memeid4s-literal` = project
-  .dependsOn(memeid)
+  .dependsOn(`memeid4s`)
   .settings(dependencies.common, dependencies.literal)
 
 lazy val `memeid4s-doobie` = project
@@ -43,12 +45,18 @@ lazy val `memeid4s-doobie` = project
   .settings(dependencies.common, dependencies.doobie)
 
 lazy val `memeid4s-circe` = project
-  .dependsOn(`memeid4s-cats` % "compile->compile;test->test")
+  .dependsOn(`memeid4s-cats`)
+  .dependsOn(`memeid4s-scalacheck` % "test->test")
   .settings(dependencies.common, dependencies.circe)
 
 lazy val `memeid4s-http4s` = project
-  .dependsOn(`memeid4s-cats` % "compile->compile;test->test")
+  .dependsOn(`memeid4s-cats`)
+  .dependsOn(`memeid4s-scalacheck` % "test->test")
   .settings(dependencies.common, dependencies.http4s)
+
+lazy val `memeid4s-scalacheck` = project
+  .dependsOn(memeid)
+  .settings(dependencies.scalacheck)
 
 lazy val allProjects: Seq[ProjectReference] = Seq(
   `memeid`,
@@ -57,5 +65,6 @@ lazy val allProjects: Seq[ProjectReference] = Seq(
   `memeid4s-literal`,
   `memeid4s-doobie`,
   `memeid4s-circe`,
-  `memeid4s-http4s`
+  `memeid4s-http4s`,
+  `memeid4s-scalacheck`
 )

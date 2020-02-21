@@ -50,6 +50,10 @@ object dependencies {
     "org.http4s" %% "http4s-dsl"  % V.http4s % Test
   )
 
+  val scalacheck: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
+    "org.scalacheck" %% "scalacheck" % "1.14.3"
+  )
+
   val docs: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
     "org.tpolecat" %% "doobie-h2"  % V.doobie,
     "org.http4s"   %% "http4s-dsl" % V.http4s
