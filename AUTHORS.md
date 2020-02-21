@@ -11,7 +11,7 @@ The maintainers of the project are:
 
 ## Contributors
 
-These are the people that have contributed to the _memeid_ project:
+These are the people that have contributed to the _memeid-root_ project:
 
 - [![alejandrohdezma](https://avatars0.githubusercontent.com/u/9027541?v=4&s=20) **alejandrohdezma**](https://github.com/alejandrohdezma)
 - [![purrgrammer](https://avatars0.githubusercontent.com/u/42009830?v=4&s=20) **purrgrammer**](https://github.com/purrgrammer)
