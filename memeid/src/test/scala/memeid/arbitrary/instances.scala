@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package memeid4s.arbitrary
+package memeid.arbitrary
 
 /*
  * Copyright 2019-2020 47 Degrees, LLC. <http://www.47deg.com>
@@ -32,7 +32,7 @@ package memeid4s.arbitrary
  * limitations under the License.
  */
 
-import memeid4s.UUID
+import memeid.UUID
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 

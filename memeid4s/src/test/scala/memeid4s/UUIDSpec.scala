@@ -16,11 +16,8 @@
 
 package memeid4s
 
-import java.nio.ByteBuffer
-
+import memeid.arbitrary.instances._
 import memeid4s.UUID.RichUUID
-import memeid4s.arbitrary.instances._
-import memeid4s.digest.Digestible
 import org.scalacheck.Gen
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
@@ -30,11 +27,11 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "UUID.from" should {
 
-    "return Some on valid UUID" in prop { uuid: UUID =>
+    "return Right on valid UUID" in prop { uuid: UUID =>
       UUID.from(uuid.toString) should beRight(uuid)
     }
 
-    "return None on invalid string" in prop { s: String =>
+    "return Left on invalid string" in prop { s: String =>
       UUID.from(s) must beLeft().like {
         case e: IllegalArgumentException => e.getMessage must contain("UUID string")
       }
@@ -130,6 +127,22 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   }
 
+  "uuid.msb" should {
+
+    "be an alias for uuid.getMostSignificantBits()" in prop { uuid: UUID =>
+      uuid.msb must be equalTo uuid.getMostSignificantBits
+    }
+
+  }
+
+  "uuid.lsb" should {
+
+    "be an alias for uuid.getLeastSignificantBits()" in prop { uuid: UUID =>
+      uuid.lsb must be equalTo uuid.getLeastSignificantBits
+    }
+
+  }
+
   "UUID.variant" should {
 
     "detect a valid variant" in prop { msb: Long =>
@@ -154,27 +167,6 @@ class UUIDSpec extends Specification with ScalaCheck {
 
     "have all 128 bits to 0" in {
       (UUID.Nil.msb must be equalTo 0L) and (UUID.Nil.lsb must be equalTo 0L)
-    }
-
-  }
-
-  "Digestible[UUID]" should {
-
-    def fromByteArray(bytes: Array[Byte]): UUID = {
-      val bb = ByteBuffer.wrap(bytes)
-      UUID.from(bb.getLong, bb.getLong)
-    }
-
-    "round-trip" in prop { (msb: Long, lsb: Long) =>
-      val uuid  = UUID.from(msb, lsb)
-      val bytes = Digestible[UUID].toByteArray(uuid)
-      fromByteArray(bytes) must be equalTo uuid
-    }
-
-    "give the same bytes for the same UUID" in {
-      val uuid = UUID.V1.next
-
-      Digestible[UUID].toByteArray(uuid) must be equalTo Digestible[UUID].toByteArray(uuid)
     }
 
   }

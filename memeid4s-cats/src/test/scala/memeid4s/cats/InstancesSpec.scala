@@ -20,13 +20,38 @@ import java.util.{UUID => JUUID}
 
 import cats.instances.uuid._
 import cats.kernel.{Hash, Order}
+import cats.syntax.contravariant._
+import cats.syntax.show._
 
+import memeid.arbitrary.instances._
 import memeid4s.UUID
 import memeid4s.cats.instances._
+import memeid4s.digest.Digestible
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
+@SuppressWarnings(Array("scalafix:Disable.toString"))
 class InstancesSpec extends Specification with ScalaCheck {
+
+  "Show[UUID]" should {
+
+    "allow representing uuids as String" in prop { uuid: UUID =>
+      uuid.show must be equalTo uuid.toString
+    }
+
+  }
+
+  "Contravariant[Digestible]" should {
+
+    "be provided" >> {
+      val intDigestible: Digestible[Int] = Digestible[String].contramap(_.toString)
+
+      val expected = Digestible[String].toByteArray(4.toString)
+
+      intDigestible.toByteArray(4) must be equalTo expected
+    }
+
+  }
 
   "Order[UUID]" should {
 

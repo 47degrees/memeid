@@ -6,22 +6,23 @@ Global / onChangedBuildSource := ReloadOnSourceChanges
 addCommandAlias("ci-test", "fix --check; mdoc; test")
 addCommandAlias("ci-docs", "mdoc; headerCreateAll")
 
-lazy val root = project
+lazy val `memeid-root` = project
   .in(file("."))
   .aggregate(allProjects: _*)
   .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
   .enablePlugins(MdocPlugin)
-  .settings(name := "memeid")
   .settings(skip in publish := true)
   .settings(mdocOut := file("."))
   .settings(dependencies.docs)
 
 lazy val `memeid` = project
   .settings(crossPaths := false)
+  .settings(publishMavenStyle := true)
   .settings(autoScalaLibrary := false)
+  .settings(dependencies.common)
 
 lazy val memeid4s = project
-  .dependsOn(`memeid`)
+  .dependsOn(`memeid` % "compile->compile;test->test")
   .settings(dependencies.common)
 
 lazy val `memeid4s-cats` = project

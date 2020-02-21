@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package memeid4s
+package memeid
 
 import org.specs2.mutable.Specification
 
@@ -49,7 +49,7 @@ class V1Spec extends Specification {
     }
 
     "check time components" in {
-      val uuid         = memeid.UUID.fromString("1cbf0782-3209-11ea-978f-2e728ce88125")
+      val uuid         = UUID.fromString("1cbf0782-3209-11ea-978f-2e728ce88125")
       val clockSeqLow  = 0x8F.toLong
       val clockSeqHigh = 0x17.toLong // 0x97 - 0x80 (from variant)
       val timeLow      = 0x1cbf0782.toLong

@@ -16,9 +16,13 @@
 
 package memeid4s.digest
 
+import java.nio.ByteBuffer
+
+import memeid4s.UUID
+import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-class DigestableSpec extends Specification {
+class DigestableSpec extends Specification with ScalaCheck {
 
   "Digestible[String]" should {
 
@@ -26,6 +30,27 @@ class DigestableSpec extends Specification {
       val str = "a-thing"
 
       Digestible[String].toByteArray(str) must be equalTo Digestible[String].toByteArray(str)
+    }
+
+  }
+
+  "Digestible[UUID]" should {
+
+    def fromByteArray(bytes: Array[Byte]): UUID = {
+      val bb = ByteBuffer.wrap(bytes)
+      UUID.from(bb.getLong, bb.getLong)
+    }
+
+    "round-trip" in prop { (msb: Long, lsb: Long) =>
+      val uuid  = UUID.from(msb, lsb)
+      val bytes = Digestible[UUID].toByteArray(uuid)
+      fromByteArray(bytes) must be equalTo uuid
+    }
+
+    "give the same bytes for the same UUID" in {
+      val uuid = UUID.V1.next
+
+      Digestible[UUID].toByteArray(uuid) must be equalTo Digestible[UUID].toByteArray(uuid)
     }
 
   }
