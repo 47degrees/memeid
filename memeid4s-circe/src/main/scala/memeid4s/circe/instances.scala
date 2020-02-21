@@ -16,18 +16,17 @@
 
 package memeid4s.circe
 
-import java.util.{UUID => JUUID}
-
 import io.circe.{Decoder, Encoder}
 import memeid4s.UUID
 
+@SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))
 trait instances {
 
-  implicit def UUIDEncoderInstance(implicit E: Encoder[JUUID]): Encoder[UUID] =
-    E.contramap(_.asJava)
+  implicit lazy val UUIDEncoderInstance: Encoder[UUID] =
+    Encoder.encodeUUID.contramap(_.asJava)
 
-  implicit def UUIDDecoderInstance(implicit D: Decoder[JUUID]): Decoder[UUID] =
-    D.map(UUID.fromUUID)
+  implicit lazy val UUIDDecoderInstance: Decoder[UUID] =
+    Decoder.decodeUUID.map(UUID.fromUUID)
 
 }
 
