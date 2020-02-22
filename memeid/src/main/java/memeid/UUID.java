@@ -418,7 +418,7 @@ public class UUID implements Comparable<UUID> {
          *
          * @return a {@link V1} UUID
          */
-        public static V1 next() {
+        public static UUID next() {
             return next(Node.getInstance());
         }
 
@@ -429,7 +429,7 @@ public class UUID implements Comparable<UUID> {
          * @param node Node for the V1 UUID generation
          * @return a {@link V1} UUID
          */
-        public static V1 next(Node node) {
+        public static UUID next(Node node) {
             return next(node, Timestamp::monotonic);
         }
 
@@ -441,7 +441,7 @@ public class UUID implements Comparable<UUID> {
          * @param monotonicSupplier monotonic timestamp which assures the V1 UUID time is unique
          * @return a {@link V1} UUID
          */
-        public static V1 next(Node node, LongSupplier monotonicSupplier) {
+        public static UUID next(Node node, LongSupplier monotonicSupplier) {
             final long timestamp = monotonicSupplier.getAsLong();
             final long low = readByte(Mask.TIME_LOW, Offset.TIME_LOW, timestamp);
             final long mid = readByte(Mask.TIME_MID, Offset.TIME_MID, timestamp);
