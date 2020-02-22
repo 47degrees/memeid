@@ -23,7 +23,7 @@ import org.scalacheck.{Arbitrary, Gen}
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:Disable.toString"))
+@SuppressWarnings(Array("scalafix:Disable.toString", "scalafix:DisableSyntax.asInstanceOf"))
 class UUIDSpec extends Specification with ScalaCheck {
 
   "UUID.fromString" should {
@@ -59,67 +59,60 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "uuid.asV* methods" should {
 
-    "uuid.asV1 should return optional with uuid only if class is UUID.V1" in prop {
-      juuid: java.util.UUID =>
-        val uuid = new UUID.V1(juuid)
+    "uuid.asV1 should return optional with uuid only if class is UUID.V1" >> {
+      val uuid = UUID.V1.next.asInstanceOf[UUID.V1]
 
-        (uuid.asV1 must be equalTo Optional.of[UUID.V1](uuid)) and
-          (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
-          (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
-          (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
-          (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
+      (uuid.asV1 must be equalTo Optional.of[UUID.V1](uuid)) and
+        (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
+        (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
+        (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
     }
 
-    "uuid.asV2 should return optional with uuid only if class is UUID.V2" in prop {
-      juuid: java.util.UUID =>
-        val uuid = new UUID.V2(juuid)
-
-        (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
-          (uuid.asV2 must be equalTo Optional.of[UUID.V2](uuid)) and
-          (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
-          (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
-          (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
+    "uuid.asV2 should return optional with uuid only if class is UUID.V2" in prop { uuid: UUID.V2 =>
+      (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
+        (uuid.asV2 must be equalTo Optional.of[UUID.V2](uuid)) and
+        (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
+        (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
     }
 
-    "uuid.asV3 should return optional with uuid only if class is UUID.V3" in prop {
-      juuid: java.util.UUID =>
-        val uuid = new UUID.V3(juuid)
+    "uuid.asV3 should return optional with uuid only if class is UUID.V3" >> {
+      val uuid = UUID.V3.from(UUID.V4.random, "miau").asInstanceOf[UUID.V3]
 
-        (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
-          (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
-          (uuid.asV3 must be equalTo Optional.of[UUID.V3](uuid)) and
-          (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
-          (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
+      (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
+        (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
+        (uuid.asV3 must be equalTo Optional.of[UUID.V3](uuid)) and
+        (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
     }
 
-    "uuid.asV4 should return optional with uuid only if class is UUID.V4" in prop {
-      juuid: java.util.UUID =>
-        val uuid = new UUID.V4(juuid)
+    "uuid.asV4 should return optional with uuid only if class is UUID.V4" >> {
+      val uuid = UUID.V4.random.asInstanceOf[UUID.V4]
 
-        (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
-          (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
-          (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
-          (uuid.asV4 must be equalTo Optional.of[UUID.V4](uuid)) and
-          (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
+      (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
+        (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
+        (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
+        (uuid.asV4 must be equalTo Optional.of[UUID.V4](uuid)) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
     }
 
-    "uuid.asV5 should return optional with uuid only if class is UUID.V5" in prop {
-      juuid: java.util.UUID =>
-        val uuid = new UUID.V5(juuid)
+    "uuid.asV5 should return optional with uuid only if class is UUID.V5" >> {
+      val uuid = UUID.V5.from(UUID.V4.random, "miau").asInstanceOf[UUID.V5]
 
-        (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
-          (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
-          (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
-          (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
-          (uuid.asV5 must be equalTo Optional.of[UUID.V5](uuid))
+      (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
+        (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
+        (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
+        (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
+        (uuid.asV5 must be equalTo Optional.of[UUID.V5](uuid))
     }
 
   }
 
   "uuid.isV* methods" should {
 
-    "uuid.isV1 should return true only if class is UUID.V1" in prop { juuid: java.util.UUID =>
-      val uuid = new UUID.V1(juuid)
+    "uuid.isV1 should return true only if class is UUID.V1" >> {
+      val uuid = UUID.V1.next
 
       (uuid.isNil must beFalse) and
         (uuid.isV1 must beTrue) and
@@ -129,9 +122,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.isV5 must beFalse)
     }
 
-    "uuid.isV2 should return true only if class is UUID.V2" in prop { juuid: java.util.UUID =>
-      val uuid = new UUID.V2(juuid)
-
+    "uuid.isV2 should return true only if class is UUID.V2" in prop { uuid: UUID.V2 =>
       (uuid.isNil must beFalse) and
         (uuid.isV1 must beFalse) and
         (uuid.isV2 must beTrue) and
@@ -140,8 +131,8 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.isV5 must beFalse)
     }
 
-    "uuid.isV3 should return true only if class is UUID.V3" in prop { juuid: java.util.UUID =>
-      val uuid = new UUID.V3(juuid)
+    "uuid.isV3 should return true only if class is UUID.V3" >> {
+      val uuid = UUID.V3.from(UUID.V4.random, "miau")
 
       (uuid.isNil must beFalse) and
         (uuid.isV1 must beFalse) and
@@ -151,8 +142,8 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.isV5 must beFalse)
     }
 
-    "uuid.isV4 should return true only if class is UUID.V4" in prop { juuid: java.util.UUID =>
-      val uuid = new UUID.V4(juuid)
+    "uuid.isV4 should return true only if class is UUID.V4" >> {
+      val uuid = UUID.V4.random
 
       (uuid.isNil must beFalse) and
         (uuid.isV1 must beFalse) and
@@ -162,8 +153,8 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.isV5 must beFalse)
     }
 
-    "uuid.isV5 should return true only if class is UUID.V5" in prop { juuid: java.util.UUID =>
-      val uuid = new UUID.V5(juuid)
+    "uuid.isV5 should return true only if class is UUID.V5" >> {
+      val uuid = UUID.V5.from(UUID.V4.random, "miau")
 
       (uuid.isNil must beFalse) and
         (uuid.isV1 must beFalse) and
@@ -218,6 +209,11 @@ class UUIDSpec extends Specification with ScalaCheck {
       msb <- arbitrary[Long]
       lsb <- arbitrary[Long]
     } yield UUID.from(msb, lsb)
+  }
+
+  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
+  implicit val UUIDV2ArbitraryInstance: Arbitrary[UUID.V2] = Arbitrary {
+    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V2]).map(_.asInstanceOf[UUID.V2])
   }
 
 }

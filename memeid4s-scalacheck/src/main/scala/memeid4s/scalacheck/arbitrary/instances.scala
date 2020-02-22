@@ -36,6 +36,9 @@ import memeid.{Node, UUID}
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 
+@SuppressWarnings(
+  Array("scalafix:DisableSyntax.isInstanceOf", "scalafix:DisableSyntax.asInstanceOf")
+)
 object instances {
 
   implicit val UUIDArbitraryInstance: Arbitrary[UUID] = Arbitrary {
@@ -51,36 +54,32 @@ object instances {
       clockSequence <- arbitrary[Short]
       id            <- arbitrary[Long]
       node = new Node(clockSequence, id)
-      uuid = UUID.V1.next(node, () => timestamp)
-    } yield new UUID.V1(uuid.asJava())
+    } yield UUID.V1.next(node, () => timestamp).asInstanceOf[UUID.V1]
   }
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
   implicit val UUIDV2ArbitraryInstance: Arbitrary[UUID.V2] = Arbitrary {
-    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V2]).map(uuid => new UUID.V2(uuid.asJava))
+    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V2]).map(_.asInstanceOf[UUID.V2])
   }
 
   implicit val UUIDV3ArbitraryInstance: Arbitrary[UUID.V3] = Arbitrary {
     for {
       namespace <- arbitrary[UUID]
       name      <- arbitrary[String]
-      uuid = UUID.V3.from(namespace, name)
-    } yield new UUID.V3(uuid.asJava())
+    } yield UUID.V3.from(namespace, name).asInstanceOf[UUID.V3]
   }
 
   implicit val UUIDV4ArbitraryInstance: Arbitrary[UUID.V4] = Arbitrary {
     for {
       msb <- arbitrary[Long]
       lsb <- arbitrary[Long]
-    } yield new UUID.V4(msb, lsb)
+    } yield UUID.V4.from(msb, lsb).asInstanceOf[UUID.V4]
   }
 
   implicit val UUIDV5ArbitraryInstance: Arbitrary[UUID.V5] = Arbitrary {
     for {
       namespace <- arbitrary[UUID]
       name      <- arbitrary[String]
-      uuid = UUID.V5.from(namespace, name)
-    } yield new UUID.V5(uuid.asJava())
+    } yield UUID.V5.from(namespace, name).asInstanceOf[UUID.V5]
   }
 
 }

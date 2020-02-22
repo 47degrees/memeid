@@ -408,7 +408,7 @@ public class UUID implements Comparable<UUID> {
             return Bits.readByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH, this.asJava().clockSequence());
         }
 
-        public V1(java.util.UUID uuid) {
+        private V1(java.util.UUID uuid) {
             super(uuid);
         }
 
@@ -474,7 +474,7 @@ public class UUID implements Comparable<UUID> {
      */
     public final static class V2 extends UUID {
 
-        public V2(java.util.UUID uuid) {
+        private V2(java.util.UUID uuid) {
             super(uuid);
         }
 
@@ -491,8 +491,8 @@ public class UUID implements Comparable<UUID> {
         /**
          * Construct a namespace name-based {@link V3} UUID. Uses MD5 as a hash algorithm
          *
-         * @param namespace   {@link UUID} used for the {@link V3} generation
-         * @param name        name used for the {@link V3} generation in string format
+         * @param namespace {@link UUID} used for the {@link V3} generation
+         * @param name      name used for the {@link V3} generation in string format
          * @return a {@link V3} UUID
          */
         public static UUID from(UUID namespace, String name) {
@@ -532,7 +532,7 @@ public class UUID implements Comparable<UUID> {
             return new V3(new java.util.UUID(msb, lsb));
         }
 
-        public V3(java.util.UUID uuid) {
+        private V3(java.util.UUID uuid) {
             super(uuid);
         }
 
@@ -552,8 +552,8 @@ public class UUID implements Comparable<UUID> {
          * @param msb Most significant bit in long representation
          * @param lsb Least significant bit in long representation
          */
-        public V4(long msb, long lsb) {
-            this(new java.util.UUID(
+        public static UUID from(long msb, long lsb) {
+            return new UUID.V4(new java.util.UUID(
                     writeByte(Mask.VERSION, Offset.VERSION, msb, 0x4),
                     writeByte(Mask.V4_LSB, Offset.V4_LSB, lsb, 0x2)));
         }
@@ -591,7 +591,7 @@ public class UUID implements Comparable<UUID> {
             return squuid(MILLISECONDS.toSeconds(System.currentTimeMillis()));
         }
 
-        public V4(java.util.UUID uuid) {
+        private V4(java.util.UUID uuid) {
             super(uuid);
         }
 
@@ -609,8 +609,8 @@ public class UUID implements Comparable<UUID> {
         /**
          * Construct a namespace name-based {@link V5} UUID. Uses SHA1 as a hash algorithm
          *
-         * @param namespace   {@link UUID} used for the {@link V5} generation
-         * @param name        name used for the {@link V5} generation in string format
+         * @param namespace {@link UUID} used for the {@link V5} generation
+         * @param name      name used for the {@link V5} generation in string format
          * @return a {@link V5} UUID
          */
         public static UUID from(UUID namespace, String name) {
@@ -649,7 +649,7 @@ public class UUID implements Comparable<UUID> {
             return new V5(new java.util.UUID(msb, lsb));
         }
 
-        public V5(java.util.UUID uuid) {
+        private V5(java.util.UUID uuid) {
             super(uuid);
         }
 
