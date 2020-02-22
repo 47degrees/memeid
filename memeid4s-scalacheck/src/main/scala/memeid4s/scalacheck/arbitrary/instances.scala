@@ -32,7 +32,7 @@ package memeid4s.scalacheck.arbitrary
  * limitations under the License.
  */
 
-import memeid.UUID
+import memeid.{Node, UUID}
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 
@@ -45,9 +45,14 @@ object instances {
     } yield UUID.from(msb, lsb)
   }
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
   implicit val UUIDV1ArbitraryInstance: Arbitrary[UUID.V1] = Arbitrary {
-    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V1]).map(uuid => new UUID.V1(uuid.asJava))
+    for {
+      timestamp     <- arbitrary[Long]
+      clockSequence <- arbitrary[Short]
+      id            <- arbitrary[Long]
+      node = new Node(clockSequence, id)
+      uuid = UUID.V1.next(node, () => timestamp)
+    } yield new UUID.V1(uuid.asJava())
   }
 
   @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
@@ -55,19 +60,27 @@ object instances {
     arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V2]).map(uuid => new UUID.V2(uuid.asJava))
   }
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
   implicit val UUIDV3ArbitraryInstance: Arbitrary[UUID.V3] = Arbitrary {
-    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V3]).map(uuid => new UUID.V3(uuid.asJava))
+    for {
+      namespace <- arbitrary[UUID]
+      name      <- arbitrary[String]
+      uuid = UUID.V3.from(namespace, name)
+    } yield new UUID.V3(uuid.asJava())
   }
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
   implicit val UUIDV4ArbitraryInstance: Arbitrary[UUID.V4] = Arbitrary {
-    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V4]).map(uuid => new UUID.V4(uuid.asJava))
+    for {
+      msb <- arbitrary[Long]
+      lsb <- arbitrary[Long]
+    } yield new UUID.V4(msb, lsb)
   }
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
   implicit val UUIDV5ArbitraryInstance: Arbitrary[UUID.V5] = Arbitrary {
-    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V5]).map(uuid => new UUID.V5(uuid.asJava))
+    for {
+      namespace <- arbitrary[UUID]
+      name      <- arbitrary[String]
+      uuid = UUID.V5.from(namespace, name)
+    } yield new UUID.V5(uuid.asJava())
   }
 
 }
