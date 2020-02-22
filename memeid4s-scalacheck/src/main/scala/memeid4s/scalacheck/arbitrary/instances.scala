@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package memeid.arbitrary
+package memeid4s.scalacheck.arbitrary
 
 /*
  * Copyright 2019-2020 47 Degrees, LLC. <http://www.47deg.com>
@@ -37,10 +37,6 @@ import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 
 object instances {
-
-  implicit val UUID2UUIDArbitraryInstance: Arbitrary[UUID => UUID] = Arbitrary(
-    arbitrary[UUID].map(uuid => { _: UUID => uuid })
-  )
 
   implicit val UUIDArbitraryInstance: Arbitrary[UUID] = Arbitrary {
     for {

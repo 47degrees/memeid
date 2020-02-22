@@ -19,10 +19,10 @@ package memeid4s.circe
 import cats.syntax.show._
 
 import io.circe.{Decoder, Encoder, Json}
-import memeid.arbitrary.instances._
 import memeid4s.UUID
 import memeid4s.cats.instances._
 import memeid4s.circe.instances._
+import memeid4s.scalacheck.arbitrary.instances._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 

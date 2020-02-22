@@ -16,8 +16,8 @@
 
 package memeid4s
 
-import memeid.arbitrary.instances._
 import memeid4s.UUID.RichUUID
+import memeid4s.scalacheck.arbitrary.instances._
 import org.scalacheck.Gen
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
