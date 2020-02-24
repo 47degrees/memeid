@@ -144,7 +144,7 @@ object UUID {
      * @param lsb Least significant bit in [[_root_.scala.Long Long]] representation
      * @return [[UUID.V4 V4]]
      */
-    @inline def apply(msb: Long, lsb: Long): UUID = new memeid.UUID.V4(msb, lsb)
+    @inline def apply(msb: Long, lsb: Long): UUID = memeid.UUID.V4.from(msb, lsb)
 
     // Construct a v4 (random) UUID.
     @inline def random: UUID = memeid.UUID.V4.random

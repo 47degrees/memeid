@@ -19,13 +19,19 @@ package memeid4s.cats
 import cats.instances.option._
 import cats.kernel.laws.discipline.{HashTests, LowerBoundedTests, OrderTests, UpperBoundedTests}
 
-import memeid.arbitrary.instances._
 import memeid4s.UUID
 import memeid4s.cats.instances._
+import memeid4s.scalacheck.arbitrary.instances._
+import org.scalacheck.Arbitrary
+import org.scalacheck.Arbitrary.arbitrary
 import org.specs2.mutable.Specification
 import org.typelevel.discipline.specs2.mutable.Discipline
 
 class UUIDLaws extends Specification with Discipline {
+
+  implicit private val UUID2UUIDArbitraryInstance: Arbitrary[UUID => UUID] = Arbitrary(
+    arbitrary[UUID].map(uuid => { _: UUID => uuid })
+  )
 
   checkAll("UUID", HashTests[UUID].hash)
   checkAll("UUID", OrderTests[UUID].order)

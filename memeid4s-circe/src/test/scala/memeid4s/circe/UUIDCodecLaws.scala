@@ -16,18 +16,18 @@
 
 package memeid4s.circe
 
-import io.circe.{Decoder, Encoder}
+import io.circe.testing.CodecTests
+import io.circe.testing.instances._
 import memeid4s.UUID
+import memeid4s.cats.instances._
+import memeid4s.circe.instances._
+import memeid4s.scalacheck.arbitrary.instances._
+import org.specs2.mutable.Specification
+import org.typelevel.discipline.specs2.mutable.Discipline
 
-@SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))
-trait instances {
+class UUIDCodecLaws extends Specification with Discipline {
 
-  implicit lazy val UUIDEncoderInstance: Encoder[UUID] =
-    Encoder.encodeUUID.contramap(_.asJava)
-
-  implicit lazy val UUIDDecoderInstance: Decoder[UUID] =
-    Decoder.decodeUUID.map(UUID.fromUUID)
+  checkAll("UUID", CodecTests[UUID].codec)
+  checkAll("UUID", CodecTests[UUID].unserializableCodec)
 
 }
-
-object instances extends instances

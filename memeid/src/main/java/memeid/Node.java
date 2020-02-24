@@ -90,6 +90,11 @@ public class Node {
         id = fromBytes(bytes);
     }
 
+    public Node(short clockSequence, long id) {
+        this.clockSequence = clockSequence;
+        this.id = id;
+    }
+
     private static final List<String> DATA_SOURCES = Arrays.asList("java.vendor", "java.vendor.url", "java.version", "os.arch", "os.name", "os.version");
 
 }

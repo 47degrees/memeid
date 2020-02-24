@@ -16,18 +16,33 @@
 
 package memeid4s.circe
 
-import io.circe.{Decoder, Encoder}
+import cats.syntax.show._
+
+import io.circe.{Decoder, Encoder, Json}
 import memeid4s.UUID
+import memeid4s.cats.instances._
+import memeid4s.circe.instances._
+import memeid4s.scalacheck.arbitrary.instances._
+import org.specs2.ScalaCheck
+import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))
-trait instances {
+class CirceInstancesSpec extends Specification with ScalaCheck {
 
-  implicit lazy val UUIDEncoderInstance: Encoder[UUID] =
-    Encoder.encodeUUID.contramap(_.asJava)
+  "Encoder[UUID]" should {
 
-  implicit lazy val UUIDDecoderInstance: Decoder[UUID] =
-    Decoder.decodeUUID.map(UUID.fromUUID)
+    "encode UUID as JSON" in prop { uuid: UUID =>
+      Encoder[UUID].apply(uuid) must be equalTo Json.fromString(uuid.show)
+    }
+
+  }
+
+  "Decoder[UUID]" should {
+
+    "decode JSON as UUID" in prop { uuid: UUID =>
+      val json = Json.fromString(uuid.show)
+      Decoder[UUID].decodeJson(json) must beRight(uuid)
+    }
+
+  }
 
 }
-
-object instances extends instances

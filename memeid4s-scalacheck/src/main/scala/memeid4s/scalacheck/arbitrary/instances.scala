@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package memeid.arbitrary
+package memeid4s.scalacheck.arbitrary
 
 /*
  * Copyright 2019-2020 47 Degrees, LLC. <http://www.47deg.com>
@@ -32,15 +32,14 @@ package memeid.arbitrary
  * limitations under the License.
  */
 
-import memeid.UUID
+import memeid.{Node, UUID}
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 
+@SuppressWarnings(
+  Array("scalafix:DisableSyntax.isInstanceOf", "scalafix:DisableSyntax.asInstanceOf")
+)
 object instances {
-
-  implicit val UUID2UUIDArbitraryInstance: Arbitrary[UUID => UUID] = Arbitrary(
-    arbitrary[UUID].map(uuid => { _: UUID => uuid })
-  )
 
   implicit val UUIDArbitraryInstance: Arbitrary[UUID] = Arbitrary {
     for {
@@ -49,29 +48,38 @@ object instances {
     } yield UUID.from(msb, lsb)
   }
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
   implicit val UUIDV1ArbitraryInstance: Arbitrary[UUID.V1] = Arbitrary {
-    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V1]).map(uuid => new UUID.V1(uuid.asJava))
+    for {
+      timestamp     <- arbitrary[Long]
+      clockSequence <- arbitrary[Short]
+      id            <- arbitrary[Long]
+      node = new Node(clockSequence, id)
+    } yield UUID.V1.next(node, () => timestamp).asInstanceOf[UUID.V1]
   }
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
   implicit val UUIDV2ArbitraryInstance: Arbitrary[UUID.V2] = Arbitrary {
-    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V2]).map(uuid => new UUID.V2(uuid.asJava))
+    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V2]).map(_.asInstanceOf[UUID.V2])
   }
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
   implicit val UUIDV3ArbitraryInstance: Arbitrary[UUID.V3] = Arbitrary {
-    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V3]).map(uuid => new UUID.V3(uuid.asJava))
+    for {
+      namespace <- arbitrary[UUID]
+      name      <- arbitrary[String]
+    } yield UUID.V3.from(namespace, name).asInstanceOf[UUID.V3]
   }
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
   implicit val UUIDV4ArbitraryInstance: Arbitrary[UUID.V4] = Arbitrary {
-    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V4]).map(uuid => new UUID.V4(uuid.asJava))
+    for {
+      msb <- arbitrary[Long]
+      lsb <- arbitrary[Long]
+    } yield UUID.V4.from(msb, lsb).asInstanceOf[UUID.V4]
   }
 
-  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
   implicit val UUIDV5ArbitraryInstance: Arbitrary[UUID.V5] = Arbitrary {
-    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V5]).map(uuid => new UUID.V5(uuid.asJava))
+    for {
+      namespace <- arbitrary[UUID]
+      name      <- arbitrary[String]
+    } yield UUID.V5.from(namespace, name).asInstanceOf[UUID.V5]
   }
 
 }

@@ -294,6 +294,27 @@ UUID.v3[IO, String](namespace, "my-secret-code")
 UUID.v5[IO, String](namespace, "my-secret-code")
 ```
 
+##### Scalacheck
+
+```scala
+libraryDependencies += "com.47deg" %% "memeid4s-scalacheck" % "@VERSION@"
+```
+
+The scalacheck integration provides `Arbitrary` instances for the `UUID`, as well as for the different version classes.
+
+```scala mdoc:silent
+import org.scalacheck.Arbitrary.arbitrary
+import memeid4s.scalacheck.arbitrary.instances._
+
+arbitrary[UUID]
+arbitrary[UUID.V1]
+arbitrary[UUID.V2]
+arbitrary[UUID.V3]
+arbitrary[UUID.V4]
+arbitrary[UUID.V5]
+```
+
+
 ## References
 
 - [RFC 4122 - A Universally Unique Identifier](https://www.ietf.org/rfc/rfc4122.txt)
