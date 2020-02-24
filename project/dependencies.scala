@@ -1,7 +1,8 @@
 import sbt.{Def, _}
 import sbt.Keys._
+import sbt.plugins.JvmPlugin
 
-object dependencies {
+object dependencies extends AutoPlugin {
 
   object V {
 
@@ -29,53 +30,82 @@ object dependencies {
 
   }
 
-  val common: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
-    libraryDependencies += "org.specs2" %% "specs2-scalacheck" % "4.8.3" % Test,
-    libraryDependencies ++= on(2, 13) {
-      "org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0" % Test
-    }.value
-  )
+  private val common = Seq("org.specs2" %% "specs2-scalacheck" % "4.8.3" % Test)
 
-  val cats: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
-    "org.typelevel" %% "cats-laws"         % "2.1.0"               % Test,
-    "org.typelevel" %% "discipline-specs2" % "1.0.0"               % Test,
-    "org.specs2"    %% "specs2-cats"       % "4.8.3"               % Test
-  )
+  private val parallel = on(2, 13) {
+    "org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0" % Test
+  }
 
-  val literal: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
-    "com.chuusai"    %% "shapeless"    % "2.3.3"            % Test
-  )
+  private val cats = Def.setting {
+    Seq(
+      "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
+      "org.typelevel" %% "cats-laws"         % "2.1.0"               % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.0.0"               % Test,
+      "org.specs2"    %% "specs2-cats"       % "4.8.3"               % Test
+    )
+  }
 
-  val doobie: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.tpolecat" %% "doobie-core"   % V.doobie.value % Provided,
-    "org.tpolecat" %% "doobie-specs2" % "0.8.8"        % Test,
-    "org.tpolecat" %% "doobie-h2"     % "0.8.8"        % Test,
-    "org.specs2"   %% "specs2-cats"   % "4.8.3"        % Test
-  )
+  private val literal = Def.setting {
+    Seq(
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
+      "com.chuusai"    %% "shapeless"    % "2.3.3"            % Test
+    )
+  }
 
-  val circe: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "io.circe"      %% "circe-core"        % V.circe.value % Provided,
-    "org.typelevel" %% "discipline-specs2" % "1.0.0"       % Test,
-    "io.circe"      %% "circe-testing"     % "0.13.0"      % Test
-  )
+  private val doobie = Def.setting {
+    Seq(
+      "org.tpolecat" %% "doobie-core"   % V.doobie.value % Provided,
+      "org.tpolecat" %% "doobie-specs2" % "0.8.8"        % Test,
+      "org.tpolecat" %% "doobie-h2"     % "0.8.8"        % Test,
+      "org.specs2"   %% "specs2-cats"   % "4.8.3"        % Test
+    )
+  }
 
-  val http4s: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.http4s" %% "http4s-core" % V.http4s.value % Provided,
-    "org.http4s" %% "http4s-dsl"  % "0.21.1"       % Test
-  )
+  private val circe = Def.setting {
+    Seq(
+      "io.circe"      %% "circe-core"        % V.circe.value % Provided,
+      "org.typelevel" %% "discipline-specs2" % "1.0.0"       % Test,
+      "io.circe"      %% "circe-testing"     % "0.13.0"      % Test
+    )
+  }
 
-  val scalacheck: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
+  private val http4s = Def.setting {
+    Seq(
+      "org.http4s" %% "http4s-core" % V.http4s.value % Provided,
+      "org.http4s" %% "http4s-dsl"  % "0.21.1"       % Test
+    )
+  }
+
+  private val scalacheck = Seq(
     "org.scalacheck" %% "scalacheck" % V.scalacheck % Provided
   )
 
-  val docs: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
+  private val docs = Seq(
     "org.typelevel"  %% "cats-effect" % "2.1.1",
     "io.circe"       %% "circe-core"  % "0.13.0",
     "org.tpolecat"   %% "doobie-h2"   % "0.8.8",
     "org.http4s"     %% "http4s-dsl"  % "0.21.1",
     "org.scalacheck" %% "scalacheck"  % "1.14.3"
+  )
+
+  override def trigger: PluginTrigger = allRequirements
+
+  override def requires: Plugins = JvmPlugin
+
+  override def projectSettings: Seq[Def.Setting[_]] = Seq(
+    libraryDependencies ++= common ++ parallel.value,
+    libraryDependencies ++= {
+      projectID.value.name match {
+        case "docs"                => docs
+        case "memeid4s-cats"       => cats.value
+        case "memeid4s-literal"    => literal.value
+        case "memeid4s-doobie"     => doobie.value
+        case "memeid4s-circe"      => circe.value
+        case "memeid4s-http4s"     => http4s.value
+        case "memeid4s-scalacheck" => scalacheck
+        case _                     => Nil
+      }
+    }
   )
 
   /**
