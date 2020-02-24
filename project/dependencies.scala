@@ -25,7 +25,7 @@ object dependencies {
   )
 
   val cats: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.typelevel" %% "cats-effect"       % V.cats,
+    "org.typelevel" %% "cats-effect"       % V.cats  % Provided,
     "org.typelevel" %% "cats-laws"         % "2.1.0" % Test,
     "org.typelevel" %% "discipline-specs2" % "1.0.0" % Test,
     "org.specs2"    %% "specs2-cats"       % "4.8.3" % Test
@@ -37,25 +37,25 @@ object dependencies {
   )
 
   val doobie: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.tpolecat" %% "doobie-core"   % V.doobie,
-    "org.tpolecat" %% "doobie-specs2" % "0.8.8" % Test,
-    "org.tpolecat" %% "doobie-h2"     % "0.8.8" % Test,
-    "org.specs2"   %% "specs2-cats"   % "4.8.3" % Test
+    "org.tpolecat" %% "doobie-core"   % V.doobie % Provided,
+    "org.tpolecat" %% "doobie-specs2" % "0.8.8"  % Test,
+    "org.tpolecat" %% "doobie-h2"     % "0.8.8"  % Test,
+    "org.specs2"   %% "specs2-cats"   % "4.8.3"  % Test
   )
 
   val circe: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "io.circe"      %% "circe-core"        % V.circe,
-    "org.typelevel" %% "discipline-specs2" % "1.0.0" % Test,
+    "io.circe"      %% "circe-core"        % V.circe  % Provided,
+    "org.typelevel" %% "discipline-specs2" % "1.0.0"  % Test,
     "io.circe"      %% "circe-testing"     % "0.13.0" % Test
   )
 
   val http4s: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.http4s" %% "http4s-core" % V.http4s,
+    "org.http4s" %% "http4s-core" % V.http4s % Provided,
     "org.http4s" %% "http4s-dsl"  % "0.21.1" % Test
   )
 
   val scalacheck: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.scalacheck" %% "scalacheck" % V.scalacheck
+    "org.scalacheck" %% "scalacheck" % V.scalacheck % Provided
   )
 
   val docs: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
