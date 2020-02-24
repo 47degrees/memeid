@@ -33,6 +33,7 @@
       - [Cats & Cats-effect](#cats--cats-effect)
         - [Typeclasses](#typeclasses)
         - [Constructors](#constructors)
+      - [Scalacheck](#scalacheck)
 - [References](#references)
 
 ## Rationale
@@ -306,6 +307,27 @@ UUID.random[IO]
 UUID.v3[IO, String](namespace, "my-secret-code")
 UUID.v5[IO, String](namespace, "my-secret-code")
 ```
+
+##### Scalacheck
+
+```scala
+libraryDependencies += "com.47deg" %% "memeid4s-scalacheck" % "0.0.0"
+```
+
+The scalacheck integration provides `Arbitrary` instances for the `UUID`, as well as for the different version classes.
+
+```scala
+import org.scalacheck.Arbitrary.arbitrary
+import memeid4s.scalacheck.arbitrary.instances._
+
+arbitrary[UUID]
+arbitrary[UUID.V1]
+arbitrary[UUID.V2]
+arbitrary[UUID.V3]
+arbitrary[UUID.V4]
+arbitrary[UUID.V5]
+```
+
 
 ## References
 
