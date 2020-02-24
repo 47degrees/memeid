@@ -25,4 +25,4 @@
    
 ## :notebook_with_decorative_cover: Fonts
 
-**Montserrat font**. Open source license [https://fonts.google.com/specimen/Montserrat]()
+[**Montserrat font**](https://fonts.google.com/specimen/Montserrat). Open source license.
