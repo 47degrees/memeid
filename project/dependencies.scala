@@ -3,7 +3,7 @@ import sbt.Keys._
 
 object dependencies {
 
-  val V = new {
+  object V {
 
     val cats                = "2.1.1"
     val `cats-laws`         = "2.1.0"
@@ -17,9 +17,11 @@ object dependencies {
 
   }
 
-  val common: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.specs2"             %% "specs2-scalacheck"          % V.specs       % Test,
-    "org.scala-lang.modules" %% "scala-parallel-collections" % V.`par-colls` % Test
+  val common: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
+    libraryDependencies += "org.specs2" %% "specs2-scalacheck" % V.specs % Test,
+    libraryDependencies ++= on(2, 13) {
+      "org.scala-lang.modules" %% "scala-parallel-collections" % V.`par-colls` % Test
+    }.value
   )
 
   val cats: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
@@ -64,5 +66,16 @@ object dependencies {
   val compilerPlugins: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
     compilerPlugin("org.augustjune" %% "context-applied" % "0.1.2")
   )
+
+  /**
+   * Wraps the value in a `Seq` if current scala version matches the one provided,
+   * otherwise returns `Nil`.
+   */
+  def on[A](major: Int, minor: Int)(a: A): Def.Initialize[Seq[A]] = Def.setting {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some(v) if v == (major, minor) => Seq(a)
+      case _                              => Nil
+    }
+  }
 
 }

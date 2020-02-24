@@ -1,6 +1,7 @@
 import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
+import dependencies.on
 
 /**
  * Enables `-Ywarn-unused` in all projects.
@@ -13,7 +14,7 @@ object WarnUnusedPlugin extends AutoPlugin {
   override def trigger: PluginTrigger = allRequirements
 
   override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    scalacOptions += "-Ywarn-unused"
+    scalacOptions ++= on(2, 13)("-Ywarn-unused").value
   )
 
 }
