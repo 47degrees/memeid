@@ -59,8 +59,11 @@ object dependencies {
   )
 
   val docs: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.tpolecat" %% "doobie-h2"  % "0.8.8",
-    "org.http4s"   %% "http4s-dsl" % "0.21.1"
+    "org.typelevel"  %% "cats-effect" % "2.1.1",
+    "io.circe"       %% "circe-core"  % "0.13.0",
+    "org.tpolecat"   %% "doobie-h2"   % "0.8.8",
+    "org.http4s"     %% "http4s-dsl"  % "0.21.1",
+    "org.scalacheck" %% "scalacheck"  % "1.14.3"
   )
 
   /**
