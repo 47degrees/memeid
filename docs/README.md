@@ -1,4 +1,4 @@
-# memeid
+![](design-assets/other-file-formats/readme-header.png)
 
 `memeid` is a JVM library for generating [RFC-compliant](https://www.ietf.org/rfc/rfc4122.txt) Universal Unique Identifiers (UUIDs).
 

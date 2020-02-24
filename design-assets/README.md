@@ -4,11 +4,13 @@
 
 ![](other-file-formats/memeid-assets.png)
 
-`.png` [Download logo](other-file-formats/memeid-logo.png) 
+`.png` [Download logo](https://github.com/47degrees/memeid/raw/master/design-assets/other-file-formats/memeid-logo.png) 
 
-`.svg` [Download logo](other-file-formats/memeid-logo.svg) 
+`.svg` [Download logo](https://github.com/47degrees/memeid/raw/master/design-assets/other-file-formats/memeid-logo.svg) 
 
-`.png` [Download card](other-file-formats/memeid-card.png) 
+`.png` [Download card](https://github.com/47degrees/memeid/raw/master/design-assets/other-file-formats/memeid-card.png) 
+
+`.png` [Download readme header](https://github.com/47degrees/memeid/raw/master/design-assets/other-file-formats/readme-header.png) 
 
 
 ## :clipboard: Color
@@ -23,4 +25,4 @@
    
 ## :notebook_with_decorative_cover: Fonts
 
-**Montserrat font**. Open source license [https://fonts.google.com/specimen/Montserrat]()
+[**Montserrat font**](https://fonts.google.com/specimen/Montserrat). Open source license.
