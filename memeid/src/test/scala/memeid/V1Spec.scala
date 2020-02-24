@@ -16,6 +16,8 @@
 
 package memeid
 
+import scala.collection.parallel.immutable.ParRange
+
 import org.specs2.mutable.Specification
 
 @SuppressWarnings(Array("scalafix:Disable.scala.parallel"))
@@ -24,9 +26,9 @@ class V1Spec extends Specification {
   "V1 constructor" should {
 
     "create version 1 UUIDs" in {
-      val ids = (1 to 10).par.map(_ => UUID.V1.next.version)
+      val ids = new ParRange(1 to 10).map(_ => UUID.V1.next.version).toVector.toSet
 
-      ids.to[Set] must contain(exactly(1))
+      ids must contain(exactly(1))
     }
 
     "create monotonically increasing UUIDs" in {
@@ -37,13 +39,13 @@ class V1Spec extends Specification {
     }
 
     "not generate the same UUID twice" in {
-      val ids = (1 to 10).par.map(_ => UUID.V1.next).toSet
+      val ids = new ParRange(1 to 10).map(_ => UUID.V1.next).toSet
 
       ids.size must be equalTo 10
     }
 
     "not generate the same UUID twice with high concurrency" in {
-      val ids = (1 to 999).par.map(_ => UUID.V1.next).toSet
+      val ids = new ParRange(1 to 999).map(_ => UUID.V1.next).toSet
 
       ids.size must be equalTo 999
     }

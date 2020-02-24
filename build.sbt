@@ -1,23 +1,25 @@
-ThisBuild / scalaVersion := "2.12.10"
-ThisBuild / organization := "com.47deg"
+ThisBuild / scalaVersion       := "2.13.1"
+ThisBuild / crossScalaVersions := Seq("2.12.10", "2.13.1")
+ThisBuild / organization       := "com.47deg"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-addCommandAlias("ci-test", "fix --check; memeid-docs/mdoc; test")
-addCommandAlias("ci-docs", "memeid-docs/mdoc; headerCreateAll")
+addCommandAlias("ci-test", "fix --check; +docs/mdoc; +test")
+addCommandAlias("ci-docs", "+docs/mdoc; headerCreateAll")
 
-lazy val `memeid-root` = project
+lazy val `root` = project
   .in(file("."))
   .aggregate(allProjects: _*)
   .settings(skip in publish := true)
 
-lazy val `memeid-docs` = project
-  .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
-  .enablePlugins(MdocPlugin)
+lazy val `docs` = project
+  .in(file("memeid-docs"))
   .settings(name := "memeid")
-  .settings(skip in publish := true)
+  .enablePlugins(MdocPlugin)
   .settings(mdocOut := file("."))
+  .settings(skip in publish := true)
   .settings(dependencies.docs)
+  .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
 
 lazy val `memeid` = project
   .settings(crossPaths := false)
@@ -26,13 +28,11 @@ lazy val `memeid` = project
   .settings(dependencies.common)
 
 lazy val memeid4s = project
-  .dependsOn(`memeid`)
-  .dependsOn(`memeid4s-scalacheck` % "test->test")
+  .dependsOn(`memeid`, `memeid4s-scalacheck` % Test)
   .settings(dependencies.common)
 
 lazy val `memeid4s-cats` = project
-  .dependsOn(`memeid4s`)
-  .dependsOn(`memeid4s-scalacheck` % "test->test")
+  .dependsOn(`memeid4s`, `memeid4s-scalacheck` % Test)
   .settings(dependencies.common, dependencies.cats)
   .settings(dependencies.compilerPlugins)
 
@@ -41,17 +41,15 @@ lazy val `memeid4s-literal` = project
   .settings(dependencies.common, dependencies.literal)
 
 lazy val `memeid4s-doobie` = project
-  .dependsOn(`memeid4s-cats`)
+  .dependsOn(`memeid4s`)
   .settings(dependencies.common, dependencies.doobie)
 
 lazy val `memeid4s-circe` = project
-  .dependsOn(`memeid4s-cats`)
-  .dependsOn(`memeid4s-scalacheck` % "test->test")
+  .dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
   .settings(dependencies.common, dependencies.circe)
 
 lazy val `memeid4s-http4s` = project
-  .dependsOn(`memeid4s-cats`)
-  .dependsOn(`memeid4s-scalacheck` % "test->test")
+  .dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
   .settings(dependencies.common, dependencies.http4s)
 
 lazy val `memeid4s-scalacheck` = project

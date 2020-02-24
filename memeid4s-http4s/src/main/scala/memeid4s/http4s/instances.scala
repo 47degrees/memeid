@@ -17,13 +17,11 @@
 package memeid4s.http4s
 
 import cats.syntax.either._
-import cats.syntax.show._
 
 import memeid4s.UUID
-import memeid4s.cats.instances._
 import org.http4s.{ParseFailure, QueryParamDecoder, QueryParamEncoder}
 
-@SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))
+@SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract", "scalafix:Disable.toString"))
 trait instances {
 
   /** Allow reading UUIDs from a request's query params */
@@ -36,7 +34,7 @@ trait instances {
 
   /** Allow using UUIDs in a request's query params */
   implicit val UUIDQueryParamEncoderInstance: QueryParamEncoder[UUID] =
-    QueryParamEncoder[String].contramap(_.show)
+    QueryParamEncoder[String].contramap(_.toString)
 
 }
 
