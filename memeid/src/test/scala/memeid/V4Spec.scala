@@ -16,6 +16,8 @@
 
 package memeid
 
+import scala.collection.parallel.immutable.ParRange
+
 import org.specs2.mutable.Specification
 
 @SuppressWarnings(Array("scalafix:Disable.scala.parallel"))
@@ -24,15 +26,15 @@ class V4Spec extends Specification {
   "V4 constructor" should {
 
     "create version 4 UUIDs" in {
-      val uuids = (1 to 10).par.map(_ => UUID.V4.random.version)
+      val uuids = new ParRange(1 to 10).map(_ => UUID.V4.random.version).toVector.toSet
 
-      uuids.to[Set] must contain(exactly(4))
+      uuids must contain(exactly(4))
     }
 
     "not generate the same UUID twice" in {
-      val uuids = (1 to 10).par.map(_ => UUID.V4.random)
+      val uuids = new ParRange(1 to 10).map(_ => UUID.V4.random).toVector.toSet
 
-      uuids.to[Set].size must be equalTo 10
+      uuids.size must be equalTo 10
     }
 
     "be unable to create non-v4 values regardless of msb/lsb values provided" in {
