@@ -13,11 +13,13 @@ object dependencies {
     val http4s              = "0.21.1"
     val specs               = "4.8.3"
     val shapeless           = "2.3.3"
+    val `par-colls`         = "0.2.0"
 
   }
 
   val common: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.specs2" %% "specs2-scalacheck" % V.specs % Test
+    "org.specs2"             %% "specs2-scalacheck"          % V.specs       % Test,
+    "org.scala-lang.modules" %% "scala-parallel-collections" % V.`par-colls` % Test
   )
 
   val cats: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
