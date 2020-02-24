@@ -34,7 +34,6 @@ lazy val memeid4s = project
 lazy val `memeid4s-cats` = project
   .dependsOn(`memeid4s`, `memeid4s-scalacheck` % Test)
   .settings(dependencies.common, dependencies.cats)
-  .settings(dependencies.compilerPlugins)
 
 lazy val `memeid4s-literal` = project
   .dependsOn(`memeid4s`)

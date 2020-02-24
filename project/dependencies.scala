@@ -63,10 +63,6 @@ object dependencies {
     "org.http4s"   %% "http4s-dsl" % V.http4s
   )
 
-  val compilerPlugins: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    compilerPlugin("org.augustjune" %% "context-applied" % "0.1.2")
-  )
-
   /**
    * Wraps the value in a `Seq` if current scala version matches the one provided,
    * otherwise returns `Nil`.
