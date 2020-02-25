@@ -4,6 +4,7 @@ import sbt.plugins.JvmPlugin
 
 object dependencies extends AutoPlugin {
 
+  // scala-steward:off
   object V {
 
     val `cats-effect` = on {
@@ -29,6 +30,7 @@ object dependencies extends AutoPlugin {
     val scalacheck = "[1.14.0,)"
 
   }
+  // scala-steward:on
 
   private val common = Seq("org.specs2" %% "specs2-scalacheck" % "4.8.3" % Test)
 
