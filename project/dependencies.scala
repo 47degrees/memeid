@@ -26,7 +26,7 @@ object dependencies extends AutoPlugin {
       case (2, 13) => "[0.21.0,)"
     }
 
-    val scalacheck = "[1.14.0,)"
+    val scalacheck = "1.14.3"
 
   }
 
