@@ -1,71 +1,123 @@
 import sbt.{Def, _}
 import sbt.Keys._
+import sbt.plugins.JvmPlugin
 
-object dependencies {
+object dependencies extends AutoPlugin {
 
   object V {
 
-    val cats                = "2.1.1"
-    val `cats-laws`         = "2.1.0"
-    val circe               = "0.13.0"
-    val `discipline-specs2` = "1.0.0"
-    val doobie              = "0.8.8"
-    val http4s              = "0.21.1"
-    val specs               = "4.8.3"
-    val shapeless           = "2.3.3"
-    val `par-colls`         = "0.2.0"
+    val `cats-effect` = on {
+      case (2, 12) => "[0.2,)"
+      case (2, 13) => "[2.0.0,)"
+    }
+
+    val circe = on {
+      case (2, 12) => "[0.6.0,)"
+      case (2, 13) => "[0.12.0,)"
+    }
+
+    val doobie = on {
+      case (2, 12) => "[0.4.0,)"
+      case (2, 13) => "[0.8.2,)"
+    }
+
+    val http4s = on {
+      case (2, 12) => "[0.15.0,)"
+      case (2, 13) => "[0.21.0,)"
+    }
+
+    val scalacheck = "[1.14.0,)"
 
   }
 
-  val common: Seq[Def.Setting[Seq[ModuleID]]] = Seq(
-    libraryDependencies += "org.specs2" %% "specs2-scalacheck" % V.specs % Test,
-    libraryDependencies ++= on(2, 13) {
-      "org.scala-lang.modules" %% "scala-parallel-collections" % V.`par-colls` % Test
-    }.value
+  private val common = Seq("org.specs2" %% "specs2-scalacheck" % "4.8.3" % Test)
+
+  private val parallel = on(2, 13) {
+    "org.scala-lang.modules" %% "scala-parallel-collections" % "0.2.0" % Test
+  }
+
+  private val cats = Def.setting {
+    Seq(
+      "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
+      "org.typelevel" %% "cats-laws"         % "2.1.0"               % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.0.0"               % Test,
+      "org.specs2"    %% "specs2-cats"       % "4.8.3"               % Test
+    )
+  }
+
+  private val literal = Def.setting {
+    Seq(
+      "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
+      "com.chuusai"    %% "shapeless"    % "2.3.3"            % Test
+    )
+  }
+
+  private val doobie = Def.setting {
+    Seq(
+      "org.tpolecat" %% "doobie-core"   % V.doobie.value % Provided,
+      "org.tpolecat" %% "doobie-specs2" % "0.8.8"        % Test,
+      "org.tpolecat" %% "doobie-h2"     % "0.8.8"        % Test,
+      "org.specs2"   %% "specs2-cats"   % "4.8.3"        % Test
+    )
+  }
+
+  private val circe = Def.setting {
+    Seq(
+      "io.circe"      %% "circe-core"        % V.circe.value % Provided,
+      "org.typelevel" %% "discipline-specs2" % "1.0.0"       % Test,
+      "io.circe"      %% "circe-testing"     % "0.13.0"      % Test
+    )
+  }
+
+  private val http4s = Def.setting {
+    Seq(
+      "org.http4s" %% "http4s-core" % V.http4s.value % Provided,
+      "org.http4s" %% "http4s-dsl"  % "0.21.1"       % Test
+    )
+  }
+
+  private val scalacheck = Seq(
+    "org.scalacheck" %% "scalacheck" % V.scalacheck % Provided
   )
 
-  val cats: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.typelevel" %% "cats-effect"       % V.cats,
-    "org.typelevel" %% "cats-laws"         % V.`cats-laws` % Test,
-    "org.typelevel" %% "discipline-specs2" % V.`discipline-specs2` % Test,
-    "org.specs2"    %% "specs2-cats"       % V.specs % Test
+  private val docs = Seq(
+    "org.typelevel"  %% "cats-effect" % "2.1.1",
+    "io.circe"       %% "circe-core"  % "0.13.0",
+    "org.tpolecat"   %% "doobie-h2"   % "0.8.8",
+    "org.http4s"     %% "http4s-dsl"  % "0.21.1",
+    "org.scalacheck" %% "scalacheck"  % "1.14.3"
   )
 
-  val literal: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
-    "com.chuusai"    %% "shapeless"    % V.shapeless        % Test
+  override def trigger: PluginTrigger = allRequirements
+
+  override def requires: Plugins = JvmPlugin
+
+  override def projectSettings: Seq[Def.Setting[_]] = Seq(
+    libraryDependencies ++= common ++ parallel.value,
+    libraryDependencies ++= {
+      projectID.value.name match {
+        case "docs"                => docs
+        case "memeid4s-cats"       => cats.value
+        case "memeid4s-literal"    => literal.value
+        case "memeid4s-doobie"     => doobie.value
+        case "memeid4s-circe"      => circe.value
+        case "memeid4s-http4s"     => http4s.value
+        case "memeid4s-scalacheck" => scalacheck
+        case _                     => Nil
+      }
+    }
   )
 
-  val doobie: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.tpolecat" %% "doobie-core"   % V.doobie,
-    "org.tpolecat" %% "doobie-specs2" % V.doobie % Test,
-    "org.tpolecat" %% "doobie-h2"     % V.doobie % Test,
-    "org.specs2"   %% "specs2-cats"   % V.specs % Test
-  )
-
-  val circe: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "io.circe"      %% "circe-core"        % V.circe,
-    "org.typelevel" %% "discipline-specs2" % V.`discipline-specs2` % Test,
-    "io.circe"      %% "circe-testing"     % V.circe % Test
-  )
-
-  val http4s: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.http4s" %% "http4s-core" % V.http4s,
-    "org.http4s" %% "http4s-dsl"  % V.http4s % Test
-  )
-
-  val scalacheck: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.scalacheck" %% "scalacheck" % "1.14.3"
-  )
-
-  val docs: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    "org.tpolecat" %% "doobie-h2"  % V.doobie,
-    "org.http4s"   %% "http4s-dsl" % V.http4s
-  )
-
-  val compilerPlugins: Def.Setting[Seq[ModuleID]] = libraryDependencies ++= Seq(
-    compilerPlugin("org.augustjune" %% "context-applied" % "0.1.2")
-  )
+  /**
+   * Wraps the value in a `Seq` if current scala version matches the one provided,
+   * otherwise returns `Nil`.
+   */
+  def on[A](pf: PartialFunction[(Long, Long), String]): Def.Initialize[String] = Def.setting {
+    CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some(v) => pf(v)
+      case _       => sys.error("Invalid Scala version")
+    }
+  }
 
   /**
    * Wraps the value in a `Seq` if current scala version matches the one provided,

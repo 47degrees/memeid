@@ -30,17 +30,17 @@ trait syntax {
 
   implicit class UUIDtoCatsConstructors(companion: UUID.type) {
 
-    def v1[F[_]: Sync](implicit N: Node, T: Time): F[UUID] = F.delay(UUID.V1.next(N, T))
+    def v1[F[_]: Sync](implicit N: Node, T: Time): F[UUID] = Sync[F].delay(UUID.V1.next(N, T))
 
     def v3[F[_]: Sync, A: Digestible](namespace: UUID, local: A): F[UUID] =
-      F.delay(UUID.V3(namespace, local))
+      Sync[F].delay(UUID.V3(namespace, local))
 
     def v5[F[_]: Sync, A: Digestible](namespace: UUID, local: A): F[UUID] =
-      F.delay(UUID.V5(namespace, local))
+      Sync[F].delay(UUID.V5(namespace, local))
 
-    def random[F[_]: Sync]: F[UUID] = F.delay(UUID.V4.random)
+    def random[F[_]: Sync]: F[UUID] = Sync[F].delay(UUID.V4.random)
 
-    def squuid[F[_]: Sync: Clock]: F[UUID] = F.realTime(SECONDS).map { s =>
+    def squuid[F[_]: Sync: Clock]: F[UUID] = Clock[F].realTime(SECONDS).map { s =>
       UUID.V4.squuid {
         new Posix {
           override def value: Long = s
