@@ -82,7 +82,10 @@ public class UUID implements Comparable<UUID> {
      *                                  described in {@link #toString}
      */
     public static UUID fromString(String name) {
-        return fromUUID(java.util.UUID.fromString(name));
+        if (name.matches("[\\da-fA-F]{8}-[\\da-fA-F]{4}-[\\da-fA-F]{4}-[\\da-fA-F]{4}-[\\da-fA-F]{12}"))
+            return fromUUID(java.util.UUID.fromString(name));
+        else
+            throw new IllegalArgumentException("Invalid UUID string: "+name);
     }
 
     /**
