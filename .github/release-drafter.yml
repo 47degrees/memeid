@@ -1,0 +1,19 @@
+name-template: 'v$NEXT_PATCH_VERSION'
+tag-template: 'v$NEXT_PATCH_VERSION'
+categories:
+  - title: '🚀 Features'
+    label: 'enhancement'
+  - title: '📘 Documentation'
+    label: 'documentation'
+  - title: '🐛 Bug Fixes'
+    label: 'bug'
+  - title: '📈 Dependency updates'
+    label: 'dependency-update'
+template: |
+  ## What's changed
+
+  $CHANGES
+
+  ## Contributors to this release
+
+  $CONTRIBUTORS
