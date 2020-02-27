@@ -1,0 +1,5 @@
+enhancement: ['enhancement/*', 'feature/*']
+documentation: ['*docs*', 'docs/*', 'doc/*']
+bug: ['bug/*', 'fix/*']
+dependency-update: ['dep/*', 'dependency/*', 'dependency-update/*']
+auto-update: 'update/*'
