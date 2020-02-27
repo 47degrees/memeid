@@ -1,8 +1,8 @@
 # Changelog
 
-## [v0.0.1](https://github.com/47degrees/memeid/tree/v0.0.1) (2020-02-27)
+## [v0.1](https://github.com/47degrees/memeid/tree/v0.1) (2020-02-27)
 
-[Full Changelog](https://github.com/47degrees/memeid/compare/c0825e89fa9430e420b533a1e37e6ae78b02ee96...v0.0.1)
+[Full Changelog](https://github.com/47degrees/memeid/compare/c0825e89fa9430e420b533a1e37e6ae78b02ee96...v0.1)
 
 **Implemented enhancements:**
 
