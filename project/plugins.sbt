@@ -1,4 +1,4 @@
-addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"           % "0.3.0")
+addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"           % "0.4.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-mdoc"   % "0.5.2")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-header" % "0.5.2")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-mdoc-toc"      % "0.2")
