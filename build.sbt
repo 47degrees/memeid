@@ -1,6 +1,6 @@
-ThisBuild / scalaVersion       := "2.13.1"
+ThisBuild / scalaVersion := "2.13.1"
 ThisBuild / crossScalaVersions := Seq("2.12.10", "2.13.1")
-ThisBuild / organization       := "com.47deg"
+ThisBuild / organization := "com.47deg"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
@@ -18,6 +18,16 @@ lazy val `docs` = project
   .settings(mdocVariables += "NAME" -> "memeid")
   .settings(mdocOut := file("."))
   .settings(skip in publish := true)
+  .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
+
+lazy val `website` = project
+  .in(file("website-docs"))
+  .aggregate(allProjects: _*)
+  .enablePlugins(MdocPlugin)
+  .enablePlugins(MicrositesPlugin)
+  .settings(skip in publish := true)
+  .settings(mdocIn := file("website-docs/docs"))
+  .settings(micrositeSettings)
   .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
 
 lazy val `memeid` = project
@@ -61,4 +71,17 @@ lazy val allProjects: Seq[ProjectReference] = Seq(
   `memeid4s-circe`,
   `memeid4s-http4s`,
   `memeid4s-scalacheck`
+)
+
+lazy val micrositeSettings: Seq[Def.Setting[_]] = Seq(
+  micrositeName := "memeid",
+  micrositeDescription := "A JVM library for generating RFC-compliant Universal Unique Identifiers (UUIDs)",
+  micrositeBaseUrl := "memeid",
+  micrositeDocumentationUrl := "docs",
+  micrositeGithubOwner := "47degrees",
+  micrositeGithubRepo := "memeid",
+  micrositeOrganizationHomepage := "https://www.47deg.com",
+  micrositePushSiteWith := GitHub4s,
+  micrositeHighlightLanguages ++= Seq("java", "scala", "kotlin"),
+  includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.md" | "*.svg"
 )
