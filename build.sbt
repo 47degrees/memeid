@@ -1,6 +1,6 @@
-ThisBuild / scalaVersion := "2.13.1"
+ThisBuild / scalaVersion       := "2.13.1"
 ThisBuild / crossScalaVersions := Seq("2.12.10", "2.13.1")
-ThisBuild / organization := "com.47deg"
+ThisBuild / organization       := "com.47deg"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
@@ -74,14 +74,14 @@ lazy val allProjects: Seq[ProjectReference] = Seq(
 )
 
 lazy val micrositeSettings: Seq[Def.Setting[_]] = Seq(
-  micrositeName := "memeid",
-  micrositeDescription := "A JVM library for generating RFC-compliant Universal Unique Identifiers (UUIDs)",
-  micrositeBaseUrl := "memeid",
-  micrositeDocumentationUrl := "docs",
-  micrositeGithubOwner := "47degrees",
-  micrositeGithubRepo := "memeid",
+  micrositeName                 := "memeid",
+  micrositeDescription          := "A JVM library for generating RFC-compliant Universal Unique Identifiers (UUIDs)",
+  micrositeBaseUrl              := "memeid",
+  micrositeDocumentationUrl     := "docs",
+  micrositeGithubOwner          := "47degrees",
+  micrositeGithubRepo           := "memeid",
   micrositeOrganizationHomepage := "https://www.47deg.com",
-  micrositePushSiteWith := GitHub4s,
-  micrositeHighlightLanguages ++= Seq("java", "scala", "kotlin"),
-  includeFilter in makeSite := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.md" | "*.svg"
+  micrositePushSiteWith         := GitHub4s,
+  micrositeHighlightLanguages   ++= Seq("java", "scala", "kotlin"),
+  includeFilter in makeSite     := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.md" | "*.svg"
 )
