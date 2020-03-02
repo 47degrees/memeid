@@ -99,6 +99,7 @@ object dependencies extends AutoPlugin {
     libraryDependencies ++= {
       projectID.value.name match {
         case "docs"                => docs
+        case "website"             => docs
         case "memeid4s-cats"       => cats.value
         case "memeid4s-literal"    => literal.value
         case "memeid4s-doobie"     => doobie.value
