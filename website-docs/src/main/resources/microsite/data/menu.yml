@@ -1,0 +1,18 @@
+options:
+
+  - title: Quickstart
+    url: docs/
+
+  - title: memeid4s
+    url: docs/memeid4s/
+    nested_options:
+      - title: Doobie
+        url: docs/memeid4s_doobie/
+      - title: Circe
+        url: docs/memeid4s_circe/
+      - title: Http4s
+        url: docs/memeid4s_http4s/
+      - title: Cats & Cats-effect
+        url: docs/memeid4s_cats/
+      - title: Scalacheck
+        url: docs/memeid4s_scalacheck/
