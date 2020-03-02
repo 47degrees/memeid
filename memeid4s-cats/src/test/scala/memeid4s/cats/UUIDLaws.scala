@@ -30,7 +30,7 @@ import org.typelevel.discipline.specs2.mutable.Discipline
 class UUIDLaws extends Specification with Discipline {
 
   implicit private val UUID2UUIDArbitraryInstance: Arbitrary[UUID => UUID] = Arbitrary(
-    arbitrary[UUID].map(uuid => { _: UUID => uuid })
+    arbitrary[UUID].map(uuid => (_: UUID) => uuid)
   )
 
   checkAll("UUID", HashTests[UUID].hash)
