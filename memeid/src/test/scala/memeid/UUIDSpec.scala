@@ -32,6 +32,10 @@ class UUIDSpec extends Specification with ScalaCheck {
       UUID.fromString(uuid.toString) should be equalTo uuid
     }
 
+    "throw exception on an invalid string that is accepted by java.util.fromString" >> {
+      UUID.fromString("1-1-1-1-1") must throwAn[IllegalArgumentException]
+    }
+
     "throw exception on invalid string" in prop { s: String =>
       UUID.fromString(s) must throwAn[IllegalArgumentException]
     }.setGen(Gen.alphaNumStr)
