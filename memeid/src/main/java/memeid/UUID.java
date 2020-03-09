@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.LongSupplier;
+import java.util.regex.Pattern;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static memeid.Bits.*;
@@ -33,6 +34,7 @@ import static memeid.Bits.*;
  * @see <a href="https://tools.ietf.org/html/rfc4122">RFC-4122</a>
  */
 public class UUID implements Comparable<UUID> {
+    public static final Pattern uuidRegex = Pattern.compile("\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12}");
 
     /**
      * The nil UUID is special form of UUID that is specified to have all 128 bits set to zero.
@@ -82,10 +84,10 @@ public class UUID implements Comparable<UUID> {
      *                                  described in {@link #toString}
      */
     public static UUID fromString(String name) {
-        if (name.matches("[\\da-fA-F]{8}-[\\da-fA-F]{4}-[\\da-fA-F]{4}-[\\da-fA-F]{4}-[\\da-fA-F]{12}"))
+        if (uuidRegex.matcher(name).matches())
             return fromUUID(java.util.UUID.fromString(name));
         else
-            throw new IllegalArgumentException("Invalid UUID string: "+name);
+            throw new IllegalArgumentException("Invalid UUID string: " + name);
     }
 
     /**
