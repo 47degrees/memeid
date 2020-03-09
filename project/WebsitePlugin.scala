@@ -17,7 +17,6 @@ object WebsitePlugin extends AutoPlugin {
     micrositeGithubOwner        := "47degrees",
     micrositeGithubRepo         := "memeid",
     micrositePushSiteWith       := GitHub4s,
-    micrositeHighlightLanguages ++= Seq("java", "scala"),
-    includeFilter in makeSite   := "*.html" | "*.css" | "*.png" | "*.jpg" | "*.gif" | "*.js" | "*.swf" | "*.md" | "*.svg"
+    micrositeHighlightLanguages ++= Seq("java", "scala")
   )
 }
