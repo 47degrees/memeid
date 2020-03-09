@@ -7,3 +7,4 @@ addSbtPlugin("com.thoughtworks.sbt-api-mappings" % "sbt-api-mappings"  % "3.0.0"
 addSbtPlugin("de.heikoseeberger"                 % "sbt-header"        % "5.4.0")
 addSbtPlugin("io.github.davidgregory084"         % "sbt-tpolecat"      % "0.1.11")
 addSbtPlugin("org.scalameta"                     % "sbt-mdoc"          % "2.1.1")
+addSbtPlugin("com.47deg"                         % "sbt-microsites"    % "1.1.0")

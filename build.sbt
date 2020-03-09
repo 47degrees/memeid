@@ -20,6 +20,14 @@ lazy val `docs` = project
   .settings(skip in publish := true)
   .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
 
+lazy val `website` = project
+  .aggregate(allProjects: _*)
+  .enablePlugins(MdocPlugin)
+  .enablePlugins(MicrositesPlugin)
+  .settings(skip in publish := true)
+  .settings(mdocIn := file("website/docs"))
+  .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
+
 lazy val `memeid` = project
   .settings(crossPaths := false)
   .settings(publishMavenStyle := true)
