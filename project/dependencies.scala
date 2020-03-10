@@ -42,7 +42,7 @@ object dependencies extends AutoPlugin {
     Seq(
       "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
       "org.typelevel" %% "cats-laws"         % "2.1.1"               % Test,
-      "org.typelevel" %% "discipline-specs2" % "1.0.0"               % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.1.0"               % Test,
       "org.specs2"    %% "specs2-cats"       % "4.9.2"               % Test
     )
   }
@@ -66,7 +66,7 @@ object dependencies extends AutoPlugin {
   private val circe = Def.setting {
     Seq(
       "io.circe"      %% "circe-core"        % V.circe.value % Provided,
-      "org.typelevel" %% "discipline-specs2" % "1.0.0"       % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.1.0"       % Test,
       "io.circe"      %% "circe-testing"     % "0.13.0"      % Test
     )
   }
