@@ -4,7 +4,6 @@
 
 The maintainers of the project are:
 
-- [![alejandrohdezma](https://avatars0.githubusercontent.com/u/9027541?v=4&s=20) **Alejandro Hernández (alejandrohdezma)**](https://github.com/alejandrohdezma)
 - [![israelperezglez](https://avatars1.githubusercontent.com/u/646886?v=4&s=20) **Israel Pérez (israelperezglez)**](https://github.com/israelperezglez)
 - [![gutiory](https://avatars2.githubusercontent.com/u/3316502?v=4&s=20) **Jose Gutiérrez de Ory (gutiory)**](https://github.com/gutiory)
 
