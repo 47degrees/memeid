@@ -50,6 +50,13 @@ lazy val `memeid4s-http4s` = project
 lazy val `memeid4s-scalacheck` = project
   .dependsOn(memeid)
 
+lazy val bench = project
+  .dependsOn(memeid4s)
+  .enablePlugins(JmhPlugin)
+
+addCommandAlias("runAvgtime", ";bench/jmh:run -bm AverageTime -tu ns -rff master.avgtime.csv;")
+addCommandAlias("runThroughput", ";bench/jmh:run -bm Throughput -tu s -rff master.throughput.csv;")
+
 lazy val allProjects: Seq[ClasspathDep[ProjectReference]] = Seq(
   `memeid`,
   memeid4s,
