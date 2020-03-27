@@ -1,3 +1,7 @@
+[comment]: <> (Don't edit this file!)
+[comment]: <> (It is automatically updated after every release of https://github.com/47degrees/.github)
+[comment]: <> (If you want to suggest a change, please open a PR or issue in that repository)
+
 # Contributing
 
 Discussion around _@NAME@_ happens in the [GitHub issues](https://github.com/@REPO@/issues) and [pull requests](https://github.com/@REPO@/pulls).
