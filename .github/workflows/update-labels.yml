@@ -2,16 +2,20 @@
 # It is automatically updated after every release of https://github.com/47degrees/.github
 # If you want to suggest a change, please open a PR or issue in that repository
 
-name: PR Labeler
+name: Github Labeler
+
 on:
-  pull_request:
-    types: [opened]
+  push:
+    paths:
+    - '.github/labels.yml'
 
 jobs:
-  pr-labeler:
+  github-labeler:
     runs-on: ubuntu-latest
     steps:
-      - name: Label PR
-        uses: TimonVS/pr-labeler-action@v3
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+      - name: Github Labeler
+        uses: crazy-max/ghaction-github-labeler@v1.1.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,3 +1,7 @@
+# Don't edit this file!
+# It is automatically updated after every release of https://github.com/47degrees/.github
+# If you want to suggest a change, please open a PR or issue in that repository
+
 name: Release Drafter
 
 on:
@@ -12,4 +16,4 @@ jobs:
       - name: Update release draft
         uses: release-drafter/release-drafter@v5
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.ADMIN_GITHUB_TOKEN }}
