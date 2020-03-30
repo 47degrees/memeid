@@ -1,10 +1,39 @@
 # Changelog
 
+## [Unreleased](https://github.com/47degrees/memeid/tree/HEAD)
+
+[Full Changelog](https://github.com/47degrees/memeid/compare/v0.1...HEAD)
+
+🚀 **Features**
+
+- Compile regex statically in `fromString` [\#136](https://github.com/47degrees/memeid/pull/136) ([purrgrammer](https://github.com/purrgrammer))
+
+🐛 **Bug Fixes**
+
+- fromString method accepts invalid strings [\#134](https://github.com/47degrees/memeid/issues/134)
+- Validate string before calling java.util.fromString [\#135](https://github.com/47degrees/memeid/pull/135) ([Philippus](https://github.com/Philippus))
+
+**Closed issues:**
+
+- Create memeid microsite [\#101](https://github.com/47degrees/memeid/issues/101)
+
+**Merged pull requests:**
+
+- Update http4s-dsl to 0.21.2 [\#150](https://github.com/47degrees/memeid/pull/150) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-mdoc to 2.1.3 [\#149](https://github.com/47degrees/memeid/pull/149) ([scala-steward](https://github.com/scala-steward))
+- Update discipline-specs2 to 1.1.0 [\#148](https://github.com/47degrees/memeid/pull/148) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-fix to 0.4.0 [\#144](https://github.com/47degrees/memeid/pull/144) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Create memeid microsite [\#142](https://github.com/47degrees/memeid/pull/142) ([gutiory](https://github.com/gutiory))
+- Update specs2-cats, specs2-scalacheck to 4.9.2 [\#141](https://github.com/47degrees/memeid/pull/141) ([scala-steward](https://github.com/scala-steward))
+- Update sbt-github-header, sbt-github-mdoc to 0.6.0 [\#140](https://github.com/47degrees/memeid/pull/140) ([scala-steward](https://github.com/scala-steward))
+- Update specs2-cats, specs2-scalacheck to 4.9.1 [\#139](https://github.com/47degrees/memeid/pull/139) ([scala-steward](https://github.com/scala-steward))
+- Update specs2-cats, specs2-scalacheck to 4.9.0 [\#138](https://github.com/47degrees/memeid/pull/138) ([scala-steward](https://github.com/scala-steward))
+
 ## [v0.1](https://github.com/47degrees/memeid/tree/v0.1) (2020-02-27)
 
 [Full Changelog](https://github.com/47degrees/memeid/compare/c0825e89fa9430e420b533a1e37e6ae78b02ee96...v0.1)
 
-**Implemented enhancements:**
+🚀 **Features**
 
 - Make `memeid-cats` not dependent on `memeid-scala` [\#91](https://github.com/47degrees/memeid/issues/91)
 - Compare by fields when two UUIDs are the same version [\#78](https://github.com/47degrees/memeid/issues/78)
@@ -13,6 +42,11 @@
 - Make implementation not dependent on cats-effect [\#41](https://github.com/47degrees/memeid/issues/41)
 - Auto-draft releases and label new PRs [\#129](https://github.com/47degrees/memeid/pull/129) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
+📘 **Documentation**
+
+- Scaladoc in comments [\#44](https://github.com/47degrees/memeid/issues/44)
+- Readme that serves as docs [\#40](https://github.com/47degrees/memeid/issues/40)
+
 **Closed issues:**
 
 - Support Scala 2.12 & 2.13 [\#115](https://github.com/47degrees/memeid/issues/115)
@@ -20,8 +54,6 @@
 - Extract Arbitrary instances to its own module [\#106](https://github.com/47degrees/memeid/issues/106)
 - Memeid guideline [\#98](https://github.com/47degrees/memeid/issues/98)
 - Release  [\#54](https://github.com/47degrees/memeid/issues/54)
-- Scaladoc in comments [\#44](https://github.com/47degrees/memeid/issues/44)
-- Readme that serves as docs [\#40](https://github.com/47degrees/memeid/issues/40)
 - Typeclass for node information [\#26](https://github.com/47degrees/memeid/issues/26)
 - Macro constructor [\#24](https://github.com/47degrees/memeid/issues/24)
 - Bitwise op primitives [\#22](https://github.com/47degrees/memeid/issues/22)
