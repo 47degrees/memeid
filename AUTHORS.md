@@ -22,3 +22,4 @@ These are the people that have contributed to the _memeid_ project:
 - [![israelperezglez](https://avatars1.githubusercontent.com/u/646886?v=4&s=20) **israelperezglez**](https://github.com/israelperezglez)
 - [![juanpedromoreno](https://avatars2.githubusercontent.com/u/4879373?v=4&s=20) **juanpedromoreno**](https://github.com/juanpedromoreno)
 - [![Philippus](https://avatars3.githubusercontent.com/u/1923596?v=4&s=20) **Philippus**](https://github.com/Philippus)
+- [![developer47deg](https://avatars1.githubusercontent.com/u/24799081?v=4&s=20) **developer47deg**](https://github.com/developer47deg)
