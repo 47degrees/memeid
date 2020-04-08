@@ -13,6 +13,10 @@
 - fromString method accepts invalid strings [\#134](https://github.com/47degrees/memeid/issues/134)
 - Validate string before calling java.util.fromString [\#135](https://github.com/47degrees/memeid/pull/135) ([Philippus](https://github.com/Philippus))
 
+📈 **Dependency updates**
+
+- Update specs2-cats, specs2-scalacheck to 4.9.3 [\#171](https://github.com/47degrees/memeid/pull/171) ([scala-steward](https://github.com/scala-steward))
+
 **Closed issues:**
 
 - Create memeid microsite [\#101](https://github.com/47degrees/memeid/issues/101)
@@ -26,7 +30,7 @@
 - Create memeid microsite [\#142](https://github.com/47degrees/memeid/pull/142) ([gutiory](https://github.com/gutiory))
 - Update specs2-cats, specs2-scalacheck to 4.9.2 [\#141](https://github.com/47degrees/memeid/pull/141) ([scala-steward](https://github.com/scala-steward))
 - Update sbt-github-header, sbt-github-mdoc to 0.6.0 [\#140](https://github.com/47degrees/memeid/pull/140) ([scala-steward](https://github.com/scala-steward))
-- Update specs2-cats, specs2-scalacheck to 4.9.3 [\#139](https://github.com/47degrees/memeid/pull/139) ([scala-steward](https://github.com/scala-steward))
+- Update specs2-cats, specs2-scalacheck to 4.9.1 [\#139](https://github.com/47degrees/memeid/pull/139) ([scala-steward](https://github.com/scala-steward))
 - Update specs2-cats, specs2-scalacheck to 4.9.0 [\#138](https://github.com/47degrees/memeid/pull/138) ([scala-steward](https://github.com/scala-steward))
 
 ## [v0.1](https://github.com/47degrees/memeid/tree/v0.1) (2020-02-27)
