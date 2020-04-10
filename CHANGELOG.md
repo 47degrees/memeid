@@ -33,7 +33,6 @@
 - Update sbt-github-header, sbt-github-mdoc to 0.6.0 [\#140](https://github.com/47degrees/memeid/pull/140) ([scala-steward](https://github.com/scala-steward))
 - Update specs2-cats, specs2-scalacheck to 4.9.1 [\#139](https://github.com/47degrees/memeid/pull/139) ([scala-steward](https://github.com/scala-steward))
 - Update specs2-cats, specs2-scalacheck to 4.9.0 [\#138](https://github.com/47degrees/memeid/pull/138) ([scala-steward](https://github.com/scala-steward))
-- Range versions should not be updated by scala steward [\#126](https://github.com/47degrees/memeid/pull/126) ([alejandrohdezma](https://github.com/alejandrohdezma))
 
 ## [v0.1](https://github.com/47degrees/memeid/tree/v0.1) (2020-02-27)
 
@@ -80,6 +79,7 @@
 **Merged pull requests:**
 
 - Auto merge all scala-steward's PRs [\#127](https://github.com/47degrees/memeid/pull/127) ([alejandrohdezma](https://github.com/alejandrohdezma))
+- Range versions should not be updated by scala steward [\#126](https://github.com/47degrees/memeid/pull/126) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add descriptions for all projects [\#124](https://github.com/47degrees/memeid/pull/124) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Add plugin for removing test dependencies from POM [\#123](https://github.com/47degrees/memeid/pull/123) ([alejandrohdezma](https://github.com/alejandrohdezma))
 - Use range provided dependencies for integrations [\#122](https://github.com/47degrees/memeid/pull/122) ([alejandrohdezma](https://github.com/alejandrohdezma))
