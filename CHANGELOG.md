@@ -15,6 +15,7 @@
 
 📈 **Dependency updates**
 
+- Update sbt-header to 5.5.0 [\#173](https://github.com/47degrees/memeid/pull/173) ([scala-steward](https://github.com/scala-steward))
 - Update specs2-cats, specs2-scalacheck to 4.9.3 [\#171](https://github.com/47degrees/memeid/pull/171) ([scala-steward](https://github.com/scala-steward))
 
 **Closed issues:**
