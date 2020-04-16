@@ -16,6 +16,7 @@ object WebsitePlugin extends AutoPlugin {
     micrositeDocumentationUrl   := "docs",
     micrositeGithubOwner        := "47degrees",
     micrositeGithubRepo         := "memeid",
+    micrositeGithubToken        := Option(System.getenv().get("GITHUB_TOKEN")),
     micrositePushSiteWith       := GitHub4s,
     micrositeHighlightLanguages ++= Seq("java", "scala")
   )
