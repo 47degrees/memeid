@@ -4,18 +4,19 @@ ThisBuild / organization       := "com.47deg"
 
 Global / onChangedBuildSource := ReloadOnSourceChanges
 
-addCommandAlias("ci-test", "fix --check; +docs/mdoc; +test")
+addCommandAlias("ci-test", "fix --check; +docs/mdoc; +website/mdoc; +test")
 addCommandAlias("ci-docs", "+docs/mdoc; headerCreateAll")
+addCommandAlias("ci-microsite", "website/publishMicrosite")
 
 lazy val `root` = project
   .in(file("."))
   .aggregate(allProjects: _*)
   .settings(skip in publish := true)
 
-lazy val `docs` = project
-  .in(file("memeid-docs"))
+lazy val `docs` = (project in file(".docs"))
   .enablePlugins(MdocPlugin)
   .settings(mdocVariables += "NAME" -> "memeid")
+  .settings(mdocIn := file(".docs"))
   .settings(mdocOut := file("."))
   .settings(skip in publish := true)
   .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
