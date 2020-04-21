@@ -2,7 +2,7 @@ addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"           % "0.4.0"
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-mdoc"   % "0.6.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-header" % "0.6.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-mdoc-toc"      % "0.2")
-addSbtPlugin("com.geirsson"                      % "sbt-ci-release"    % "1.5.2")
+addSbtPlugin("com.geirsson"                      % "sbt-ci-release"    % "1.5.3")
 addSbtPlugin("com.thoughtworks.sbt-api-mappings" % "sbt-api-mappings"  % "3.0.0")
 addSbtPlugin("de.heikoseeberger"                 % "sbt-header"        % "5.5.0")
 addSbtPlugin("io.github.davidgregory084"         % "sbt-tpolecat"      % "0.1.11")
