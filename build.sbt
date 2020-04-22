@@ -54,8 +54,37 @@ lazy val bench = project
   .dependsOn(memeid4s)
   .enablePlugins(JmhPlugin)
 
-addCommandAlias("runAvgtime", ";bench/jmh:run -bm AverageTime -tu ns -rff master.avgtime.csv;")
-addCommandAlias("runThroughput", ";bench/jmh:run -bm Throughput -tu s -rff master.throughput.csv;")
+val runAvgtimeCmd =
+  "bench/jmh:run -bm AverageTime -tu ns"
+val runThroughputCmd =
+  "bench/jmh:run -bm Throughput -tu s"
+
+addCommandAlias(
+  "runAvgtime",
+  ";" +
+    runAvgtimeCmd +
+    " -rff master.avgtime.csv;"
+)
+addCommandAlias(
+  "runAvgtimeProf",
+  ";" +
+    runAvgtimeCmd +
+    " -rff master.avgtime.prof.csv" +
+    " -prof stack;"
+)
+addCommandAlias(
+  "runThroughput",
+  ";" +
+    runAvgtimeCmd +
+    " -rff master.throughput.csv;"
+)
+addCommandAlias(
+  "runThroughputProf",
+  ";" +
+    runAvgtimeCmd +
+    " -rff master.throughput.csv" +
+    " -prof stack;"
+)
 
 lazy val allProjects: Seq[ClasspathDep[ProjectReference]] = Seq(
   `memeid`,
