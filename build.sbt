@@ -15,7 +15,6 @@ lazy val `root` = project
 
 lazy val `docs` = (project in file(".docs"))
   .enablePlugins(MdocPlugin)
-  .settings(mdocVariables += "NAME" -> "memeid")
   .settings(mdocIn := file(".docs"))
   .settings(mdocOut := file("."))
   .settings(skip in publish := true)
