@@ -19,7 +19,9 @@ package memeid4s.http4s
 import cats.syntax.either._
 
 import memeid4s.UUID
-import org.http4s.{ParseFailure, QueryParamDecoder, QueryParamEncoder}
+import org.http4s.ParseFailure
+import org.http4s.QueryParamDecoder
+import org.http4s.QueryParamEncoder
 
 @SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract", "scalafix:Disable.toString"))
 trait instances {

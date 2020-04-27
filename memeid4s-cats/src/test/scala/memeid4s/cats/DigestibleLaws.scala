@@ -16,11 +16,13 @@
 
 package memeid4s.cats
 
+import cats.Contravariant
+import cats.Eq
 import cats.kernel.laws.discipline.SerializableTests
+import cats.laws.discipline.ContravariantTests
+import cats.laws.discipline.MiniInt
 import cats.laws.discipline.arbitrary._
 import cats.laws.discipline.eq._
-import cats.laws.discipline.{ContravariantTests, MiniInt}
-import cats.{Contravariant, Eq}
 
 import memeid4s.cats.instances._
 import memeid4s.digest.Digestible

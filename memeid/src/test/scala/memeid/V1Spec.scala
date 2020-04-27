@@ -20,7 +20,7 @@ import scala.collection.parallel.immutable.ParRange
 
 import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:Disable.scala.parallel"))
+@SuppressWarnings(Array("scalafix:Disable.scala.collection.parallel"))
 class V1Spec extends Specification {
 
   "V1 constructor" should {
@@ -52,7 +52,7 @@ class V1Spec extends Specification {
 
     "check time components" in {
       val uuid         = UUID.fromString("1cbf0782-3209-11ea-978f-2e728ce88125")
-      val clockSeqLow  = 0x8F.toLong
+      val clockSeqLow  = 0x8f.toLong
       val clockSeqHigh = 0x17.toLong // 0x97 - 0x80 (from variant)
       val timeLow      = 0x1cbf0782.toLong
       val timeMid      = 0x3209.toLong

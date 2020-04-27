@@ -16,7 +16,8 @@
 
 package memeid4s.circe
 
-import io.circe.{Decoder, Encoder}
+import io.circe.Decoder
+import io.circe.Encoder
 import memeid4s.UUID
 
 @SuppressWarnings(Array("scalafix:DisableSyntax.valInAbstract"))

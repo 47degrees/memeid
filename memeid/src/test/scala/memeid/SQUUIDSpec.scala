@@ -20,7 +20,7 @@ import scala.collection.parallel.immutable.ParRange
 
 import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:Disable.scala.parallel"))
+@SuppressWarnings(Array("scalafix:Disable.scala.collection.parallel"))
 class SQUUIDSpec extends Specification {
 
   "SQUUID constructor" should {

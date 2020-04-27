@@ -10,14 +10,15 @@ object WebsitePlugin extends AutoPlugin {
 
   override def trigger: PluginTrigger = allRequirements
 
-  override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    micrositeName               := "memeid",
-    micrositeBaseUrl            := "memeid",
-    micrositeDocumentationUrl   := "docs",
-    micrositeGithubOwner        := "47degrees",
-    micrositeGithubRepo         := "memeid",
-    micrositeGithubToken        := Option(System.getenv().get("GITHUB_TOKEN")),
-    micrositePushSiteWith       := GitHub4s,
-    micrositeHighlightLanguages ++= Seq("java", "scala")
-  )
+  override def projectSettings: Seq[Def.Setting[_]] =
+    Seq(
+      micrositeName                := "memeid",
+      micrositeBaseUrl             := "memeid",
+      micrositeDocumentationUrl    := "docs",
+      micrositeGithubOwner         := "47degrees",
+      micrositeGithubRepo          := "memeid",
+      micrositeGithubToken         := Option(System.getenv().get("GITHUB_TOKEN")),
+      micrositePushSiteWith        := GitHub4s,
+      micrositeHighlightLanguages ++= Seq("java", "scala")
+    )
 }

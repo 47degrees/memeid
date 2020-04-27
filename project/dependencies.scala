@@ -1,4 +1,4 @@
-import sbt.{Def, _}
+import sbt._
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
 
@@ -50,7 +50,7 @@ object dependencies extends AutoPlugin {
   private val literal = Def.setting {
     Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
-      "com.chuusai"    %% "shapeless"    % "2.3.3"            % Test
+      "com.chuusai"   %% "shapeless"     % "2.3.3"            % Test
     )
   }
 
@@ -94,43 +94,46 @@ object dependencies extends AutoPlugin {
 
   override def requires: Plugins = JvmPlugin
 
-  override def projectSettings: Seq[Def.Setting[_]] = Seq(
-    libraryDependencies ++= common ++ parallel.value,
-    libraryDependencies ++= {
-      projectID.value.name match {
-        case "docs"                => docs
-        case "website"             => docs
-        case "memeid4s-cats"       => cats.value
-        case "memeid4s-literal"    => literal.value
-        case "memeid4s-doobie"     => doobie.value
-        case "memeid4s-circe"      => circe.value
-        case "memeid4s-http4s"     => http4s.value
-        case "memeid4s-scalacheck" => scalacheck
-        case _                     => Nil
+  override def projectSettings: Seq[Def.Setting[_]] =
+    Seq(
+      libraryDependencies ++= common ++ parallel.value,
+      libraryDependencies ++= {
+        projectID.value.name match {
+          case "docs"                => docs
+          case "website"             => docs
+          case "memeid4s-cats"       => cats.value
+          case "memeid4s-literal"    => literal.value
+          case "memeid4s-doobie"     => doobie.value
+          case "memeid4s-circe"      => circe.value
+          case "memeid4s-http4s"     => http4s.value
+          case "memeid4s-scalacheck" => scalacheck
+          case _                     => Nil
+        }
+      }
+    )
+
+  /**
+   * Wraps the value in a `Seq` if current scala version matches the one provided,
+   * otherwise returns `Nil`.
+   */
+  def on[A](pf: PartialFunction[(Long, Long), String]): Def.Initialize[String] =
+    Def.setting {
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some(v) => pf(v)
+        case _       => sys.error("Invalid Scala version")
       }
     }
-  )
 
   /**
    * Wraps the value in a `Seq` if current scala version matches the one provided,
    * otherwise returns `Nil`.
    */
-  def on[A](pf: PartialFunction[(Long, Long), String]): Def.Initialize[String] = Def.setting {
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some(v) => pf(v)
-      case _       => sys.error("Invalid Scala version")
+  def on[A](major: Int, minor: Int)(a: A): Def.Initialize[Seq[A]] =
+    Def.setting {
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some(v) if v == (major, minor) => Seq(a)
+        case _                              => Nil
+      }
     }
-  }
-
-  /**
-   * Wraps the value in a `Seq` if current scala version matches the one provided,
-   * otherwise returns `Nil`.
-   */
-  def on[A](major: Int, minor: Int)(a: A): Def.Initialize[Seq[A]] = Def.setting {
-    CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some(v) if v == (major, minor) => Seq(a)
-      case _                              => Nil
-    }
-  }
 
 }

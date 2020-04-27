@@ -27,9 +27,10 @@ trait Time {
 
 object Time {
 
-  implicit def apply: Time = new Time {
+  implicit def apply: Time =
+    new Time {
 
-    override def monotonic: Long = Timestamp.monotonic()
+      override def monotonic: Long = Timestamp.monotonic()
 
-  }
+    }
 }

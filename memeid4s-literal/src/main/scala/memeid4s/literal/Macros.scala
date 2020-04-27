@@ -40,10 +40,11 @@ private[literal] class Macros(val c: blackbox.Context) {
 
   private object interpolate {
 
-    def unapply(t: c.Tree): Option[String] = t match {
-      case Apply(_, List(Apply(_, List(Literal(Constant(s: String)))))) => Some(s)
-      case _                                                            => None
-    }
+    def unapply(t: c.Tree): Option[String] =
+      t match {
+        case Apply(_, List(Apply(_, List(Literal(Constant(s: String)))))) => Some(s)
+        case _                                                            => None
+      }
 
   }
 
