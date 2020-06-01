@@ -9,6 +9,7 @@ addSbtPlugin("com.alejandrohdezma"               % "sbt-modules"              % 
 addSbtPlugin("com.alejandrohdezma"               % "sbt-remove-test-from-pom" % "0.1.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-scalafix-defaults"    % "0.2.3")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-scalafmt-defaults"    % "0.2.0")
+addSbtPlugin("com.hanhuy.sbt"                    % "kotlin-plugin"            % "2.0.0")
 addSbtPlugin("com.geirsson"                      % "sbt-ci-release"           % "1.5.3")
 addSbtPlugin("com.thoughtworks.sbt-api-mappings" % "sbt-api-mappings"         % "3.0.0")
 addSbtPlugin("de.heikoseeberger"                 % "sbt-header"               % "5.6.0")

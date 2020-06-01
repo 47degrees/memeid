@@ -41,6 +41,9 @@ lazy val `memeid4s-scalacheck` = module.dependsOn(memeid)
 ////  KOTLIN ////
 /////////////////
 
+kotlinLib("stdlib")
+kotlincOptions += "-verbose"
+
 lazy val `memeid-kotlin` = project.dependsOn(`memeid`)
 
 lazy val bench = project

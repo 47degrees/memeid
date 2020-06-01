@@ -11,12 +11,11 @@ object WebsitePlugin extends AutoPlugin {
 
   override def projectSettings: Seq[Def.Setting[_]] =
     Seq(
-      micrositeName               := "memeid",
-      micrositeBaseUrl            := "memeid",
-      micrositeDocumentationUrl   := "docs",
-      micrositeGithubToken        := Option(System.getenv().get("GITHUB_TOKEN")),
-      micrositePushSiteWith       := GitHub4s,
-      micrositeHighlightLanguages := Seq("java", "scala")
+      micrositeName := "memeid",
+      micrositeBaseUrl := "memeid",
+      micrositeDocumentationUrl := "docs",
+      micrositeGithubToken := Option(System.getenv().get("GITHUB_TOKEN")),
+      micrositePushSiteWith := GitHub4s,
+      micrositeHighlightLanguages ++= Seq("java", "scala", "kotlin")
     )
-
 }
