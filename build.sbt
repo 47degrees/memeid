@@ -37,6 +37,12 @@ lazy val `memeid4s-circe`      = module.dependsOn(`memeid4s`, `memeid4s-cats` % 
 lazy val `memeid4s-http4s`     = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
 lazy val `memeid4s-scalacheck` = module.dependsOn(memeid)
 
+/////////////////
+////  KOTLIN ////
+/////////////////
+
+lazy val `memeid-kotlin` = project.dependsOn(`memeid`)
+
 lazy val bench = project
   .dependsOn(memeid4s)
   .enablePlugins(JmhPlugin)
