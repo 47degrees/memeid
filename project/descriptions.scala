@@ -18,7 +18,8 @@ object descriptions extends AutoPlugin {
     "memeid4s-doobie"     -> "Doobie type-classes instances to enable using memeid's UUID in doobie queries",
     "memeid4s-circe"      -> "Circe type-classes instances to enable decoding/encoding memeid's UUID values in JSON",
     "memeid4s-http4s"     -> "Http4s type-classes instances to enable using memeid's UUID as a query param in http4s services",
-    "memeid4s-scalacheck" -> "Arbitrary instances for memeid's UUID as well as the different UUID versions"
+    "memeid4s-scalacheck" -> "Arbitrary instances for memeid's UUID as well as the different UUID versions",
+    "memeid-kotlin"       -> "Kotlin wrapper for memeid, providing idiomatic constructors"
   )
 
 }
