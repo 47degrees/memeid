@@ -3,8 +3,7 @@ ThisBuild / crossScalaVersions := Seq("2.12.11", "2.13.2")
 ThisBuild / organization       := "com.47deg"
 
 addCommandAlias("ci-test", "fix --check; +mdoc; +test")
-addCommandAlias("ci-docs", "+mdoc; headerCreateAll")
-addCommandAlias("ci-microsite", "publishMicrosite")
+addCommandAlias("ci-docs", "+mdoc; headerCreateAll; publishMicrosite")
 
 lazy val documentation = project
   .enablePlugins(MdocPlugin)
