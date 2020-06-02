@@ -1,22 +1,23 @@
 package memeid4s.bench
 
-import memeid4s.UUID
+import java.util.concurrent.TimeUnit
+
 import scala.util.Random
 
-import java.util.concurrent.TimeUnit
+import memeid4s.UUID
 import org.openjdk.jmh.annotations._
-
 
 object UUIDStates {
   val namespace = UUID.V1.next
 
   val gen = new Random()
 
-  val uuids: List[String] =
-    (1 to 100).map(_ => UUID.V1.next.toString).toList
+  @SuppressWarnings(Array("scalafix:Disable.toString"))
+  val uuids: List[String] = (1 to 100).map(_ => UUID.V1.next.toString).toList
 
   @State(Scope.Benchmark)
   class RNG {
+
     def uuid: String =
       uuids(gen.nextInt(uuids.length))
   }
