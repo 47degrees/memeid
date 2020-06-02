@@ -4,6 +4,7 @@ ThisBuild / organization       := "com.47deg"
 
 addCommandAlias("ci-test", "fix --check; +mdoc; +test")
 addCommandAlias("ci-docs", "+mdoc; headerCreateAll; publishMicrosite")
+addCommandAlias("ci-publish", "ci-release")
 
 lazy val documentation = project
   .enablePlugins(MdocPlugin)
