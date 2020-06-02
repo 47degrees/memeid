@@ -18,7 +18,9 @@ package memeid4s.circe
 
 import cats.syntax.show._
 
-import io.circe.{Decoder, Encoder, Json}
+import io.circe.Decoder
+import io.circe.Encoder
+import io.circe.Json
 import memeid4s.UUID
 import memeid4s.cats.instances._
 import memeid4s.circe.instances._

@@ -17,7 +17,10 @@
 package memeid4s.cats
 
 import cats.instances.option._
-import cats.kernel.laws.discipline.{HashTests, LowerBoundedTests, OrderTests, UpperBoundedTests}
+import cats.kernel.laws.discipline.HashTests
+import cats.kernel.laws.discipline.LowerBoundedTests
+import cats.kernel.laws.discipline.OrderTests
+import cats.kernel.laws.discipline.UpperBoundedTests
 
 import memeid4s.UUID
 import memeid4s.cats.instances._

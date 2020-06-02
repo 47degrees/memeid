@@ -32,7 +32,8 @@ package memeid4s.scalacheck.arbitrary
  * limitations under the License.
  */
 
-import memeid.{Node, UUID}
+import memeid.Node
+import memeid.UUID
 import org.scalacheck.Arbitrary
 import org.scalacheck.Arbitrary.arbitrary
 

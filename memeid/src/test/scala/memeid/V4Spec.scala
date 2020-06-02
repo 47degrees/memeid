@@ -20,7 +20,7 @@ import scala.collection.parallel.immutable.ParRange
 
 import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:Disable.scala.parallel"))
+@SuppressWarnings(Array("scalafix:Disable.scala.collection.parallel"))
 class V4Spec extends Specification {
 
   "V4 constructor" should {

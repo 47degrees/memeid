@@ -18,7 +18,8 @@ package memeid4s.doobie
 
 import java.util.{UUID => JUUID}
 
-import doobie.util.{Get, Put}
+import doobie.util.Get
+import doobie.util.Put
 import memeid4s.UUID
 
 trait instances {

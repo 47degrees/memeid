@@ -18,11 +18,13 @@ package memeid4s
 
 import java.util.{UUID => JUUID}
 
-import _root_.scala.reflect.ClassTag
-import _root_.scala.util.Try
+import scala.reflect.ClassTag
+import scala.util.Try
+
 import memeid4s.digest.Digestible
 import memeid4s.node.Node
-import memeid4s.time.{Posix, Time}
+import memeid4s.time.Posix
+import memeid4s.time.Time
 
 object UUID {
 
@@ -49,10 +51,11 @@ object UUID {
      * @return this [[UUID]] as the provided type if versions match;
      *         otherwise, returns `None`
      */
-    def as[A <: UUID: ClassTag]: Option[A] = uuid match {
-      case a: A => Some(a)
-      case _    => None
-    }
+    def as[A <: UUID: ClassTag]: Option[A] =
+      uuid match {
+        case a: A => Some(a)
+        case _    => None
+      }
 
     /**
      * Returns `true` if this UUID matches the provided type;
@@ -62,10 +65,11 @@ object UUID {
      * @return `true` if this [[UUID]] matches the provided type;
      *         otherwise, returns `false`
      */
-    def is[A <: UUID: ClassTag]: Boolean = uuid match {
-      case _: A => true
-      case _    => false
-    }
+    def is[A <: UUID: ClassTag]: Boolean =
+      uuid match {
+        case _: A => true
+        case _    => false
+      }
 
   }
 

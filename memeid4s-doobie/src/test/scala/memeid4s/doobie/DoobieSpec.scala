@@ -43,7 +43,7 @@ class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatc
     sql"CREATE TABLE test (id UUID NOT NULL)".update.run.transact(transactor).void.unsafeRunSync
 
   def select(uuid: UUID): Query0[UUID] =
-    sql"""SELECT id from test where id = ${uuid}""".query[UUID]
+    sql"""SELECT id from test where id = $uuid""".query[UUID]
 
   def insert(uuid: UUID): Update0 =
     sql"""insert into test (id) values ($uuid)""".update

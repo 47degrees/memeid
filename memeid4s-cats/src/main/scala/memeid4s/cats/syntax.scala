@@ -18,13 +18,15 @@ package memeid4s.cats
 
 import java.util.concurrent.TimeUnit.SECONDS
 
-import cats.effect.{Clock, Sync}
+import cats.effect.Clock
+import cats.effect.Sync
 import cats.syntax.functor._
 
 import memeid4s.UUID
 import memeid4s.digest.Digestible
 import memeid4s.node.Node
-import memeid4s.time.{Posix, Time}
+import memeid4s.time.Posix
+import memeid4s.time.Time
 
 trait syntax {
 
@@ -40,13 +42,14 @@ trait syntax {
 
     def random[F[_]: Sync]: F[UUID] = Sync[F].delay(UUID.V4.random)
 
-    def squuid[F[_]: Sync: Clock]: F[UUID] = Clock[F].realTime(SECONDS).map { s =>
-      UUID.V4.squuid {
-        new Posix {
-          override def value: Long = s
+    def squuid[F[_]: Sync: Clock]: F[UUID] =
+      Clock[F].realTime(SECONDS).map { s =>
+        UUID.V4.squuid {
+          new Posix {
+            override def value: Long = s
+          }
         }
       }
-    }
 
   }
 

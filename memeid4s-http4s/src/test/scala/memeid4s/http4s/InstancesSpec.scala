@@ -22,8 +22,9 @@ import memeid4s.UUID
 import memeid4s.cats.instances._
 import memeid4s.http4s.instances._
 import memeid4s.scalacheck.arbitrary.instances._
+import org.http4s.QueryParamEncoder
+import org.http4s.QueryParameterValue
 import org.http4s.dsl.impl.QueryParamDecoderMatcher
-import org.http4s.{QueryParamEncoder, QueryParameterValue}
 import org.scalacheck.Gen
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification

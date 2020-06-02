@@ -1,33 +1,22 @@
-ThisBuild / scalaVersion       := "2.13.1"
-ThisBuild / crossScalaVersions := Seq("2.12.10", "2.13.1")
+ThisBuild / scalaVersion       := "2.13.2"
+ThisBuild / crossScalaVersions := Seq("2.12.11", "2.13.2")
 ThisBuild / organization       := "com.47deg"
 
-Global / onChangedBuildSource := ReloadOnSourceChanges
+addCommandAlias("ci-test", "fix --check; +mdoc; testCovered")
+addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishMicrosite")
+addCommandAlias("ci-publish", "github; ci-release")
 
-addCommandAlias("ci-test", "fix --check; +docs/mdoc; +website/mdoc; +test")
-addCommandAlias("ci-docs", "+docs/mdoc; headerCreateAll")
-addCommandAlias("ci-microsite", "website/publishMicrosite")
-
-lazy val `root` = project
-  .in(file("."))
-  .aggregate(allProjects: _*)
-  .settings(skip in publish := true)
-
-lazy val `docs` = (project in file(".docs"))
+lazy val documentation = project
   .enablePlugins(MdocPlugin)
-  .settings(mdocVariables += "NAME" -> "memeid")
-  .settings(mdocIn := file(".docs"))
   .settings(mdocOut := file("."))
   .settings(skip in publish := true)
-  .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
+  .dependsOn(allProjects: _*)
 
-lazy val `website` = project
-  .aggregate(allProjects: _*)
+lazy val microsite = project
   .enablePlugins(MdocPlugin)
   .enablePlugins(MicrositesPlugin)
   .settings(skip in publish := true)
-  .settings(mdocIn := file("website/docs"))
-  .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
+  .dependsOn(allProjects: _*)
 
 lazy val `memeid` = project
   .settings(crossPaths := false)
@@ -61,7 +50,7 @@ lazy val `memeid4s-http4s` = project
 lazy val `memeid4s-scalacheck` = project
   .dependsOn(memeid)
 
-lazy val allProjects: Seq[ProjectReference] = Seq(
+lazy val allProjects: Seq[ClasspathDep[ProjectReference]] = Seq(
   `memeid`,
   memeid4s,
   `memeid4s-cats`,

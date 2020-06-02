@@ -19,7 +19,8 @@ package memeid4s.cats
 import java.util.{UUID => JUUID}
 
 import cats.instances.uuid._
-import cats.kernel.{Hash, Order}
+import cats.kernel.Hash
+import cats.kernel.Order
 import cats.syntax.contravariant._
 import cats.syntax.show._
 
@@ -58,7 +59,7 @@ class InstancesSpec extends Specification with ScalaCheck {
     "compare using unsigned comparison" in prop { lsb: Long =>
       // specifically chosen since they will not compare correctly unless using unsigned comparison
       val uuid1 = UUID.from(0x20000000.toLong, lsb)
-      val uuid2 = UUID.from(0xE0000000.toLong, lsb)
+      val uuid2 = UUID.from(0xe0000000.toLong, lsb)
 
       (Order[UUID].compare(uuid1, uuid2) must be equalTo -1) and
         (Order[JUUID].compare(uuid1.asJava, uuid2.asJava) must be equalTo 1)
