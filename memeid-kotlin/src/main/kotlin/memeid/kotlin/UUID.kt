@@ -16,16 +16,13 @@
 
 package memeid.kotlin
 
-import memeid.Bits.toBytes
 import memeid.kotlin.node.Node
 import memeid.kotlin.time.time
 import memeid.UUID
-import scala.inline
-import java.nio.charset.StandardCharsets.UTF_8
-import java.util.function.Function
 
 typealias V1 = UUID.V1
 typealias V2 = UUID.V2
+typealias V3 = UUID.V3
 typealias V4 = UUID.V4
 typealias V5 = UUID.V5
 typealias UnknownVersion = UUID.UnknownVersion
@@ -43,7 +40,8 @@ class UUID(val uuid: UUID) {
   }
 
   object V3 {
-    inline fun <reified A> apply(namespace: UUID): UUID = UUID.V3.from(namespace, A::class.java, digestible)
+    inline fun <reified A> apply(namespace: UUID): UUID = V3.from(namespace, A::class.java, A::scope)
+
   }
 }
 

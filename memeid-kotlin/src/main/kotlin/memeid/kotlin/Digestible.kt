@@ -4,39 +4,33 @@ import memeid.Bits.toBytes
 import java.util.function.Function
 import kotlin.text.Charsets.UTF_8
 
-object Digestable {
-  @JvmStatic fun <T, R> toByteArray(function: Function<T, R>): (T) -> R = function::apply
-
-  fun call(function: (String) -> ByteArray, arg: String): ByteArray = function(arg)
-  fun call(function: Function<String, ByteArray>, arg: String): ByteArray = call(toByteArray(function), arg)
-
-  fun call(function: (UUID) -> ByteArray, arg: UUID): ByteArray = function(arg)
-  fun call(function: Function<UUID, ByteArray>, arg: UUID): ByteArray = call(toByteArray(function), arg)
-}
-
-interface Digestible : FormatString, FormatUuid
+interface Format : FormatString, FormatUuid
 
 interface FormatString {
-  fun Digestible.f(
+  fun Format.f(
     f: (String) -> ByteArray
   ): Function<String, ByteArray> = Function { t -> f(t) }
 }
 
 interface FormatUuid {
-  fun Digestible.g(
+  fun Format.g(
     f: (UUID) -> ByteArray
   ): Function<UUID, ByteArray> = Function { t -> f(t) }
 }
 
 fun <A> scope(
-  env: Digestible.() -> A
-): A = env(object : Digestible {})
+  env: Format.() -> A
+): A = env(object : Format {})
 
-val digestible: Function<UUID, ByteArray> =
-  scope {
-    f { string -> string.toByteArray(UTF_8) }
-    g { uuid -> toBytes(uuid.msb).plus(toBytes(uuid.lsb)) }
-  }
+object Digestible {
+  
+
+  operator fun invoke(string: String): Function<String, ByteArray> = scope { f { string.toByteArray(UTF_8)} }
+  operator fun invoke(uuid: UUID): Function<UUID, ByteArray> = scope { g { toBytes(uuid.msb) + toBytes(uuid.lsb) } }
+}
+
+fun String.scope() = Digestible.invoke(this)
+fun UUID.scope() = Digestible.invoke(this)
 
 
 
