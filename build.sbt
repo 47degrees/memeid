@@ -2,29 +2,23 @@ ThisBuild / scalaVersion       := "2.13.2"
 ThisBuild / crossScalaVersions := Seq("2.12.11", "2.13.2")
 ThisBuild / organization       := "com.47deg"
 
-addCommandAlias("ci-test", "fix --check; +docs/mdoc; +website/mdoc; +test")
-addCommandAlias("ci-docs", "+docs/mdoc; headerCreateAll")
+addCommandAlias("ci-test", "fix --check; +mdoc; +test")
+addCommandAlias("ci-docs", "+mdoc; headerCreateAll")
 addCommandAlias("ci-microsite", "website/publishMicrosite")
-
-lazy val `root` = project
-  .in(file("."))
-  .aggregate(allProjects: _*)
-  .settings(skip in publish := true)
 
 lazy val `docs` = (project in file(".docs"))
   .enablePlugins(MdocPlugin)
   .settings(mdocIn := file(".docs"))
   .settings(mdocOut := file("."))
   .settings(skip in publish := true)
-  .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
+  .dependsOn(allProjects: _*)
 
 lazy val `website` = project
-  .aggregate(allProjects: _*)
   .enablePlugins(MdocPlugin)
   .enablePlugins(MicrositesPlugin)
   .settings(skip in publish := true)
   .settings(mdocIn := file("website/docs"))
-  .dependsOn(allProjects.map(ClasspathDependency(_, None)): _*)
+  .dependsOn(allProjects: _*)
 
 lazy val `memeid` = project
   .settings(crossPaths := false)
@@ -58,7 +52,7 @@ lazy val `memeid4s-http4s` = project
 lazy val `memeid4s-scalacheck` = project
   .dependsOn(memeid)
 
-lazy val allProjects: Seq[ProjectReference] = Seq(
+lazy val allProjects: Seq[ClasspathDep[ProjectReference]] = Seq(
   `memeid`,
   memeid4s,
   `memeid4s-cats`,
