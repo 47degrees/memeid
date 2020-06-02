@@ -43,7 +43,7 @@ class UUID(val uuid: UUID) {
   }
 
   object V3 {
-    inline fun <reified A> apply(namespace: UUID): UUID = UUID.V3.from(namespace, A::class.java, Digestable.toByteArray())
+    inline fun <reified A> apply(namespace: UUID): UUID = UUID.V3.from(namespace, A::class.java, digestible)
   }
 }
 

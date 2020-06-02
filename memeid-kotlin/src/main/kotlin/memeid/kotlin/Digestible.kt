@@ -1,7 +1,6 @@
 package memeid.kotlin
 
 import memeid.Bits.toBytes
-import memeid.kotlin.Digestable.toByteArray
 import java.util.function.Function
 import kotlin.text.Charsets.UTF_8
 
@@ -15,8 +14,29 @@ object Digestable {
   fun call(function: Function<UUID, ByteArray>, arg: UUID): ByteArray = call(toByteArray(function), arg)
 }
 
-val string = Function<String, ByteArray> { t -> t.toByteArray(UTF_8) }
-val uuid = Function<UUID, ByteArray> { t -> toBytes(t.msb).plus(toBytes(t.lsb))}
+interface Digestible : FormatString, FormatUuid
+
+interface FormatString {
+  fun Digestible.f(
+    f: (String) -> ByteArray
+  ): Function<String, ByteArray> = Function { t -> f(t) }
+}
+
+interface FormatUuid {
+  fun Digestible.g(
+    f: (UUID) -> ByteArray
+  ): Function<UUID, ByteArray> = Function { t -> f(t) }
+}
+
+fun <A> scope(
+  env: Digestible.() -> A
+): A = env(object : Digestible {})
+
+val digestible: Function<UUID, ByteArray> =
+  scope {
+    f { string -> string.toByteArray(UTF_8) }
+    g { uuid -> toBytes(uuid.msb).plus(toBytes(uuid.lsb)) }
+  }
 
 
 
