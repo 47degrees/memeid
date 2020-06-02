@@ -1,5 +1,6 @@
 addSbtPlugin("ch.epfl.scala"                     % "sbt-scalafix"             % "0.9.16")
 addSbtPlugin("com.47deg"                         % "sbt-microsites"           % "1.2.1")
+addSbtPlugin("com.alejandrohdezma"               % "sbt-codecov"              % "0.2.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"                  % "0.5.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-header"        % "0.8.2")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-mdoc"          % "0.8.2")
@@ -13,3 +14,4 @@ addSbtPlugin("de.heikoseeberger"                 % "sbt-header"               % 
 addSbtPlugin("io.github.davidgregory084"         % "sbt-tpolecat"             % "0.1.11")
 addSbtPlugin("org.scalameta"                     % "sbt-mdoc"                 % "2.2.0")
 addSbtPlugin("org.scalameta"                     % "sbt-scalafmt"             % "2.4.0")
+addSbtPlugin("org.scoverage"                     % "sbt-scoverage"            % "1.6.1")
