@@ -3,7 +3,7 @@ ThisBuild / crossScalaVersions := Seq("2.12.11", "2.13.2")
 ThisBuild / organization       := "com.47deg"
 
 addCommandAlias("ci-test", "fix --check; +mdoc; +test")
-addCommandAlias("ci-docs", "github; +mdoc; headerCreateAll; publishMicrosite")
+addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishMicrosite")
 addCommandAlias("ci-publish", "github; ci-release")
 
 lazy val documentation = project
