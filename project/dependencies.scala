@@ -82,7 +82,7 @@ object dependencies extends AutoPlugin {
     "org.scalacheck" %% "scalacheck" % V.scalacheck % Provided
   )
 
-  private val docs = Seq(
+  private val documentation = Seq(
     "org.typelevel"  %% "cats-effect" % "2.1.1",
     "io.circe"       %% "circe-core"  % "0.13.0",
     "org.tpolecat"   %% "doobie-h2"   % "0.9.0",
@@ -99,8 +99,8 @@ object dependencies extends AutoPlugin {
       libraryDependencies ++= common ++ parallel.value,
       libraryDependencies ++= {
         projectID.value.name match {
-          case "docs"                => docs
-          case "website"             => docs
+          case "documentation"       => documentation
+          case "microsite"           => documentation
           case "memeid4s-cats"       => cats.value
           case "memeid4s-literal"    => literal.value
           case "memeid4s-doobie"     => doobie.value

@@ -4,20 +4,18 @@ ThisBuild / organization       := "com.47deg"
 
 addCommandAlias("ci-test", "fix --check; +mdoc; +test")
 addCommandAlias("ci-docs", "+mdoc; headerCreateAll")
-addCommandAlias("ci-microsite", "website/publishMicrosite")
+addCommandAlias("ci-microsite", "publishMicrosite")
 
-lazy val `docs` = (project in file(".docs"))
+lazy val documentation = project
   .enablePlugins(MdocPlugin)
-  .settings(mdocIn := file(".docs"))
   .settings(mdocOut := file("."))
   .settings(skip in publish := true)
   .dependsOn(allProjects: _*)
 
-lazy val `website` = project
+lazy val microsite = project
   .enablePlugins(MdocPlugin)
   .enablePlugins(MicrositesPlugin)
   .settings(skip in publish := true)
-  .settings(mdocIn := file("website/docs"))
   .dependsOn(allProjects: _*)
 
 lazy val `memeid` = project
