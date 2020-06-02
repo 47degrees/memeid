@@ -2,8 +2,6 @@ ThisBuild / scalaVersion       := "2.13.2"
 ThisBuild / crossScalaVersions := Seq("2.12.11", "2.13.2")
 ThisBuild / organization       := "com.47deg"
 
-Global / onChangedBuildSource := ReloadOnSourceChanges
-
 addCommandAlias("ci-test", "fix --check; +docs/mdoc; +website/mdoc; +test")
 addCommandAlias("ci-docs", "+docs/mdoc; headerCreateAll")
 addCommandAlias("ci-microsite", "website/publishMicrosite")
