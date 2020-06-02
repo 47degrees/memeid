@@ -16,33 +16,34 @@
 
 package memeid.kotlin
 
+import memeid.Bits.toBytes
 import memeid.kotlin.node.Node
 import memeid.kotlin.time.time
+import memeid.UUID
+import scala.inline
+import java.nio.charset.StandardCharsets.UTF_8
 import java.util.function.Function
 
-typealias V1 = memeid.UUID.V1
-typealias V2 = memeid.UUID.V2
-typealias V4 = memeid.UUID.V4
-typealias V5 = memeid.UUID.V5
-typealias UnknownVersion = memeid.UUID.UnknownVersion
+typealias V1 = UUID.V1
+typealias V2 = UUID.V2
+typealias V4 = UUID.V4
+typealias V5 = UUID.V5
+typealias UnknownVersion = UUID.UnknownVersion
 
-class UUID(val uuid: memeid.UUID) {
+class UUID(val uuid: UUID) {
+
+  /** The most significant 64 bits of this UUID's 128 bit value */
+  val msb: Long = uuid.mostSignificantBits
+
+  /** The least significant 64 bits of this UUID's 128 bit value */
+  val lsb: Long = uuid.leastSignificantBits
+
   object V1 {
-    fun next(node: Node): memeid.UUID =  memeid.UUID.V1.next(node.node) { time.monotonic }
+    fun next(node: Node): UUID =  UUID.V1.next(node.node) { time.monotonic }
   }
 
   object V3 {
-    inline fun <reified A: memeid.UUID> from(namespace: memeid.UUID): memeid.UUID {
-      val handler = Function<A, ByteArray> { t ->
-        when (t) {
-          // is Digest<String> ->
-        }
-
-        byteArrayOf()
-      }
-
-      return memeid.UUID.V3.from(namespace, A::class.java, handler.apply("wha"))
-    }
+    inline fun <reified A> apply(namespace: UUID): UUID = UUID.V3.from(namespace, A::class.java, Digestable.toByteArray())
   }
 }
 
