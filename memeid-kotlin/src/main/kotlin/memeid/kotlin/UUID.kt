@@ -19,13 +19,7 @@ package memeid.kotlin
 import memeid.kotlin.node.Node
 import memeid.kotlin.time.time
 import memeid.UUID
-
-typealias V1 = UUID.V1
-typealias V2 = UUID.V2
-typealias V3 = UUID.V3
-typealias V4 = UUID.V4
-typealias V5 = UUID.V5
-typealias UnknownVersion = UUID.UnknownVersion
+import memeid.kotlin.time.Posix
 
 class UUID(val uuid: UUID) {
 
@@ -40,8 +34,46 @@ class UUID(val uuid: UUID) {
   }
 
   object V3 {
-    inline fun <reified A> apply(namespace: UUID): UUID = V3.from(namespace, A::class.java, A::scope)
+    /**
+     * Construct a namespace name-based v3 UUID. Uses MD5 as a hash algorithm
+     *
+     * @param namespace [UUID] used for the [V3] generation
+     * @tparam A Sets the type for the [Digestible] parameter
+     * @return [V3]
+     */
+    inline fun <reified A> apply(namespace: UUID): UUID =
+      UUID.V3.from(namespace, A::class.java, Digestible::invoke)
+  }
 
+  object V4 {
+
+    /**
+     * Construct a v4 (random) UUID from the given `msb` and `lsb`.
+     *
+     * @param msb Most significant bit in [Long] representation
+     * @param lsb Least significant bit in [Long] representation
+     * @return [V4]
+     */
+    fun apply(msb: Long, lsb: Long): UUID = UUID.V4.from(msb, lsb)
+
+    // Construct a v4 (random) UUID.
+    fun random(): UUID = UUID.V4.random()
+
+    // Construct a SQUUID (random, time-based) UUID.
+    fun squuid(p: Posix): UUID = UUID.V4.squuid(p.value)
+  }
+
+  object V5 {
+
+    /**
+     * Construct a namespace name-based v5 UUID. Uses SHA as a hash algorithm
+     *
+     * @param namespace [UUID] used for the [V5] generation
+     * @tparam A Sets the type for the [Digestible] parameter
+     * @return [V5]
+     */
+    inline fun <reified A> apply(namespace: UUID): UUID =
+      UUID.V5.from(namespace, A::class.java, Digestible::invoke)
   }
 }
 

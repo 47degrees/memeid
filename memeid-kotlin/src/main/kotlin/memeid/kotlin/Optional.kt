@@ -16,7 +16,6 @@
 
 package memeid.kotlin
 
-import memeid.UUID
 import java.util.NoSuchElementException
 
 sealed class Optional<T>(private val value: T?) {
