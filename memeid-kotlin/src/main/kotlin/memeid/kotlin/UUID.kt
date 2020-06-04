@@ -38,11 +38,17 @@ class UUID(val uuid: UUID) {
      * Construct a namespace name-based v3 UUID. Uses MD5 as a hash algorithm
      *
      * @param namespace [UUID] used for the [V3] generation
-     * @tparam A Sets the type for the [Digestible] parameter
+     * @tparam A Sets the type for the [Format] parameter
      * @return [V3]
      */
-    inline fun <reified A> apply(namespace: UUID): UUID =
+    inline operator fun <reified A> invoke(namespace: UUID): UUID =
       UUID.V3.from(namespace, A::class.java, Digestible::invoke)
+
+
+    private fun
+
+    operator fun invoke(namespace: UUID, B: String): UUID =
+      UUID.V3.from(namespace, B::class.java, Digestible::invoke)
   }
 
   object V4 {
@@ -69,10 +75,10 @@ class UUID(val uuid: UUID) {
      * Construct a namespace name-based v5 UUID. Uses SHA as a hash algorithm
      *
      * @param namespace [UUID] used for the [V5] generation
-     * @tparam A Sets the type for the [Digestible] parameter
+     * @tparam A Sets the type for the [Format] parameter
      * @return [V5]
      */
-    inline fun <reified A> apply(namespace: UUID): UUID =
+    inline fun <reified A: Digestible> apply(namespace: UUID): UUID =
       UUID.V5.from(namespace, A::class.java, Digestible::invoke)
   }
 }

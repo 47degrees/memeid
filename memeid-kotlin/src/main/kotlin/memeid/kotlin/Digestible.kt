@@ -16,23 +16,53 @@ package memeid.kotlin
  */
 
 import memeid.Bits.toBytes
+import memeid.kotlin.UUID.V3.invoke
+import scala.Predef
+import scala.inline
+import scala.runtime.BoxesRunTime.toByte
 import java.util.function.Function
+import kotlin.reflect.KClass
 import kotlin.text.Charsets.UTF_8
 
-interface Format<A> : memeid.kotlin.Function<A>
+/**
+ * Create a wrapper to emulate type safety for two types by
+ * binding the desired type to its desired type.
+ */
+
+data class Bind<Wrapper: Digestible, T>(
+  val type: T
+)
+
+typealias StringIdToByteArray = Bind<Digestible.Str, String>
+typealias UuidToByteArray = Bind<Digestible.UID, UUID>
+
+/**
+ * Feed in type to gain access to the desired Function<T, R>
+ */
+
+sealed class Digestible {
+
+  data class Str(val kotlinClass: KClass<String>): Digestible(), Transform<String> {
+    override val toByteArray = f { t -> t.toByteArray(UTF_8) }
+  }
+
+  data class UID(val kotlinClass: KClass<UUID>): Digestible(), Transform<UUID> {
+    override val toByteArray = f { t -> toBytes(t.msb).plus(toBytes(t.lsb)) }
+  }
+
+  operator fun invoke(id: StringIdToByteArray) = Str(String::class)
+  operator fun invoke(id: UuidToByteArray) = UID(UUID::class)
+}
+
+interface Transform<A> : memeid.kotlin.Function<A> {
+  val toByteArray: Function<A, ByteArray>
+}
 
 interface Function<A> {
-  fun Format<A>.f(f: (A) -> ByteArray): Function<A, ByteArray> = Function { t -> f(t) }
+  fun Transform<A>.f(f: (A) -> ByteArray): Function<A, ByteArray> = Function { t -> f(t) }
 }
 
-fun <A, B> scope(
-  env: Format<A>.() -> B
-): B = env(object : Format<A> {})
 
-object Digestible {
-  operator fun invoke(string: String): Function<String, ByteArray> = scope { f { string.toByteArray(UTF_8)} }
-  operator fun invoke(uuid: UUID): Function<UUID, ByteArray> = scope { f { toBytes(uuid.msb) + toBytes(uuid.lsb) } }
-}
 
 
 
