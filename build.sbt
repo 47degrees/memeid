@@ -2,6 +2,8 @@ ThisBuild / scalaVersion       := "2.13.2"
 ThisBuild / crossScalaVersions := Seq("2.12.11", "2.13.2")
 ThisBuild / organization       := "com.47deg"
 
+skip in publish := true
+
 addCommandAlias("ci-test", "fix --check; +mdoc; testCovered")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishMicrosite")
 addCommandAlias("ci-publish", "github; ci-release")
@@ -19,35 +21,43 @@ lazy val microsite = project
   .dependsOn(allProjects: _*)
 
 lazy val `memeid` = project
+  .in(file("modules") / "memeid")
   .settings(crossPaths := false)
   .settings(publishMavenStyle := true)
   .settings(autoScalaLibrary := false)
 
 lazy val memeid4s = project
+  .in(file("modules") / "memeid4s")
   .dependsOn(`memeid`)
   .dependsOn(`memeid4s-scalacheck` % Test)
 
 lazy val `memeid4s-cats` = project
+  .in(file("modules") / "memeid4s-cats")
   .dependsOn(`memeid4s`)
   .dependsOn(`memeid4s-scalacheck` % Test)
 
 lazy val `memeid4s-literal` = project
+  .in(file("modules") / "memeid4s-literal")
   .dependsOn(`memeid4s`)
 
 lazy val `memeid4s-doobie` = project
+  .in(file("modules") / "memeid4s-doobie")
   .dependsOn(`memeid4s`)
 
 lazy val `memeid4s-circe` = project
+  .in(file("modules") / "memeid4s-circe")
   .dependsOn(`memeid4s`)
   .dependsOn(`memeid4s-cats` % Test)
   .dependsOn(`memeid4s-scalacheck` % Test)
 
 lazy val `memeid4s-http4s` = project
+  .in(file("modules") / "memeid4s-http4s")
   .dependsOn(`memeid4s`)
   .dependsOn(`memeid4s-cats` % Test)
   .dependsOn(`memeid4s-scalacheck` % Test)
 
 lazy val `memeid4s-scalacheck` = project
+  .in(file("modules") / "memeid4s-scalacheck")
   .dependsOn(memeid)
 
 lazy val allProjects: Seq[ClasspathDep[ProjectReference]] = Seq(
