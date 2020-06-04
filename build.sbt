@@ -9,12 +9,12 @@ addCommandAlias("ci-publish", "github; ci-release")
 lazy val documentation = project
   .enablePlugins(MdocPlugin)
   .settings(mdocOut := file("."))
-  .dependsOn(allProjects: _*)
+  .dependsOn(allModules: _*)
 
 lazy val microsite = project
   .enablePlugins(MdocPlugin)
   .enablePlugins(MicrositesPlugin)
-  .dependsOn(allProjects: _*)
+  .dependsOn(allModules: _*)
 
 lazy val `memeid` = module
   .settings(crossPaths := false)
@@ -47,14 +47,3 @@ lazy val `memeid4s-http4s` = module
 
 lazy val `memeid4s-scalacheck` = module
   .dependsOn(memeid)
-
-lazy val allProjects: Seq[ClasspathDep[ProjectReference]] = Seq(
-  `memeid`,
-  memeid4s,
-  `memeid4s-cats`,
-  `memeid4s-literal`,
-  `memeid4s-doobie`,
-  `memeid4s-circe`,
-  `memeid4s-http4s`,
-  `memeid4s-scalacheck`
-)
