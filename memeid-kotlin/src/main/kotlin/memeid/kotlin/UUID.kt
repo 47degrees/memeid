@@ -21,13 +21,15 @@ import memeid.kotlin.time.time
 import memeid.UUID
 import memeid.kotlin.time.Posix
 
-class UUID(val uuid: UUID) {
+/** The most significant 64 bits of this UUID's 128 bit value */
+val UUID.msb: Long
+  get() = this.mostSignificantBits
 
-  /** The most significant 64 bits of this UUID's 128 bit value */
-  val msb: Long = uuid.mostSignificantBits
+/** The least significant 64 bits of this UUID's 128 bit value */
+val UUID.lsb: Long
+  get() = this.leastSignificantBits
 
-  /** The least significant 64 bits of this UUID's 128 bit value */
-  val lsb: Long = uuid.leastSignificantBits
+object UUID {
 
   object V1 {
     fun next(node: Node): UUID =  UUID.V1.next(node.node) { time.monotonic }
@@ -37,18 +39,27 @@ class UUID(val uuid: UUID) {
     /**
      * Construct a namespace name-based v3 UUID. Uses MD5 as a hash algorithm
      *
+     * In order to use a custom type,
+     *
      * @param namespace [UUID] used for the [V3] generation
      * @tparam A Sets the type for the [Format] parameter
      * @return [V3]
      */
-    inline operator fun <reified A> invoke(namespace: UUID): UUID =
-      UUID.V3.from(namespace, A::class.java, Digestible::invoke)
+    operator fun invoke(
+      namespace: UUID,
+      name: String
+    ): UUID = UUID.V3.from(namespace, name, Digestible(name)::toByteArray.call())
 
+    operator fun invoke(
+      namespace: UUID,
+      name: UUID
+    ): UUID = UUID.V3.from(namespace, name, Digestible(name)::toByteArray.call())
 
-    private fun
-
-    operator fun invoke(namespace: UUID, B: String): UUID =
-      UUID.V3.from(namespace, B::class.java, Digestible::invoke)
+    inline operator fun <reified A> invoke(
+      namespace: UUID,
+      custom: A,
+      noinline function: (A) -> ByteArray
+    ): UUID = UUID.V3.from(namespace, custom, Digestible(custom, function)::toByteArray.call())
   }
 
   object V4 {
@@ -78,8 +89,8 @@ class UUID(val uuid: UUID) {
      * @tparam A Sets the type for the [Format] parameter
      * @return [V5]
      */
-    inline fun <reified A: Digestible> apply(namespace: UUID): UUID =
-      UUID.V5.from(namespace, A::class.java, Digestible::invoke)
+    /*inline operator fun <reified A: Digestible> invoke(namespace: UUID): UUID =
+      UUID.V5.from(namespace, A::class.java, Digestible(custom, function)::toByteArray.call())*/
   }
 }
 

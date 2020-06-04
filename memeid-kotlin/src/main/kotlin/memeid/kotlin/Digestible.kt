@@ -16,12 +16,8 @@ package memeid.kotlin
  */
 
 import memeid.Bits.toBytes
-import memeid.kotlin.UUID.V3.invoke
-import scala.Predef
-import scala.inline
-import scala.runtime.BoxesRunTime.toByte
+import memeid.UUID
 import java.util.function.Function
-import kotlin.reflect.KClass
 import kotlin.text.Charsets.UTF_8
 
 /**
@@ -30,32 +26,44 @@ import kotlin.text.Charsets.UTF_8
  */
 
 data class Bind<Wrapper: Digestible, T>(
+  val digestible: Wrapper,
   val type: T
 )
 
 typealias StringIdToByteArray = Bind<Digestible.Str, String>
-typealias UuidToByteArray = Bind<Digestible.UID, UUID>
+typealias UuidToByteArray = Bind<Digestible.UID, memeid.UUID>
+typealias CustomToByteArray<T> = Bind<Digestible.Custom<T>, T>
 
 /**
  * Feed in type to gain access to the desired Function<T, R>
  */
 
-sealed class Digestible {
+open class Digestible {
 
-  data class Str(val kotlinClass: KClass<String>): Digestible(), Transform<String> {
-    override val toByteArray = f { t -> t.toByteArray(UTF_8) }
+  object Str: Digestible(), Transform<String> {
+    override fun toByteArray() = f { t -> t.toByteArray(UTF_8) }
   }
 
-  data class UID(val kotlinClass: KClass<UUID>): Digestible(), Transform<UUID> {
-    override val toByteArray = f { t -> toBytes(t.msb).plus(toBytes(t.lsb)) }
+  object UID: Digestible(), Transform<UUID> {
+    override fun toByteArray() = f { t -> toBytes(t.msb).plus(toBytes(t.lsb)) }
   }
 
-  operator fun invoke(id: StringIdToByteArray) = Str(String::class)
-  operator fun invoke(id: UuidToByteArray) = UID(UUID::class)
+  data class Custom<T>(val function: (T) -> ByteArray): Digestible(), Transform<T> {
+    override fun toByteArray() = f { t -> function(t) }
+  }
+
+  companion object {
+    operator fun invoke(input: String) = StringIdToByteArray(Str, input).digestible
+    operator fun invoke(input: UUID) = UuidToByteArray(UID, input).digestible
+    inline operator fun <reified T> invoke(
+      input: T,
+      noinline function: (T) -> ByteArray
+    ) = CustomToByteArray(Custom(function), input).digestible
+  }
 }
 
 interface Transform<A> : memeid.kotlin.Function<A> {
-  val toByteArray: Function<A, ByteArray>
+  fun toByteArray(): Function<A, ByteArray>
 }
 
 interface Function<A> {
