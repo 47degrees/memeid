@@ -21,14 +21,6 @@ import memeid.kotlin.time.time
 import memeid.UUID
 import memeid.kotlin.time.Posix
 
-/** The most significant 64 bits of this UUID's 128 bit value */
-val UUID.msb: Long
-  get() = this.mostSignificantBits
-
-/** The least significant 64 bits of this UUID's 128 bit value */
-val UUID.lsb: Long
-  get() = this.leastSignificantBits
-
 object UUID {
 
   object V1 {
@@ -39,10 +31,8 @@ object UUID {
     /**
      * Construct a namespace name-based v3 UUID. Uses MD5 as a hash algorithm
      *
-     * In order to use a custom type,
-     *
      * @param namespace [UUID] used for the [V3] generation
-     * @tparam A Sets the type for the [Format] parameter
+     * @param name [String] used for the [V3] generation
      * @return [V3]
      */
     operator fun invoke(
@@ -50,11 +40,27 @@ object UUID {
       name: String
     ): UUID = UUID.V3.from(namespace, name, Digestible(name)::toByteArray.call())
 
+    /**
+     * Construct a namespace name-based v3 UUID. Uses MD5 as a hash algorithm
+     *
+     * @param namespace [UUID] used for the [V3] generation
+     * @param name [UUID] used for the [V3] generation
+     * @return [V3]
+     */
     operator fun invoke(
       namespace: UUID,
       name: UUID
     ): UUID = UUID.V3.from(namespace, name, Digestible(name)::toByteArray.call())
 
+    /**
+     * Construct a namespace name-based v3 UUID. Uses MD5 as a hash algorithm
+     *
+     * @param namespace [UUID] used for the [V3] generation
+     * @param custom [A] used for the [V3] generation
+     * @tparam A Sets the type for the [Format] parameter
+     * @param function ([A]) -> [ByteArray] customizes digestible toByteArray
+     * @return [V3]
+     */
     inline operator fun <reified A> invoke(
       namespace: UUID,
       custom: A,
@@ -86,11 +92,40 @@ object UUID {
      * Construct a namespace name-based v5 UUID. Uses SHA as a hash algorithm
      *
      * @param namespace [UUID] used for the [V5] generation
-     * @tparam A Sets the type for the [Format] parameter
+     * @param name [UUID] used for the [V5] generation
      * @return [V5]
      */
-    /*inline operator fun <reified A: Digestible> invoke(namespace: UUID): UUID =
-      UUID.V5.from(namespace, A::class.java, Digestible(custom, function)::toByteArray.call())*/
+    operator fun invoke(
+      namespace: UUID,
+      name: String
+    ): UUID = UUID.V5.from(namespace, name, Digestible(name)::toByteArray.call())
+
+    /**
+     * Construct a namespace name-based v5 UUID. Uses SHA as a hash algorithm
+     *
+     * @param namespace [UUID] used for the [V5] generation
+     * @param name [UUID] used for the [V5] generation
+     * @return [V5]
+     */
+    operator fun invoke(
+      namespace: UUID,
+      name: UUID
+    ): UUID = UUID.V5.from(namespace, name, Digestible(name)::toByteArray.call())
+
+    /**
+     * Construct a namespace name-based v5 UUID. Uses SHA as a hash algorithm
+     *
+     * @param namespace [UUID] used for the [V5] generation
+     * @param custom [A] used for the [V5] generation
+     * @tparam A Sets the type for the [Format] parameter
+     * @param function ([A]) -> [ByteArray] customizes digestible toByteArray
+     * @return [V5]
+     */
+    inline operator fun <reified A> invoke(
+      namespace: UUID,
+      custom: A,
+      noinline function: (A) -> ByteArray
+    ): UUID = UUID.V5.from(namespace, custom, Digestible(custom, function)::toByteArray.call())
   }
 }
 
