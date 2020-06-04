@@ -53,6 +53,7 @@ lazy val `memeid4s-scalacheck` = project
 lazy val bench = project
   .dependsOn(memeid4s)
   .enablePlugins(JmhPlugin)
+  .disablePlugins(ScoverageSbtPlugin)
 
 val runAvgtimeCmd =
   "bench/jmh:run -i 15 -wi 15 -bm AverageTime -tu ns"
