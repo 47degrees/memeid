@@ -21,7 +21,7 @@ import memeid.kotlin.time.time
 import memeid.UUID
 import memeid.kotlin.time.Posix
 
-object UUID {
+sealed class UUID {
 
   object V1 {
     fun next(node: Node): UUID =  UUID.V1.next(node.node) { time.monotonic }
