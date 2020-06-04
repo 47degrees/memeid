@@ -16,34 +16,23 @@ lazy val microsite = project
   .enablePlugins(MicrositesPlugin)
   .dependsOn(allModules: _*)
 
+////////////////
+////  JAVA  ////
+////////////////
+
 lazy val `memeid` = module
   .settings(crossPaths := false)
   .settings(publishMavenStyle := true)
   .settings(autoScalaLibrary := false)
 
-lazy val memeid4s = module
-  .dependsOn(`memeid`)
-  .dependsOn(`memeid4s-scalacheck` % Test)
+/////////////////
+////  SCALA  ////
+/////////////////
 
-lazy val `memeid4s-cats` = module
-  .dependsOn(`memeid4s`)
-  .dependsOn(`memeid4s-scalacheck` % Test)
-
-lazy val `memeid4s-literal` = module
-  .dependsOn(`memeid4s`)
-
-lazy val `memeid4s-doobie` = module
-  .dependsOn(`memeid4s`)
-
-lazy val `memeid4s-circe` = module
-  .dependsOn(`memeid4s`)
-  .dependsOn(`memeid4s-cats` % Test)
-  .dependsOn(`memeid4s-scalacheck` % Test)
-
-lazy val `memeid4s-http4s` = module
-  .dependsOn(`memeid4s`)
-  .dependsOn(`memeid4s-cats` % Test)
-  .dependsOn(`memeid4s-scalacheck` % Test)
-
-lazy val `memeid4s-scalacheck` = module
-  .dependsOn(memeid)
+lazy val memeid4s              = module.dependsOn(`memeid`, `memeid4s-scalacheck` % Test)
+lazy val `memeid4s-cats`       = module.dependsOn(`memeid4s`, `memeid4s-scalacheck` % Test)
+lazy val `memeid4s-literal`    = module.dependsOn(`memeid4s`)
+lazy val `memeid4s-doobie`     = module.dependsOn(`memeid4s`)
+lazy val `memeid4s-circe`      = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
+lazy val `memeid4s-http4s`     = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
+lazy val `memeid4s-scalacheck` = module.dependsOn(memeid)
