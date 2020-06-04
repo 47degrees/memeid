@@ -2,8 +2,6 @@ ThisBuild / scalaVersion       := "2.13.2"
 ThisBuild / crossScalaVersions := Seq("2.12.11", "2.13.2")
 ThisBuild / organization       := "com.47deg"
 
-skip in publish := true
-
 addCommandAlias("ci-test", "fix --check; +mdoc; testCovered")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishMicrosite")
 addCommandAlias("ci-publish", "github; ci-release")
@@ -11,13 +9,11 @@ addCommandAlias("ci-publish", "github; ci-release")
 lazy val documentation = project
   .enablePlugins(MdocPlugin)
   .settings(mdocOut := file("."))
-  .settings(skip in publish := true)
   .dependsOn(allProjects: _*)
 
 lazy val microsite = project
   .enablePlugins(MdocPlugin)
   .enablePlugins(MicrositesPlugin)
-  .settings(skip in publish := true)
   .dependsOn(allProjects: _*)
 
 lazy val `memeid` = module
