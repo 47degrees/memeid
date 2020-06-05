@@ -91,8 +91,8 @@ object dependencies extends AutoPlugin {
   )
 
   private val kotlin = Seq(
-    "com.jakewharton.timber" % "timber" % "4.7.1",
-    "com.novocode" % "junit-interface" % "0.11" % "test"
+    "io.github.microutils" % "kotlin-logging" % "1.7.9" % Provided,
+    "com.novocode" % "junit-interface" % "0.11" % Test
   )
 
   override def trigger: PluginTrigger = allRequirements

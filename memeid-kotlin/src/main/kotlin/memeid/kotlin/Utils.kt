@@ -1,8 +1,11 @@
 package memeid.kotlin
 
+import mu.KotlinLogging
 import memeid.kotlin.UUID  as K_UUID
 import memeid.UUID as MEME_ID
 import java.util.UUID as J_UUID
+
+val logger by lazy { KotlinLogging.logger { } }
 
 /** The most significant 64 bits of this UUID's 128 bit value */
 val MEME_ID.msb: Long
@@ -20,9 +23,7 @@ val MEME_ID.lsb: Long
  * @return this [memeid.kotlin.UUID] as the provided type if versions match;
  *         otherwise, returns [None]
  */
-inline fun <reified A> K_UUID.getOptional(uuid: A?): Optional<A> = if (uuid is A) Some(uuid) else None()
-
-// fun K_UUID.unapply(str: String): Optional<K_UUID> = from(str).getOptional(UUID) else None
+inline fun <reified A: memeid.kotlin.UUID> K_UUID.asVersion(uuid: A?): Optional<A> = if (uuid is A) Some(uuid) else None()
 
 /**
  * Creates a valid [memeid.kotlin.UUID] from two [kotlin.Long] values representing
@@ -58,6 +59,7 @@ fun from(str: String): Optional<MEME_ID> = try {
   val result = MEME_ID.fromString(str)
   Some(result)
 } catch (e: IllegalArgumentException) {
-  println("$e") // TODO install Timber logging
+  logger.debug { "Unable to get UUID from string $str. Cause of error: $e" }
+
   None()
 }
