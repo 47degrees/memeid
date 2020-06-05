@@ -20,6 +20,7 @@ import memeid.kotlin.node.Node
 import memeid.kotlin.time.time
 import memeid.UUID
 import memeid.kotlin.time.Posix
+import memeid.kotlin.time.posix
 
 sealed class UUID {
 
@@ -80,10 +81,10 @@ sealed class UUID {
     fun apply(msb: Long, lsb: Long): UUID = UUID.V4.from(msb, lsb)
 
     // Construct a v4 (random) UUID.
-    fun random(): UUID = UUID.V4.random()
+    val random: UUID = UUID.V4.random()
 
     // Construct a SQUUID (random, time-based) UUID.
-    fun squuid(p: Posix): UUID = UUID.V4.squuid(p.value)
+    val squuid: UUID = UUID.V4.squuid(posix.value)
   }
 
   object V5 {

@@ -31,7 +31,7 @@ data class Bind<Wrapper: Digestible, T>(
 )
 
 typealias StringIdToByteArray = Bind<Digestible.Str, String>
-typealias UuidToByteArray = Bind<Digestible.UID, memeid.UUID>
+typealias UuidToByteArray = Bind<Digestible.UID, UUID>
 typealias CustomToByteArray<T> = Bind<Digestible.Custom<T>, T>
 
 /**

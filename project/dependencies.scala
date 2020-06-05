@@ -90,6 +90,11 @@ object dependencies extends AutoPlugin {
     "org.scalacheck" %% "scalacheck"  % "1.14.3"
   )
 
+  private val kotlin = Seq(
+    "com.jakewharton.timber" % "timber" % "4.7.1",
+    "com.novocode" % "junit-interface" % "0.11" % "test"
+  )
+
   override def trigger: PluginTrigger = allRequirements
 
   override def requires: Plugins = JvmPlugin
@@ -107,6 +112,7 @@ object dependencies extends AutoPlugin {
           case "memeid4s-circe"      => circe.value
           case "memeid4s-http4s"     => http4s.value
           case "memeid4s-scalacheck" => scalacheck
+          case "memeid-kotlin"       => kotlin
           case _                     => Nil
         }
       }
