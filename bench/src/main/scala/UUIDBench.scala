@@ -1,8 +1,7 @@
 package memeid4s.bench
 
+import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
-
-import scala.util.Random
 
 import memeid4s.UUID
 import org.openjdk.jmh.annotations._
@@ -10,17 +9,14 @@ import org.openjdk.jmh.annotations._
 object UUIDStates {
   val namespace = UUID.V1.next
 
-  val gen = new Random()
-
   @SuppressWarnings(Array("scalafix:Disable.toString"))
-  val uuids: List[String] = (1 to 100).map(_ => UUID.V1.next.toString).toList
+  val uuids: Array[String] = (1 to 100).map(_ => UUID.V1.next.toString).toArray
 
   @State(Scope.Benchmark)
   class RNG {
-
-    def uuid: String =
-      uuids(gen.nextInt(uuids.length))
+    def uuid: String = uuids(ThreadLocalRandom.current().nextInt(uuids.length))
   }
+
 }
 
 @Warmup(
@@ -34,6 +30,7 @@ object UUIDStates {
   timeUnit = TimeUnit.SECONDS
 )
 class UUIDBenchmark {
+
   import UUIDStates._
 
   @Benchmark

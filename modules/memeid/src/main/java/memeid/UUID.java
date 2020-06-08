@@ -22,7 +22,6 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.LongSupplier;
-import java.util.regex.Pattern;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static memeid.Bits.*;
@@ -34,7 +33,33 @@ import static memeid.Bits.*;
  * @see <a href="https://tools.ietf.org/html/rfc4122">RFC-4122</a>
  */
 public class UUID implements Comparable<UUID> {
-    public static final Pattern uuidRegex = Pattern.compile("\\p{XDigit}{8}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{4}-\\p{XDigit}{12}");
+    public static final byte [] nibbles = new byte[256];
+
+    static {
+        java.util.Arrays.fill(nibbles, (byte) -1);
+        nibbles['0'] = 0;
+        nibbles['1'] = 1;
+        nibbles['2'] = 2;
+        nibbles['3'] = 3;
+        nibbles['4'] = 4;
+        nibbles['5'] = 5;
+        nibbles['6'] = 6;
+        nibbles['7'] = 7;
+        nibbles['8'] = 8;
+        nibbles['9'] = 9;
+        nibbles['A'] = 10;
+        nibbles['B'] = 11;
+        nibbles['C'] = 12;
+        nibbles['D'] = 13;
+        nibbles['E'] = 14;
+        nibbles['F'] = 15;
+        nibbles['a'] = 10;
+        nibbles['b'] = 11;
+        nibbles['c'] = 12;
+        nibbles['d'] = 13;
+        nibbles['e'] = 14;
+        nibbles['f'] = 15;
+    }
 
     /**
      * The nil UUID is special form of UUID that is specified to have all 128 bits set to zero.
@@ -62,16 +87,15 @@ public class UUID implements Comparable<UUID> {
      * @return a valid {@link UUID} created from a {@link java.util.UUID}
      */
     public static UUID fromUUID(java.util.UUID juuid) {
-        if (juuid.version() == 0 && juuid == NIL.juuid)
-            return NIL;
-
-        if (juuid.version() == 1) return new V1(juuid);
-        if (juuid.version() == 2) return new V2(juuid);
-        if (juuid.version() == 3) return new V3(juuid);
-        if (juuid.version() == 4) return new V4(juuid);
-        if (juuid.version() == 5) return new V5(juuid);
-
-        return new UnknownVersion(juuid);
+        switch(juuid.version()) {
+            case 5: return new V5(juuid);
+            case 4: return new V4(juuid);
+            case 3: return new V3(juuid);
+            case 2: return new V2(juuid);
+            case 1: return new V1(juuid);
+            case 0: if (juuid == NIL.juuid) return NIL;
+            default: return new UnknownVersion(juuid);
+        }
     }
 
     /**
@@ -84,10 +108,35 @@ public class UUID implements Comparable<UUID> {
      *                                  described in {@link #toString}
      */
     public static UUID fromString(String name) {
-        if (uuidRegex.matcher(name).matches())
-            return fromUUID(java.util.UUID.fromString(name));
-        else
-            throw new IllegalArgumentException("Invalid UUID string: " + name);
+        byte[] ns = nibbles;
+        if (name.length() == 36 &&
+                name.charAt(8) == '-' &&
+                name.charAt(13) == '-' &&
+                name.charAt(18) == '-' &&
+                name.charAt(23) == '-') {
+            int msb1 = parse4Nibbles(name, ns, 0);
+            int msb2 = parse4Nibbles(name, ns, 4);
+            int msb3 = parse4Nibbles(name, ns, 9);
+            int msb4 = parse4Nibbles(name, ns, 14);
+            if ((msb1 | msb2 | msb3 | msb4) >= 0) {
+                int lsb1 = parse4Nibbles(name, ns, 19);
+                int lsb2 = parse4Nibbles(name, ns, 24);
+                int lsb3 = parse4Nibbles(name, ns, 28);
+                int lsb4 = parse4Nibbles(name, ns, 32);
+                if ((lsb1 | lsb2 | lsb3 | lsb4) >= 0) return from(
+                        (long) msb1 << 48 | (long) msb2 << 32 | (long) msb3 << 16 | msb4,
+                        (long) lsb1 << 48 | (long) lsb2 << 32 | (long) lsb3 << 16 | lsb4);
+            }
+        }
+        throw new IllegalArgumentException("Invalid UUID string: " + name);
+    }
+
+    private static int parse4Nibbles(String name, byte[] ns, int pos) {
+        char ch1 = name.charAt(pos);
+        char ch2 = name.charAt(pos + 1);
+        char ch3 = name.charAt(pos + 2);
+        char ch4 = name.charAt(pos + 3);
+        return (ch1 | ch2 | ch3 | ch4) > 0xFF ? -1 : ns[ch1] << 12 | ns[ch2] << 8 | ns[ch3] << 4 | ns[ch4];
     }
 
     /**
