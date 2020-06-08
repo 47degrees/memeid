@@ -41,6 +41,7 @@ lazy val bench = project
   .dependsOn(memeid4s)
   .enablePlugins(JmhPlugin)
   .disablePlugins(ScoverageSbtPlugin)
+  .enablePlugins(HoodPlugin)
 
 val runAvgtimeCmd =
   "bench/jmh:run -i 15 -wi 15 -bm AverageTime -tu ns"
@@ -52,25 +53,25 @@ addCommandAlias(
   "runAvgtime",
   ";" +
     runAvgtimeCmd +
-    " -rff master.avgtime.csv;"
+    " -rff current.avgtime.csv;"
 )
 addCommandAlias(
   "runAvgtimeProf",
   ";" +
     runAvgtimeCmd +
-    " -rff master.avgtime.prof.csv" +
+    " -rff current.avgtime.prof.csv" +
     " -prof stack;"
 )
 addCommandAlias(
   "runThroughput",
   ";" +
     runAvgtimeCmd +
-    " -rff master.throughput.csv;"
+    " -rff current.throughput.csv;"
 )
 addCommandAlias(
   "runThroughputProf",
   ";" +
     runAvgtimeCmd +
-    " -rff master.throughput.prof.csv" +
+    " -rff current.throughput.prof.csv" +
     " -prof stack;"
 )
