@@ -1,0 +1,7 @@
+"Benchmark","Mode","Threads","Samples","Score","Score Error (99.9%)","Unit"
+"memeid4s.bench.UUIDBenchmark.fromString","avgt",1,75,702.257848,66.830633,"ns/op"
+"memeid4s.bench.UUIDBenchmark.namespacedV3","avgt",1,75,567.832107,5.398131,"ns/op"
+"memeid4s.bench.UUIDBenchmark.namespacedV5","avgt",1,75,755.857186,30.986563,"ns/op"
+"memeid4s.bench.UUIDBenchmark.random","avgt",1,75,417.346200,19.714111,"ns/op"
+"memeid4s.bench.UUIDBenchmark.squuid","avgt",1,75,478.450024,46.716124,"ns/op"
+"memeid4s.bench.UUIDBenchmark.timeBased","avgt",1,75,1001.340323,1.937381,"ns/op"
