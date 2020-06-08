@@ -16,8 +16,6 @@
 
 package memeid.kotlin
 
-import java.util.NoSuchElementException
-
 sealed class Optional<T>(private val value: T?) {
 
   abstract val isEmpty: Boolean

@@ -2,4 +2,8 @@ package memeid.kotlin.node
 
 import memeid.Node
 
-data class Node(val node: Node)
+class Node {
+  companion object {
+    val node = Node()
+  }
+}

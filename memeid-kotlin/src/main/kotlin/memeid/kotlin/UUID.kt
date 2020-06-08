@@ -25,7 +25,7 @@ import memeid.kotlin.time.posix
 sealed class UUID {
 
   object V1 {
-    fun next(node: Node): UUID =  UUID.V1.next(node.node) { time.monotonic }
+    val next: UUID = UUID.V1.next(Node.node) { time.monotonic }
   }
 
   object V3 {
@@ -78,7 +78,7 @@ sealed class UUID {
      * @param lsb Least significant bit in [Long] representation
      * @return [V4]
      */
-    fun apply(msb: Long, lsb: Long): UUID = UUID.V4.from(msb, lsb)
+    operator fun invoke(msb: Long, lsb: Long): UUID = UUID.V4.from(msb, lsb)
 
     // Construct a v4 (random) UUID.
     val random: UUID = UUID.V4.random()
@@ -127,6 +127,45 @@ sealed class UUID {
       custom: A,
       noinline function: (A) -> ByteArray
     ): UUID = UUID.V5.from(namespace, custom, Digestible(custom, function)::toByteArray.call())
+  }
+
+  companion object {
+    /**
+     * Creates a valid [UUID] from two [kotlin.Long] values representing
+     * the most/least significant bits.
+     *
+     * @param msb Most significant bit in [kotlin.Long] representation
+     * @param lsb Least significant bit in [kotlin.Long] representation
+     * @return a new [UUID] constructed from msb and lsb
+     */
+    fun from(msb: Long, lsb: Long): UUID = UUID.from(msb, lsb)
+
+    /**
+     * Creates a valid [UUID] from a [[UUID]].
+     *
+     * @param jUuid the [java.util.UUID]
+     * @return a valid [java.util.UUID]
+     */
+    fun fromUUID(jUuid: java.util.UUID): UUID = UUID.fromUUID(jUuid)
+
+    /**
+     * Creates a [memeid.UUID] from the [java.util.UUID]::toString string standard
+     * representation wrapped in an [Optional].
+     *
+     * Returns [None] with the error in case the string doesn't follow the
+     * string standard representation.
+     *
+     * @param str String for the [memeid.UUID] to be generated as an [memeid.UUID]
+     * @return [Some] with the error in case the string doesn't follow the
+     *          string standard representation or [None] with the [MEME_ID]
+     *          representation.
+     */
+    fun fromString(str: String): UUID? = try {
+      UUID.fromString(str)
+    } catch (e: IllegalArgumentException) {
+      logger.debug { "Unable to get UUID from string $str. Cause of error: $e" }
+      null
+    }
   }
 }
 
