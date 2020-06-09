@@ -2,7 +2,7 @@ ThisBuild / scalaVersion       := "2.13.3"
 ThisBuild / crossScalaVersions := Seq("2.12.12", "2.13.3")
 ThisBuild / organization       := "com.47deg"
 
-addCommandAlias("ci-test", "fix --check; +mdoc; testCovered")
+addCommandAlias("ci-test", "fix --check; +mdoc; testCovered; generateMasterFile; compareBenchmarksCI")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishMicrosite")
 addCommandAlias("ci-publish", "github; ci-release")
 
@@ -54,10 +54,10 @@ lazy val bench = project
   .enablePlugins(HoodPlugin)
 
 val runAvgtimeCmd =
-  "bench/jmh:run -i 15 -wi 15 -bm AverageTime -tu ns"
+  "bench/jmh:run -i 10 -wi 5 -bm AverageTime -tu ns"
 
 val runThroughputCmd =
-  "bench/jmh:run -i 15 -wi 15 -bm Throughput -tu s"
+  "bench/jmh:run -i 10 -wi 5 -bm Throughput -tu s"
 
 addCommandAlias(
   "runAvgtime",
@@ -85,3 +85,12 @@ addCommandAlias(
     " -rff current.throughput.prof.csv" +
     " -prof stack;"
 )
+
+val generateMasterFileTask =
+  taskKey[Unit]("If the master file has not been created, current is copied. This will happen just the first time.")
+generateMasterFileTask := {
+  if (!file("bench/master.avgtime.csv").exists())
+    IO.copy(Seq((file("bench/current.avgtime.csv"), file("bench/master.avgtime.csv"))))
+}
+
+addCommandAlias("generateMasterFile", ";" + generateMasterFileTask.key)
