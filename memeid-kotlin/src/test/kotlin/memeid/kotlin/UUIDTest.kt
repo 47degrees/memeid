@@ -5,14 +5,6 @@ import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 
 class UUIDTest {
-  @Test
-  fun `Create UUID from valid string`() {
-
-    val validUUIDStrings: String = (1..36).map { UUID_REGEX.random() }.joinToString("")
-    println(validUUIDStrings)
-
-    assertThat(true, equalTo(true))
-  }
 
   @Test
   fun `Create memeid from UUID V1`() {
@@ -23,12 +15,7 @@ class UUIDTest {
       val fromSigBits = UUID.from(uuid.mostSignificantBits, uuid.leastSignificantBits)
       val fromString = UUID.fromString(uuid.toString())
 
-      println( """
-      Generated Version 1 UUID: $uuid | UUID Version: ${uuid.version()} | UUID Variant: ${uuid.version()} 
-      |  From UUID: $fromUUID | version: ${fromUUID.version()} | variant: ${fromUUID.variant()}
-      |  From significant bits: $fromSigBits | version: ${fromSigBits.version()} | variant: ${fromSigBits.variant()}
-      |  From String: $fromString | version: ${fromString?.version()} | variant: ${fromString?.variant()}
-      --------------------------------------------------------------------""".trimIndent())
+      logTest(1, uuid, fromUUID, fromSigBits, fromString)
 
       assertThat(fromUUID.isV1, equalTo(true))
       assertThat(fromSigBits.isV1, equalTo(true))
@@ -37,23 +24,51 @@ class UUIDTest {
   }
 
   @Test
-  fun `Create V1 memeid from Kotlin module`() {
+  fun `Create V1 memeid with memeid-kotlin`() {
     val uuid = UUID.V1.next
 
     val fromUUID = UUID.fromUUID(uuid.asJava())
     val fromSigBits = UUID.from(uuid.msb, uuid.lsb)
     val fromString = UUID.fromString(uuid.asJava().toString())
 
-    println( """
-      Generated Version 1 UUID: $uuid | UUID Version: ${uuid.version()} | UUID Variant: ${uuid.version()} 
-      |  From UUID: $fromUUID | version: ${fromUUID.version()} | variant: ${fromUUID.variant()}
-      |  From significant bits: $fromSigBits | version: ${fromSigBits.version()} | variant: ${fromSigBits.variant()}
-      |  From String: $fromString | version: ${fromString?.version()} | variant: ${fromString?.variant()}
-      --------------------------------------------------------------------""".trimIndent())
-
     assertThat(fromUUID.isV1, equalTo(true))
-    // assertThat(fromSigBits.isV1, equalTo(true))   <-- returns a NIL version
+    assertThat(fromSigBits.isV1, equalTo(true))
     assertThat(fromString?.isV1, equalTo(true))
+  }
+
+  @Test
+  fun `Create V3 memeid namespace with String`() {
+    val uuid = UUID.V1.next
+    val fromUUID = UUID.V3(uuid, "namespace-test")
+
+    assertThat(fromUUID.isV3, equalTo(true))
+  }
+
+  @Test
+  fun `Create V3 memeid namespace with UUID`() {
+    val a = UUID.V1.next
+    val b = UUID.V4.random
+
+    listOf(
+      Pair(a, b),
+      Pair(a, a),
+      Pair(b, a)
+    ).forEach { pair ->
+      val uuid = UUID.V3(pair.first, pair.second)
+      assertThat(uuid.isV3, equalTo(true))
+    }
+  }
+
+  @Test
+  fun `Create V3 memeid namespace with custom Digestible`() {
+    val uuid = UUID.V1.next
+    val person = Person("Federico", "García Lorca")
+
+    val fromUUID = UUID.V3(uuid, person) {
+      it.firstName.toByteArray() + it.lastName.toByteArray()
+    }
+
+    assertThat(fromUUID.isV3, equalTo(true))
   }
 
   @Test
@@ -65,12 +80,22 @@ class UUIDTest {
       val fromSigBits = UUID.from(uuid.mostSignificantBits, uuid.leastSignificantBits)
       val fromString = UUID.fromString(uuid.toString())
 
-      println( """
-      Generated Version 4 UUID: $uuid | UUID Version: ${uuid.version()} | UUID Variant: ${uuid.version()} 
-      |  From UUID: $fromUUID | version: ${fromUUID.version()} | variant: ${fromUUID.variant()}
-      |  From significant bits: $fromSigBits | version: ${fromSigBits.version()} | variant: ${fromSigBits.variant()}
-      |  From String: $fromString | version: ${fromString?.version()} | variant: ${fromString?.variant()}
-      --------------------------------------------------------------------""".trimIndent())
+      logTest(4, uuid, fromUUID, fromSigBits, fromString)
+
+      assertThat(fromUUID.isV4, equalTo(true))
+      assertThat(fromSigBits.isV4, equalTo(true))
+      assertThat(fromString?.isV4, equalTo(true))
+    }
+  }
+
+  @Test
+  fun `Create V4 memeid with memeid-kotlin`() {
+    listOf(UUID.V4.random, UUID.V4.squuid).forEach { uuid ->
+      val fromUUID = UUID.fromUUID(uuid.asJava())
+      val fromSigBits = UUID.from(uuid.msb, uuid.lsb)
+      val fromString = UUID.fromString(uuid.asJava().toString())
+
+      logTest(4, uuid, fromUUID, fromSigBits, fromString)
 
       assertThat(fromUUID.isV4, equalTo(true))
       assertThat(fromSigBits.isV4, equalTo(true))
@@ -122,9 +147,23 @@ class UUIDTest {
 
   }
 
-  companion object {
-    // Canonically formatted UUID for V1..V5
-    const val UUID_REGEX = "/^[0-9a-f]{8}-[0-9a-f]{4}-[0-5][0-9a-f]{3}-[089ab][0-9a-f]{3}-[0-9a-f]{12}\$/i"
+  private fun logTest(version: Int, uuid: memeid.UUID, fromUUID: memeid.UUID, fromSigBits: memeid.UUID, fromString: memeid.UUID?) {
+    println( """
+      Generated Version $version UUID: $uuid | UUID Version: ${uuid.version()} | UUID Variant: ${uuid.version()} 
+      |  From UUID: $fromUUID | version: ${fromUUID.version()} | variant: ${fromUUID.variant()}
+      |  From significant bits: $fromSigBits | version: ${fromSigBits.version()} | variant: ${fromSigBits.variant()}
+      |  From String: $fromString | version: ${fromString?.version()} | variant: ${fromString?.variant()}
+      --------------------------------------------------------------------""".trimIndent())
   }
-  
+
+  private fun logTest(version: Int, uuid: java.util.UUID, fromUUID: memeid.UUID, fromSigBits: memeid.UUID, fromString: memeid.UUID?) {
+    println( """
+      Generated Version $version UUID: $uuid | UUID Version: ${uuid.version()} | UUID Variant: ${uuid.version()} 
+      |  From UUID: $fromUUID | version: ${fromUUID.version()} | variant: ${fromUUID.variant()}
+      |  From significant bits: $fromSigBits | version: ${fromSigBits.version()} | variant: ${fromSigBits.variant()}
+      |  From String: $fromString | version: ${fromString?.version()} | variant: ${fromString?.variant()}
+      --------------------------------------------------------------------""".trimIndent())
+  }
 }
+
+data class Person(val firstName: String, val lastName: String)
