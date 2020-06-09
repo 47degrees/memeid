@@ -13,6 +13,10 @@ jobs:
   test:
     if: "!contains(github.event.head_commit.message, 'skip ci')"
     runs-on: ubuntu-latest
+    env:
+      REQUIRES_JEKYLL_CI: ${{secrets.REQUIRES_JEKYLL_CI}}
+      REQUIRES_CODECOV: ${{secrets.REQUIRES_CODECOV}}
+      PULL_REQUEST_NUMBER: ${{ github.event.pull_request.number }}
     steps:
       - name: Checkout project (pull-request)
         if: github.event_name == 'pull_request'
