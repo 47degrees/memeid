@@ -160,11 +160,11 @@ sealed class UUID {
      *          string standard representation or [None] with the [MEME_ID]
      *          representation.
      */
-    fun fromString(str: String): UUID? = try {
+    fun fromString(str: String): UUID = try {
       UUID.fromString(str)
     } catch (e: IllegalArgumentException) {
       logger.debug { "Unable to get UUID from string $str. Cause of error: $e" }
-      null
+      UUID.NIL
     }
   }
 }

@@ -19,7 +19,7 @@ class UUIDTest {
 
       assertThat(fromUUID.isV1, equalTo(true))
       assertThat(fromSigBits.isV1, equalTo(true))
-      assertThat(fromString?.isV1, equalTo(true))
+      assertThat(fromString.isV1, equalTo(true))
     }
   }
 
@@ -33,7 +33,7 @@ class UUIDTest {
 
     assertThat(fromUUID.isV1, equalTo(true))
     assertThat(fromSigBits.isV1, equalTo(true))
-    assertThat(fromString?.isV1, equalTo(true))
+    assertThat(fromString.isV1, equalTo(true))
   }
 
   @Test
@@ -84,7 +84,7 @@ class UUIDTest {
 
       assertThat(fromUUID.isV4, equalTo(true))
       assertThat(fromSigBits.isV4, equalTo(true))
-      assertThat(fromString?.isV4, equalTo(true))
+      assertThat(fromString.isV4, equalTo(true))
     }
   }
 
@@ -95,61 +95,78 @@ class UUIDTest {
       val fromSigBits = UUID.from(uuid.msb, uuid.lsb)
       val fromString = UUID.fromString(uuid.asJava().toString())
 
-      logTest(4, uuid, fromUUID, fromSigBits, fromString)
+      logTest(uuid, fromUUID, fromSigBits, fromString)
 
       assertThat(fromUUID.isV4, equalTo(true))
       assertThat(fromSigBits.isV4, equalTo(true))
-      assertThat(fromString?.isV4, equalTo(true))
+      assertThat(fromString.isV4, equalTo(true))
+    }
+  }
+  @Test
+  fun `Create V5 memeid namespace with String`() {
+    val uuid = UUID.V1.next
+    val fromUUID = UUID.V5(uuid, "namespace-test")
+
+    assertThat(fromUUID.isV5, equalTo(true))
+  }
+
+  @Test
+  fun `Create V5 memeid namespace with UUID`() {
+    val a = UUID.V1.next
+    val b = UUID.V4.random
+
+    listOf(
+      Pair(a, b),
+      Pair(a, a),
+      Pair(b, a)
+    ).forEach { pair ->
+      val uuid = UUID.V5(pair.first, pair.second)
+      assertThat(uuid.isV5, equalTo(true))
     }
   }
 
   @Test
+  fun `Create V5 memeid namespace with custom Digestible`() {
+    val uuid = UUID.V1.next
+    val person = Person("Federico", "García Lorca")
+
+    val fromUUID = UUID.V5(uuid, person) {
+      it.firstName.toByteArray() + it.lastName.toByteArray()
+    }
+
+    assertThat(fromUUID.isV5, equalTo(true))
+  }
+
+  @Test
   fun `Attempt to create UUID from invalid string`() {
-    assertThat(1 == 1, equalTo(true))
+    val uuidString = "1-1-1-1-1"
+    val fromString = UUID.fromString(uuidString)
+
+    // Catches an illegal argument exception but returns null
+    assertThat(fromString.isNil, equalTo(true))
   }
 
   @Test
-  fun `Attempt to create UUID from invalid type`() {
-    val allVersions = listOf(
-      UUIDGenerator.generateV1(),
+  fun `Attempt to create UUID from invalid long bytes`() {
+    val fromString = UUID.from(0L, 1000L)
 
-      UUIDGenerator.generateV4()
-    )
-  }
-
-  @Test
-  fun `UUIDs correspond to version types`() {
-
-  }
-
-  @Test
-  fun `UUIDs do not correspond to version types`() {
-
-  }
-
-  @Test
-  fun `Detect a valid UUID variant`() {
-
-  }
-
-  @Test
-  fun `Detect a invalid UUID variant`() {
-
+    assertThat(fromString.version(), equalTo(0))
   }
 
   @Test
   fun `Nil variant must be equal to 0`() {
-
+    assertThat(memeid.UUID.NIL.variant(), equalTo(0))
   }
 
   @Test
   fun `Nil all 128 bits in 0`() {
-
+    assertThat(memeid.UUID.NIL.mostSignificantBits, equalTo(0L))
+    assertThat(memeid.UUID.NIL.leastSignificantBits, equalTo(0L))
   }
 
-  private fun logTest(version: Int, uuid: memeid.UUID, fromUUID: memeid.UUID, fromSigBits: memeid.UUID, fromString: memeid.UUID?) {
+  private fun logTest(uuid: memeid.UUID, fromUUID: memeid.UUID, fromSigBits: memeid.UUID, fromString: memeid.UUID?) {
     println( """
-      Generated Version $version UUID: $uuid | UUID Version: ${uuid.version()} | UUID Variant: ${uuid.version()} 
+      Generated Version 4 UUID: $uuid | UUID Version: ${uuid.version()} | UUID Variant: ${uuid.version()} 
       |  From UUID: $fromUUID | version: ${fromUUID.version()} | variant: ${fromUUID.variant()}
       |  From significant bits: $fromSigBits | version: ${fromSigBits.version()} | variant: ${fromSigBits.variant()}
       |  From String: $fromString | version: ${fromString?.version()} | variant: ${fromString?.variant()}
@@ -165,5 +182,3 @@ class UUIDTest {
       --------------------------------------------------------------------""".trimIndent())
   }
 }
-
-data class Person(val firstName: String, val lastName: String)

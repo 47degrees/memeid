@@ -12,3 +12,4 @@ val MEME_ID.msb: Long
 /** The least significant 64 bits of this UUID's 128 bit value */
 val MEME_ID.lsb: Long
   get() = this.leastSignificantBits
+
