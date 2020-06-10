@@ -73,6 +73,14 @@ Add this to your `build.sbt` file:
 libraryDependencies += "com.47deg" %% "memeid4s" % "0.1"
 ```
 
+### Kotlin
+
+Add this to your `build.gradle` file:
+
+```groovy
+implementation "com.47deg:memeid-kotlin:0.1"
+```
+
 ## Usage
 
 ### Scala
@@ -328,6 +336,90 @@ arbitrary[UUID.V4]
 arbitrary[UUID.V5]
 ```
 
+### Kotlin
+
+At the moment, this module is written and tested for Kotlin JVM.  There will be future considerations to add on Kotlin 
+Native, Android extensions serialization, and more.If you see something missing don't hesitate to open an issue or 
+send a patch.
+
+#### UUID construction
+
+##### Time-based (v1)
+
+The time-based (V1) variant of UUIDs is the fastest to generate. It uses a monotonic clock and node information to generate UUIDs.
+
+```kotlin
+import memeid.kotlin.UUID
+
+val uuid = UUID.V1.next
+```
+
+##### Random (v4)
+
+The cryptographically random variant, equivalent to `java.util.UUID/randomUUID`.
+
+```kotlin
+import memeid.kotlin.UUID
+
+val uuidV4Random = UUID.V1.random
+```
+
+##### Semi-sequential, random (SQUUID)
+
+SQUUIDs are a non-standard variaton of V4 UUIDs that are semi-sequential. They incorporate a time-component in their 32 most significant bits to generate UUIDs that don't fragment DB indexes.
+
+```kotlin
+import memeid.kotlin.UUID
+
+val uuidV4Squid = UUID.V4.squid
+```
+
+##### Namespaced (v3, v5)
+
+Namespaced UUIDs are generated from a UUID (namespace) and a hashed value (name). We can now create UUIDs with 
+the namespace and an arbitrary value as the name. It automatically works with Strings and UUIDs:
+
+```kotlin
+import memeid.kotlin.UUID
+
+val namespace = UUID.V1.next
+
+// V3 uses MD5 hash
+val uuidV3String = UUID.V3(namespace, "name")
+val uuidV3UUID = UUID.V3(namespace, UUID.V4.random)
+
+// V5 uses SHA hash
+val uuidV5String = UUID.V5(namespace, "name")
+val uuidV5UUID = UUID.V5(namespace, UUID.V4.random)
+```
+
+For hashing a custom digestible type with a Java UUID, a functional interface is required. To address Kotlin's current
+difficulty in working with SAM conversions (see [KT-7770](https://youtrack.jetbrains.com/issue/KT-7770)), this
+library provides a flexible backwards-compatible `memeid.kotlin.digest.Digestible` object.
+
+If you want to hash a custom type, simply feed in the object of your desire and feed a function returning a `ByteArray`:
+
+```kotlin
+import memeid.kotlin.UUID
+import memeid.kotlin.digest.Digestible
+
+val person = Person("Federico", "García Lorca")
+
+val fromUUID = UUID.V3(uuid, person) {
+  it.firstName.toByteArray() + it.lastName.toByteArray()
+}
+```
+
+Optionally, you can use create Digestible `memeid4s.digest.Digestible` as a way to feed in a functional interface 
+parameter elsewhere.
+
+```kotlin
+import memeid.kotlin.digest.Digestible
+
+val digestible = Digestible(person) {
+  it.firstName.toByteArray() + it.lastName.toByteArray()
+}
+```
 
 ## References
 

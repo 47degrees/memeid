@@ -1,4 +1,4 @@
-package memeid.kotlin
+package memeid.kotlin.digest
 /*
  * Copyright 2019-2020 47 Degrees Open Source <https://www.47deg.com>
  *
@@ -17,6 +17,8 @@ package memeid.kotlin
 
 import memeid.Bits.toBytes
 import memeid.UUID
+import memeid.kotlin.lsb
+import memeid.kotlin.msb
 import java.util.function.Function
 import kotlin.text.Charsets.UTF_8
 
@@ -62,7 +64,7 @@ open class Digestible {
   }
 }
 
-interface Transform<A> : memeid.kotlin.Function<A> {
+interface Transform<A> : memeid.kotlin.digest.Function<A> {
   fun toByteArray(): Function<A, ByteArray>
 }
 
