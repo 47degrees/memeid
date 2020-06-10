@@ -91,10 +91,10 @@ object dependencies extends AutoPlugin {
   )
 
   private val kotlin = Seq(
-    "org.slf4j" % "slf4j-simple" % "1.6.2" % Provided,
-    "io.github.microutils" % "kotlin-logging" % "1.7.9" % Provided,
-    "com.novocode" % "junit-interface" % "0.11" % Test,
-    "com.fasterxml.uuid" % "java-uuid-generator" % "4.0" % Test
+    "org.slf4j"            % "slf4j-simple"        % "1.6.2" % Provided,
+    "io.github.microutils" % "kotlin-logging"      % "1.7.9" % Provided,
+    "com.novocode"         % "junit-interface"     % "0.11"  % Test,
+    "com.fasterxml.uuid"   % "java-uuid-generator" % "4.0"   % Test
   )
 
   override def trigger: PluginTrigger = allRequirements

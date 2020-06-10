@@ -19,7 +19,7 @@ package memeid.kotlin
 import memeid.kotlin.node.Node
 import memeid.kotlin.time.time
 import memeid.UUID
-import memeid.kotlin.time.Posix
+import memeid.kotlin.digest.Digestible
 import memeid.kotlin.time.posix
 
 sealed class UUID {
@@ -58,7 +58,6 @@ sealed class UUID {
      *
      * @param namespace [UUID] used for the [V3] generation
      * @param custom [A] used for the [V3] generation
-     * @tparam A Sets the type for the [Format] parameter
      * @param function ([A]) -> [ByteArray] customizes digestible toByteArray
      * @return [V3]
      */
@@ -118,7 +117,6 @@ sealed class UUID {
      *
      * @param namespace [UUID] used for the [V5] generation
      * @param custom [A] used for the [V5] generation
-     * @tparam A Sets the type for the [Format] parameter
      * @param function ([A]) -> [ByteArray] customizes digestible toByteArray
      * @return [V5]
      */
