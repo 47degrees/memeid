@@ -86,11 +86,9 @@ addCommandAlias(
     " -prof stack;"
 )
 
-val generateMasterFileTask =
+val generateMasterFile =
   taskKey[Unit]("If the master file has not been created, current is copied. This will happen just the first time.")
-generateMasterFileTask := {
+generateMasterFile := {
   if (!file("bench/master.avgtime.csv").exists())
     IO.copy(Seq((file("bench/current.avgtime.csv"), file("bench/master.avgtime.csv"))))
 }
-
-addCommandAlias("generateMasterFile", ";" + generateMasterFileTask.key)
