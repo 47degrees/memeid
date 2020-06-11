@@ -2,7 +2,7 @@ ThisBuild / scalaVersion       := "2.13.3"
 ThisBuild / crossScalaVersions := Seq("2.12.12", "2.13.3")
 ThisBuild / organization       := "com.47deg"
 
-addCommandAlias("ci-test", "fix --check; +mdoc; testCovered; generateMasterFile; compareBenchmarksCI")
+addCommandAlias("ci-test", "fix --check; +mdoc; testCovered; runAvgtime; generateMasterFile; compareBenchmarksCI")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishMicrosite")
 addCommandAlias("ci-publish", "github; ci-release")
 
