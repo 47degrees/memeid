@@ -17,6 +17,9 @@ object HoodPlugin extends AutoPlugin {
       repositoryName        := Option("memeid"),
       pullRequestNumber     := Option(System.getenv().get("PULL_REQUEST_NUMBER")).map(_.toInt),
       outputToFile          := true,
-      outputPath            := file("bench/comparison.md")
+      outputPath            := file("bench/comparison.md"),
+      benchmarkFiles        := List(file("bench/current.avgtime.csv")),
+      uploadDirectory       := "bench",
+      commitMessage         := "Update benchmark file"
     )
 }
