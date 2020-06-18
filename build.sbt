@@ -41,15 +41,14 @@ lazy val `memeid4s-scalacheck` = module.dependsOn(memeid)
 ////  KOTLIN ////
 /////////////////
 
-kotlinLib("stdlib")
-kotlincOptions += "-verbose"
-
 lazy val `memeid-kotlin` = module
   .dependsOn(`memeid`)
   .disablePlugins(ScoverageSbtPlugin)
   .settings(crossPaths := false)
   .settings(resolvers += DefaultMavenRepository)
   .settings(skip in publish := true)
+  .settings(kotlinLib("stdlib"))
+  .settings(kotlincOptions += "-verbose")
 
 lazy val bench = project
   .dependsOn(memeid4s)
