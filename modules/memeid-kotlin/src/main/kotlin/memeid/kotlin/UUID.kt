@@ -161,7 +161,6 @@ sealed class UUID {
     fun fromString(str: String): UUID = try {
       UUID.fromString(str)
     } catch (e: IllegalArgumentException) {
-      logger.debug { "Unable to get UUID from string $str. Cause of error: $e" }
       UUID.NIL
     }
   }
