@@ -45,7 +45,6 @@ lazy val `memeid-kotlin` = module
   .dependsOn(`memeid`)
   .disablePlugins(ScoverageSbtPlugin)
   .settings(crossPaths := false)
-  .settings(resolvers += DefaultMavenRepository)
   .settings(skip in publish := true)
   .settings(publishMavenStyle := true)
   .settings(autoScalaLibrary := false)
