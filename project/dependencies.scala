@@ -43,7 +43,7 @@ object dependencies extends AutoPlugin {
       "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
       "org.typelevel" %% "cats-laws"         % "2.1.1"               % Test,
       "org.typelevel" %% "discipline-specs2" % "1.1.0"               % Test,
-      "org.specs2"    %% "specs2-cats"       % "4.10.0"               % Test
+      "org.specs2"    %% "specs2-cats"       % "4.10.0"              % Test
     )
   }
 
@@ -59,7 +59,7 @@ object dependencies extends AutoPlugin {
       "org.tpolecat" %% "doobie-core"   % V.doobie.value % Provided,
       "org.tpolecat" %% "doobie-specs2" % "0.9.0"        % Test,
       "org.tpolecat" %% "doobie-h2"     % "0.9.0"        % Test,
-      "org.specs2"   %% "specs2-cats"   % "4.10.0"        % Test
+      "org.specs2"   %% "specs2-cats"   % "4.10.0"       % Test
     )
   }
 
