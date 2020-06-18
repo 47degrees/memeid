@@ -47,6 +47,8 @@ lazy val `memeid-kotlin` = module
   .settings(crossPaths := false)
   .settings(resolvers += DefaultMavenRepository)
   .settings(skip in publish := true)
+  .settings(publishMavenStyle := true)
+  .settings(autoScalaLibrary := false)
   .settings(kotlinLib("stdlib"))
   .settings(kotlincOptions += "-verbose")
 
