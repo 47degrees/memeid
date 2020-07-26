@@ -34,6 +34,7 @@
         - [Typeclasses](#typeclasses)
         - [Constructors](#constructors)
       - [Scalacheck](#scalacheck)
+- [Benchmarking](#benchmarking)
 - [References](#references)
 
 ## Rationale
@@ -212,7 +213,7 @@ val example = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
     _ <- insert(example).run.transact(transactor)
     u <- select(example).unique.transact(transactor)
   } yield u
-}.unsafeRunSync
+}.unsafeRunSync()
 // res10: UUID = 58d61328-1b08-1171-1ee7-1283ed639e77
 ```
 
@@ -327,6 +328,14 @@ arbitrary[UUID.V3]
 arbitrary[UUID.V4]
 arbitrary[UUID.V5]
 ```
+
+## Benchmarking
+
+[``sbt-jmh``](https://github.com/ktoso/sbt-jmh) is used for executing the benchmarking tests. 
+
+There are 2 kind of benchmarking:
+- ``runAvgtime``: Measures the average time it takes for the benchmark method to execute (a single execution). Generates the ``master.avgtime.csv`` file in the ``bench`` folder. 
+- ``runThroughput``: Measures the number of operations per second, meaning the number of times per second your benchmark method could be executed. Generates the ``master.throughput.csv`` file in the ``bench`` folder.
 
 
 ## References

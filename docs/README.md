@@ -1,4 +1,4 @@
-![](design-assets/other-file-formats/readme-header.png)
+\![](design-assets/other-file-formats/readme-header.png)
 
 `memeid` is a JVM library for generating [RFC-compliant](https://www.ietf.org/rfc/rfc4122.txt) Universal Unique Identifiers (UUIDs).
 
@@ -180,7 +180,7 @@ val transactor: Transactor[IO] =
     pass = ""
   )
 
-sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync
+sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync()
 ```
 
 ```scala mdoc:silent
@@ -201,7 +201,7 @@ val example = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
     _ <- insert(example).run.transact(transactor)
     u <- select(example).unique.transact(transactor)
   } yield u
-}.unsafeRunSync
+}.unsafeRunSync()
 ```
 
 ##### Circe

@@ -33,7 +33,7 @@ val transactor: Transactor[IO] =
     pass = ""
   )
 
-sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync
+sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync()
 ```
 
 ```scala mdoc:silent
@@ -56,6 +56,6 @@ val example = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
     _ <- insert(example).run.transact(transactor)
     u <- select(example).unique.transact(transactor)
   } yield u
-}.unsafeRunSync
+}.unsafeRunSync()
 ```
 
