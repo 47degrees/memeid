@@ -41,7 +41,7 @@ object dependencies extends AutoPlugin {
   private val cats = Def.setting {
     Seq(
       "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
-      "org.typelevel" %% "cats-laws"         % "2.1.1"               % Test,
+      "org.typelevel" %% "cats-laws"         % "2.2.0"               % Test,
       "org.typelevel" %% "discipline-specs2" % "1.1.0"               % Test,
       "org.specs2"    %% "specs2-cats"       % "4.10.3"              % Test
     )
