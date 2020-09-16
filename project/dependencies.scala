@@ -93,11 +93,12 @@ object dependencies extends AutoPlugin {
   )
 
   private val documentation = Seq(
-    "org.typelevel"  %% "cats-effect" % "2.2.0",
-    "io.circe"       %% "circe-core"  % "0.13.0",
-    "org.tpolecat"   %% "doobie-h2"   % "0.9.2",
-    "org.http4s"     %% "http4s-dsl"  % "0.21.7",
-    "org.scalacheck" %% "scalacheck"  % "1.14.3"
+    "org.typelevel"               %% "cats-effect" % "2.2.0",
+    "io.circe"                    %% "circe-core"  % "0.13.0",
+    "org.tpolecat"                %% "doobie-h2"   % "0.9.2",
+    "org.http4s"                  %% "http4s-dsl"  % "0.21.7",
+    "org.scalacheck"              %% "scalacheck"  % "1.14.3",
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.16.16"
   )
 
   override def trigger: PluginTrigger = allRequirements
