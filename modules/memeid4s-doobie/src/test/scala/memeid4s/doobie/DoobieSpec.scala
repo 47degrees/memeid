@@ -17,7 +17,6 @@
 package memeid4s.doobie
 
 import cats.effect._
-import cats.syntax.functor._
 
 import doobie._
 import doobie.h2.implicits._
