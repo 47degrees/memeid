@@ -29,6 +29,8 @@ object dependencies extends AutoPlugin {
 
     val scalacheck = "[1.14.0,)"
 
+    val tapir = "[0.16.0,)"
+
   }
   // scala-steward:on
 
@@ -78,16 +80,25 @@ object dependencies extends AutoPlugin {
     )
   }
 
+  private val tapir = Def.setting {
+    Seq(
+      "com.softwaremill.sttp.tapir" %% "tapir-core"               % V.tapir   % Provided,
+      "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % "0.16.16" % Test,
+      "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % "0.16.16" % Test
+    )
+  }
+
   private val scalacheck = Seq(
     "org.scalacheck" %% "scalacheck" % V.scalacheck % Provided
   )
 
   private val documentation = Seq(
-    "org.typelevel"  %% "cats-effect" % "2.2.0",
-    "io.circe"       %% "circe-core"  % "0.13.0",
-    "org.tpolecat"   %% "doobie-h2"   % "0.9.2",
-    "org.http4s"     %% "http4s-dsl"  % "0.21.7",
-    "org.scalacheck" %% "scalacheck"  % "1.14.3"
+    "org.typelevel"               %% "cats-effect" % "2.2.0",
+    "io.circe"                    %% "circe-core"  % "0.13.0",
+    "org.tpolecat"                %% "doobie-h2"   % "0.9.2",
+    "org.http4s"                  %% "http4s-dsl"  % "0.21.7",
+    "org.scalacheck"              %% "scalacheck"  % "1.14.3",
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.16.16"
   )
 
   override def trigger: PluginTrigger = allRequirements
@@ -106,6 +117,7 @@ object dependencies extends AutoPlugin {
           case "memeid4s-doobie"     => doobie.value
           case "memeid4s-circe"      => circe.value
           case "memeid4s-http4s"     => http4s.value
+          case "memeid4s-tapir"      => tapir.value
           case "memeid4s-scalacheck" => scalacheck
           case _                     => Nil
         }
