@@ -10,6 +10,7 @@ lazy val documentation = project
   .enablePlugins(MdocPlugin)
   .settings(mdocOut := file("."))
   .dependsOn(allModules: _*)
+  .settings(description := "test")
 
 lazy val microsite = project
   .enablePlugins(MdocPlugin)
