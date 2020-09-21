@@ -109,7 +109,8 @@ object dependencies extends AutoPlugin {
     "org.tpolecat"                %% "doobie-h2"   % "0.9.2",
     "org.http4s"                  %% "http4s-dsl"  % "0.21.7",
     "org.scalacheck"              %% "scalacheck"  % "1.14.3",
-    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.16.16"
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.16.16",
+    "io.chrisdavenport"           %% "fuuid"       % "0.4.0"
   )
 
   override def trigger: PluginTrigger = allRequirements

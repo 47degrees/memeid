@@ -283,6 +283,39 @@ import sttp.tapir._
 endpoint.get.in("hello" / path[UUID])
 ```
 
+##### FUUID
+
+```scala
+libraryDependencies += "com.47deg" %% "memeid4s-fuuid" % "@VERSION@"
+```
+
+The [FUUID](https://christopherdavenport.github.io/fuuid/) integration provides both semi (via extension methods) and auto conversions between memeid's `UUID` type and `FUUID`.
+
+```scala mdoc:reset:silent
+import memeid4s.UUID
+import io.chrisdavenport.fuuid.FUUID
+import memeid4s.fuuid.syntax._
+
+val fuuid: FUUID = UUID.V4.random.toFUUID
+
+val uuid: UUID = fuuid.toUUID
+```
+
+```scala mdoc:reset:silent
+import memeid4s.UUID
+import io.chrisdavenport.fuuid.FUUID
+import memeid4s.fuuid.auto._
+
+def usingFUUID(fuuid: FUUID) = fuuid
+def usingUUID(uuid: UUID) = uuid
+
+val uuid: UUID = UUID.V4.random
+val fuuid: FUUID = FUUID.fromUUID(java.util.UUID.randomUUID)
+
+usingFUUID(uuid)
+usingUUID(fuuid)
+```
+
 ##### Cats & Cats-effect
 
 ```scala
@@ -296,6 +329,7 @@ The cats integration provides typeclass implementation for `UUID`, as well as ef
 ```scala mdoc:silent
 import cats._
 import memeid4s.cats.implicits._
+import cats.effect.IO
 
 Order[UUID]
 Hash[UUID]
@@ -307,6 +341,9 @@ Show[UUID]
 
 ```scala mdoc:silent
 UUID.random[IO]
+
+val namespace = UUID.V4.random
+
 UUID.v3[IO, String](namespace, "my-secret-code")
 UUID.v5[IO, String](namespace, "my-secret-code")
 ```

@@ -13,6 +13,8 @@ options:
         url: docs/memeid4s_http4s/
       - title: Tapir
         url: docs/memeid4s_tapir/
+      - title: FUUID
+        url: docs/memeid4s_fuuid/
       - title: Cats & Cats-effect
         url: docs/memeid4s_cats/
       - title: Scalacheck
