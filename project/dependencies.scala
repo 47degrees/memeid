@@ -31,6 +31,11 @@ object dependencies extends AutoPlugin {
 
     val tapir = "[0.16.0,)"
 
+    val fuuid = on {
+      case (2, 12) => "[0.1.0,)"
+      case (2, 13) => "[0.3.0,)"
+    }
+
   }
   // scala-steward:on
 
@@ -88,6 +93,12 @@ object dependencies extends AutoPlugin {
     )
   }
 
+  private val fuuid = Def.setting {
+    Seq(
+      "io.chrisdavenport" %% "fuuid" % V.fuuid.value % Provided
+    )
+  }
+
   private val scalacheck = Seq(
     "org.scalacheck" %% "scalacheck" % V.scalacheck % Provided
   )
@@ -118,6 +129,7 @@ object dependencies extends AutoPlugin {
           case "memeid4s-circe"      => circe.value
           case "memeid4s-http4s"     => http4s.value
           case "memeid4s-tapir"      => tapir.value
+          case "memeid4s-fuuid"      => fuuid.value
           case "memeid4s-scalacheck" => scalacheck
           case _                     => Nil
         }
