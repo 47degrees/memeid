@@ -19,6 +19,7 @@ object descriptions extends AutoPlugin {
     "memeid4s-circe"      -> "Circe type-classes instances to enable decoding/encoding memeid's UUID values in JSON",
     "memeid4s-http4s"     -> "Http4s type-classes instances to enable using memeid's UUID as a query param in http4s services",
     "memeid4s-tapir"      -> "Tapir type-classes instances to enable using memeid's UUID as path/query param or headers in tapir's endpoints as well as richer documentation",
+    "memeid4s-fuuid"      -> "Conversions between FUUID's UUID class and memeid one",
     "memeid4s-scalacheck" -> "Arbitrary instances for memeid's UUID as well as the different UUID versions"
   )
 
