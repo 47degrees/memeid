@@ -32,8 +32,8 @@ class UUIDSpec extends Specification with ScalaCheck {
     }
 
     "return Left on invalid string" in prop { s: String =>
-      UUID.from(s) must beLeft().like {
-        case e: IllegalArgumentException => e.getMessage must contain("UUID string")
+      UUID.from(s) must beLeft().like { case e: IllegalArgumentException =>
+        e.getMessage must contain("UUID string")
       }
     }.setGen(Gen.alphaNumStr)
 
