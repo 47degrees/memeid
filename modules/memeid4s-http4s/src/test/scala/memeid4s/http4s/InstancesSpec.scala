@@ -52,8 +52,8 @@ class InstancesSpec extends Specification with ScalaCheck {
   "QueryParamEncoder[UUID]" should {
 
     "correctly encode a valid UUID" in prop { uuid: UUID =>
-      QueryParamEncoder[UUID].encode(uuid) must be like {
-        case QueryParameterValue(string) => string must be equalTo uuid.show
+      QueryParamEncoder[UUID].encode(uuid) must be like { case QueryParameterValue(string) =>
+        string must be equalTo uuid.show
       }
     }
 
