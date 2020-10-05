@@ -8,8 +8,8 @@ object dependencies extends AutoPlugin {
   object V {
 
     val `cats-effect` = on {
-      case (2, 12) => "[0.2,)"
-      case (2, 13) => "[2.0.0,)"
+      case (2, 12) => "[0.2,2.99)"
+      case (2, 13) => "[2.0.0,2.99)"
     }
 
     val circe = on {
