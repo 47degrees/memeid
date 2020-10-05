@@ -1,20 +1,10 @@
-ThisBuild / scalaVersion       := "2.13.2"
-ThisBuild / crossScalaVersions := Seq("2.12.11", "2.13.2")
+ThisBuild / scalaVersion       := "2.13.3"
+ThisBuild / crossScalaVersions := Seq("2.12.12", "2.13.3")
 ThisBuild / organization       := "com.47deg"
 
 addCommandAlias("ci-test", "fix --check; +mdoc; testCovered")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishMicrosite")
 addCommandAlias("ci-publish", "github; ci-release")
-
-lazy val documentation = project
-  .enablePlugins(MdocPlugin)
-  .settings(mdocOut := file("."))
-  .dependsOn(allModules: _*)
-
-lazy val microsite = project
-  .enablePlugins(MdocPlugin)
-  .enablePlugins(MicrositesPlugin)
-  .dependsOn(allModules: _*)
 
 ////////////////
 ////  JAVA  ////
@@ -38,6 +28,24 @@ lazy val `memeid4s-http4s`     = module.dependsOn(`memeid4s`, `memeid4s-cats` % 
 lazy val `memeid4s-tapir`      = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
 lazy val `memeid4s-fuuid`      = module.dependsOn(`memeid4s`, `memeid4s-scalacheck` % Test)
 lazy val `memeid4s-scalacheck` = module.dependsOn(memeid)
+
+/////////////////////////
+////  DOCUMENTATION  ////
+/////////////////////////
+
+lazy val documentation = project
+  .enablePlugins(MdocPlugin)
+  .settings(mdocOut := file("."))
+  .dependsOn(allModules: _*)
+
+lazy val microsite = project
+  .enablePlugins(MdocPlugin)
+  .enablePlugins(MicrositesPlugin)
+  .dependsOn(allModules: _*)
+
+//////////////////////
+////  BENCHMARKS  ////
+//////////////////////
 
 lazy val bench = project
   .dependsOn(memeid4s)
