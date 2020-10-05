@@ -23,7 +23,6 @@ import memeid.UUID
 private[literal] class Macros(val c: blackbox.Context) {
   import c.universe._
 
-  @SuppressWarnings(Array("scalafix:Disable.Any"))
   def uuidInterpolator(args: Any*): c.Expr[UUID] = {
     if (args.nonEmpty)
       c.abort(c.enclosingPosition, "uuid interpolator should only be used on string literals")
