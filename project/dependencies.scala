@@ -64,8 +64,8 @@ object dependencies extends AutoPlugin {
   private val doobie = Def.setting {
     Seq(
       "org.tpolecat" %% "doobie-core"   % V.doobie.value % Provided,
-      "org.tpolecat" %% "doobie-specs2" % "0.10.0"        % Test,
-      "org.tpolecat" %% "doobie-h2"     % "0.10.0"        % Test,
+      "org.tpolecat" %% "doobie-specs2" % "0.10.0"       % Test,
+      "org.tpolecat" %% "doobie-h2"     % "0.10.0"       % Test,
       "org.specs2"   %% "specs2-cats"   % "4.10.5"       % Test
     )
   }
