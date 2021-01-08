@@ -87,7 +87,7 @@ object dependencies extends AutoPlugin {
 
   private val tapir = Def.setting {
     Seq(
-      "com.softwaremill.sttp.tapir" %% "tapir-core"               % V.tapir   % Provided,
+      "com.softwaremill.sttp.tapir" %% "tapir-core"               % V.tapir  % Provided,
       "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % "0.17.2" % Test,
       "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % "0.17.2" % Test
     )
