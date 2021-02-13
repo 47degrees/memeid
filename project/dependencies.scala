@@ -39,7 +39,7 @@ object dependencies extends AutoPlugin {
   }
   // scala-steward:on
 
-  private val common = Seq("org.specs2" %% "specs2-scalacheck" % "4.10.5" % Test)
+  private val common = Seq("org.specs2" %% "specs2-scalacheck" % "4.10.6" % Test)
 
   private val parallel = on(2, 13) {
     "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.0" % Test
@@ -48,9 +48,9 @@ object dependencies extends AutoPlugin {
   private val cats = Def.setting {
     Seq(
       "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
-      "org.typelevel" %% "cats-laws"         % "2.3.0"               % Test,
-      "org.typelevel" %% "discipline-specs2" % "1.1.2"               % Test,
-      "org.specs2"    %% "specs2-cats"       % "4.10.5"              % Test
+      "org.typelevel" %% "cats-laws"         % "2.3.1"               % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.1.3"               % Test,
+      "org.specs2"    %% "specs2-cats"       % "4.10.6"              % Test
     )
   }
 
@@ -64,16 +64,16 @@ object dependencies extends AutoPlugin {
   private val doobie = Def.setting {
     Seq(
       "org.tpolecat" %% "doobie-core"   % V.doobie.value % Provided,
-      "org.tpolecat" %% "doobie-specs2" % "0.9.4"        % Test,
-      "org.tpolecat" %% "doobie-h2"     % "0.9.4"        % Test,
-      "org.specs2"   %% "specs2-cats"   % "4.10.5"       % Test
+      "org.tpolecat" %% "doobie-specs2" % "0.10.0"       % Test,
+      "org.tpolecat" %% "doobie-h2"     % "0.10.0"       % Test,
+      "org.specs2"   %% "specs2-cats"   % "4.10.6"       % Test
     )
   }
 
   private val circe = Def.setting {
     Seq(
       "io.circe"      %% "circe-core"        % V.circe.value % Provided,
-      "org.typelevel" %% "discipline-specs2" % "1.1.2"       % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.1.3"       % Test,
       "io.circe"      %% "circe-testing"     % "0.13.0"      % Test
     )
   }
@@ -81,15 +81,15 @@ object dependencies extends AutoPlugin {
   private val http4s = Def.setting {
     Seq(
       "org.http4s" %% "http4s-core" % V.http4s.value % Provided,
-      "org.http4s" %% "http4s-dsl"  % "0.21.13"      % Test
+      "org.http4s" %% "http4s-dsl"  % "0.21.18"      % Test
     )
   }
 
   private val tapir = Def.setting {
     Seq(
       "com.softwaremill.sttp.tapir" %% "tapir-core"               % V.tapir   % Provided,
-      "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % "0.16.16" % Test,
-      "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % "0.16.16" % Test
+      "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % "0.17.10" % Test,
+      "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % "0.17.10" % Test
     )
   }
 
@@ -104,13 +104,13 @@ object dependencies extends AutoPlugin {
   )
 
   private val documentation = Seq(
-    "org.typelevel"               %% "cats-effect" % "2.3.0",
+    "org.typelevel"               %% "cats-effect" % "2.3.1",
     "io.circe"                    %% "circe-core"  % "0.13.0",
-    "org.tpolecat"                %% "doobie-h2"   % "0.9.4",
-    "org.http4s"                  %% "http4s-dsl"  % "0.21.13",
-    "org.scalacheck"              %% "scalacheck"  % "1.15.1",
-    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.16.16",
-    "io.chrisdavenport"           %% "fuuid"       % "0.4.0"
+    "org.tpolecat"                %% "doobie-h2"   % "0.10.0",
+    "org.http4s"                  %% "http4s-dsl"  % "0.21.18",
+    "org.scalacheck"              %% "scalacheck"  % "1.15.2",
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.17.10",
+    "io.chrisdavenport"           %% "fuuid"       % "0.5.0"
   )
 
   override def trigger: PluginTrigger = allRequirements

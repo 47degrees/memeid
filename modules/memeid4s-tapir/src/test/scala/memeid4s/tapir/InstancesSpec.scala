@@ -25,7 +25,7 @@ import memeid4s.tapir.implicits._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 import sttp.tapir._
-import sttp.tapir.docs.openapi._
+import sttp.tapir.docs.openapi.OpenAPIDocsInterpreter
 import sttp.tapir.openapi.circe.yaml._
 
 class InstancesSpec extends Specification with ScalaCheck {
@@ -35,10 +35,10 @@ class InstancesSpec extends Specification with ScalaCheck {
     "provide correct schema when generating documentation" in {
       val testEndpoint = endpoint.get.in("hello" / path[UUID])
 
-      val result = testEndpoint.toOpenAPI("", "").toYaml
+      val result = OpenAPIDocsInterpreter.toOpenAPI(testEndpoint, "", "").toYaml
 
       val expected =
-        """openapi: 3.0.1
+        """openapi: 3.0.3
           |info:
           |  title: ''
           |  version: ''
