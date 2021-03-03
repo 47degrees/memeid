@@ -81,7 +81,7 @@ object dependencies extends AutoPlugin {
   private val http4s = Def.setting {
     Seq(
       "org.http4s" %% "http4s-core" % V.http4s.value % Provided,
-      "org.http4s" %% "http4s-dsl"  % "0.21.19"      % Test
+      "org.http4s" %% "http4s-dsl"  % "0.21.20"      % Test
     )
   }
 
@@ -107,7 +107,7 @@ object dependencies extends AutoPlugin {
     "org.typelevel"               %% "cats-effect" % "2.3.3",
     "io.circe"                    %% "circe-core"  % "0.13.0",
     "org.tpolecat"                %% "doobie-h2"   % "0.10.0",
-    "org.http4s"                  %% "http4s-dsl"  % "0.21.19",
+    "org.http4s"                  %% "http4s-dsl"  % "0.21.20",
     "org.scalacheck"              %% "scalacheck"  % "1.15.3",
     "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.17.13",
     "io.chrisdavenport"           %% "fuuid"       % "0.5.0"
