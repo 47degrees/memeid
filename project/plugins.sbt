@@ -7,7 +7,7 @@ addSbtPlugin("com.alejandrohdezma"               % "sbt-github-mdoc"          % 
 addSbtPlugin("com.alejandrohdezma"               % "sbt-mdoc-toc"             % "0.3.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-modules"              % "0.1.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-remove-test-from-pom" % "0.1.0")
-addSbtPlugin("com.alejandrohdezma"               % "sbt-scalafix-defaults"    % "0.4.0")
+addSbtPlugin("com.alejandrohdezma"               % "sbt-scalafix-defaults"    % "0.5.1")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-scalafmt-defaults"    % "0.4.1")
 addSbtPlugin("com.geirsson"                      % "sbt-ci-release"           % "1.5.7")
 addSbtPlugin("com.thoughtworks.sbt-api-mappings" % "sbt-api-mappings"         % "3.0.0")
