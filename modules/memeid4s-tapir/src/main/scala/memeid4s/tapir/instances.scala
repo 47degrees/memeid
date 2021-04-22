@@ -21,7 +21,7 @@ trait instances {
   /**
    * Provides a valid `Schema` for `UUID` type, to be used when generating documentation.
    */
-  implicit val UUIDSchema: Schema[UUID] = Schema(SString).format("uuid")
+  implicit val UUIDSchema: Schema[UUID] = Schema(SString[UUID]()).format("uuid")
 
 }
 
