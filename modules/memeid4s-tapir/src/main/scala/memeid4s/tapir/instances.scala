@@ -16,12 +16,12 @@ trait instances {
   implicit val UUIDCodec: Codec[String, UUID, CodecFormat.TextPlain] =
     Codec.string
       .mapDecode(s => UUID.from(s).fold(DecodeResult.Error(s, _), DecodeResult.Value(_)))(_.toString) // scalafix:ok
-      .schema(_.format("uuid"))
+      .modifySchema(_.format("uuid"))
 
   /**
    * Provides a valid `Schema` for `UUID` type, to be used when generating documentation.
    */
-  implicit val UUIDSchema: Schema[UUID] = Schema(SString()).format("uuid")
+  implicit val UUIDSchema: Schema[UUID] = Schema(SString).format("uuid")
 
 }
 
