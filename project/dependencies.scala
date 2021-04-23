@@ -29,8 +29,6 @@ object dependencies extends AutoPlugin {
 
     val scalacheck = "[1.14.0,)"
 
-    val tapir = "[0.16.0,)"
-
     val fuuid = on {
       case (2, 12) => "[0.1.0,)"
       case (2, 13) => "[0.3.0,)"
@@ -87,7 +85,7 @@ object dependencies extends AutoPlugin {
 
   private val tapir = Def.setting {
     Seq(
-      "com.softwaremill.sttp.tapir" %% "tapir-core"               % V.tapir   % Provided,
+      "com.softwaremill.sttp.tapir" %% "tapir-core"               % "0.17.19" % Provided,
       "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % "0.17.19" % Test,
       "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % "0.17.19" % Test
     )
