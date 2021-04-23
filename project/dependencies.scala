@@ -47,7 +47,7 @@ object dependencies extends AutoPlugin {
     Seq(
       "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
       "org.typelevel" %% "cats-laws"         % "2.5.0"               % Test,
-      "org.typelevel" %% "discipline-specs2" % "1.1.4"               % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.1.5"               % Test,
       "org.specs2"    %% "specs2-cats"       % "4.10.6"              % Test
     )
   }
@@ -55,7 +55,7 @@ object dependencies extends AutoPlugin {
   private val literal = Def.setting {
     Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
-      "com.chuusai"   %% "shapeless"     % "2.3.3"            % Test
+      "com.chuusai"   %% "shapeless"     % "2.3.4"            % Test
     )
   }
 
@@ -71,7 +71,7 @@ object dependencies extends AutoPlugin {
   private val circe = Def.setting {
     Seq(
       "io.circe"      %% "circe-core"        % V.circe.value % Provided,
-      "org.typelevel" %% "discipline-specs2" % "1.1.4"       % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.1.5"       % Test,
       "io.circe"      %% "circe-testing"     % "0.13.0"      % Test
     )
   }
@@ -79,7 +79,7 @@ object dependencies extends AutoPlugin {
   private val http4s = Def.setting {
     Seq(
       "org.http4s" %% "http4s-core" % V.http4s.value % Provided,
-      "org.http4s" %% "http4s-dsl"  % "0.21.21"      % Test
+      "org.http4s" %% "http4s-dsl"  % "0.21.22"      % Test
     )
   }
 
@@ -105,7 +105,7 @@ object dependencies extends AutoPlugin {
     "org.typelevel"               %% "cats-effect" % "2.4.1",
     "io.circe"                    %% "circe-core"  % "0.13.0",
     "org.tpolecat"                %% "doobie-h2"   % "0.12.1",
-    "org.http4s"                  %% "http4s-dsl"  % "0.21.21",
+    "org.http4s"                  %% "http4s-dsl"  % "0.21.22",
     "org.scalacheck"              %% "scalacheck"  % "1.15.3",
     "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.17.19",
     "io.chrisdavenport"           %% "fuuid"       % "0.5.0"
