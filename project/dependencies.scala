@@ -64,8 +64,8 @@ object dependencies extends AutoPlugin {
   private val doobie = Def.setting {
     Seq(
       "org.tpolecat" %% "doobie-core"   % V.doobie.value % Provided,
-      "org.tpolecat" %% "doobie-specs2" % "0.12.1"       % Test,
-      "org.tpolecat" %% "doobie-h2"     % "0.12.1"       % Test,
+      "org.tpolecat" %% "doobie-specs2" % "0.13.0"       % Test,
+      "org.tpolecat" %% "doobie-h2"     % "0.13.0"       % Test,
       "org.specs2"   %% "specs2-cats"   % "4.10.6"       % Test
     )
   }
@@ -106,7 +106,7 @@ object dependencies extends AutoPlugin {
   private val documentation = Seq(
     "org.typelevel"               %% "cats-effect" % "2.4.1",
     "io.circe"                    %% "circe-core"  % "0.13.0",
-    "org.tpolecat"                %% "doobie-h2"   % "0.12.1",
+    "org.tpolecat"                %% "doobie-h2"   % "0.13.0",
     "org.http4s"                  %% "http4s-dsl"  % "0.21.21",
     "org.scalacheck"              %% "scalacheck"  % "1.15.3",
     "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.17.19",
