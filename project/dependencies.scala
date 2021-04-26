@@ -37,7 +37,7 @@ object dependencies extends AutoPlugin {
   }
   // scala-steward:on
 
-  private val common = Seq("org.specs2" %% "specs2-scalacheck" % "4.10.6" % Test)
+  private val common = Seq("org.specs2" %% "specs2-scalacheck" % "4.11.0" % Test)
 
   private val parallel = on(2, 13) {
     "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.2" % Test
@@ -48,7 +48,7 @@ object dependencies extends AutoPlugin {
       "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
       "org.typelevel" %% "cats-laws"         % "2.6.0"               % Test,
       "org.typelevel" %% "discipline-specs2" % "1.1.5"               % Test,
-      "org.specs2"    %% "specs2-cats"       % "4.10.6"              % Test
+      "org.specs2"    %% "specs2-cats"       % "4.11.0"              % Test
     )
   }
 
@@ -64,7 +64,7 @@ object dependencies extends AutoPlugin {
       "org.tpolecat" %% "doobie-core"   % V.doobie.value % Provided,
       "org.tpolecat" %% "doobie-specs2" % "0.13.1"       % Test,
       "org.tpolecat" %% "doobie-h2"     % "0.13.1"       % Test,
-      "org.specs2"   %% "specs2-cats"   % "4.10.6"       % Test
+      "org.specs2"   %% "specs2-cats"   % "4.11.0"       % Test
     )
   }
 
