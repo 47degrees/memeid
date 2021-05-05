@@ -106,7 +106,7 @@ object dependencies extends AutoPlugin {
     "io.circe"                    %% "circe-core"  % "0.13.0",
     "org.tpolecat"                %% "doobie-h2"   % "0.13.1",
     "org.http4s"                  %% "http4s-dsl"  % "0.21.22",
-    "org.scalacheck"              %% "scalacheck"  % "1.15.3",
+    "org.scalacheck"              %% "scalacheck"  % "1.15.4",
     "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.17.19",
     "io.chrisdavenport"           %% "fuuid"       % "0.5.0"
   )
