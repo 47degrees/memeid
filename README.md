@@ -1,4 +1,4 @@
-![](design-assets/other-file-formats/readme-header.png)
+\![](design-assets/other-file-formats/readme-header.png)
 
 `memeid` is a JVM library for generating [RFC-compliant](https://www.ietf.org/rfc/rfc4122.txt) Universal Unique Identifiers (UUIDs).
 
@@ -30,6 +30,8 @@
       - [Http4s](#http4s)
         - [Path parameters](#path-parameters)
         - [Query parameters](#query-parameters)
+      - [Tapir](#tapir)
+      - [FUUID](#fuuid)
       - [Cats & Cats-effect](#cats--cats-effect)
         - [Typeclasses](#typeclasses)
         - [Constructors](#constructors)
@@ -56,14 +58,14 @@ This library aims to solve the aforementioned issues and provide an RFC-complian
 <dependency>
     <groupId>com.47deg</groupId>
     <artifactId>memeid</artifactId>
-    <version>0.1</version>
+    <version>0.2.0</version>
 </dependency>
 ```
 
 #### Using gradle
 
 ```groovy
-compile group: 'com.47deg', name: 'memeid', version: '0.1'
+compile group: 'com.47deg', name: 'memeid', version: '0.2.0'
 ```
 
 ### Scala
@@ -71,7 +73,7 @@ compile group: 'com.47deg', name: 'memeid', version: '0.1'
 Add this to your `build.sbt` file:
 
 ```scala
-libraryDependencies += "com.47deg" %% "memeid4s" % "0.1"
+libraryDependencies += "com.47deg" %% "memeid4s" % "0.2.0"
 ```
 
 ## Usage
@@ -159,7 +161,7 @@ u.asJava
 
 
 ```scala
-libraryDependencies += "com.47deg" %% "memeid4s-literal" % "0.1"
+libraryDependencies += "com.47deg" %% "memeid4s-literal" % "0.2.0"
 ```
 
 We can now create UUIDs with literal syntax by importing `memeid.literal._`
@@ -189,7 +191,7 @@ uuid"not-a-uuid"
 The [Doobie](https://github.com/tpolecat/doobie) integration allows you to use the `UUID` type mapped to your database's UUID type.
 
 ```scala
-libraryDependencies += "com.47deg" %% "memeid4s-doobie" % "0.1"
+libraryDependencies += "com.47deg" %% "memeid4s-doobie" % "0.2.0"
 ```
 
 To have the [UUID mappings](https://tpolecat.github.io/doobie/docs/12-Custom-Mappings.html) available in scope you can import `memeid.doobie.implicits`.
@@ -220,7 +222,7 @@ val example = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
 ##### Circe
 
 ```scala
-libraryDependencies += "com.47deg" %% "memeid4s-circe" % "0.1"
+libraryDependencies += "com.47deg" %% "memeid4s-circe" % "0.2.0"
 ```
 
 You can import `memeid.circe.implicits` to have the `Encoder` and `Decoder` instances for `UUID` in scope.
@@ -236,15 +238,17 @@ val json = Json.fromString(uuid.toString)
 
 ```scala
 Encoder[UUID].apply(uuid)
-// res11: Json = JString("58d61328-1b08-1171-1ee7-1283ed639e77")
+// res11: Json = JString(value = "58d61328-1b08-1171-1ee7-1283ed639e77")
 Decoder[UUID].decodeJson(json)
-// res12: Decoder.Result[UUID] = Right(58d61328-1b08-1171-1ee7-1283ed639e77)
+// res12: Decoder.Result[UUID] = Right(
+//   value = 58d61328-1b08-1171-1ee7-1283ed639e77
+// )
 ```
 
 ##### Http4s
 
 ```scala
-libraryDependencies += "com.47deg" %% "memeid4s-http4s" % "0.1"
+libraryDependencies += "com.47deg" %% "memeid4s-http4s" % "0.2.0"
 ```
 
 ###### Path parameters
@@ -281,10 +285,60 @@ HttpRoutes.of[IO] {
 }
 ```
 
+##### Tapir
+
+```scala
+libraryDependencies += "com.47deg" %% "memeid4s-tapir" % "0.2.0"
+```
+
+The [Tapir](https://tapir.softwaremill.com/en/latest/) integration provides implicit instances for `Codec[UUID]` and `Schema[UUID]`, which allow using `UUID` as 
+type for query/path params or headers in endpoints. As well as enriching documentation when a `UUID` field is used.
+
+```scala
+import memeid4s.tapir.implicits._
+
+import sttp.tapir._
+
+endpoint.get.in("hello" / path[UUID])
+```
+
+##### FUUID
+
+```scala
+libraryDependencies += "com.47deg" %% "memeid4s-fuuid" % "0.2.0"
+```
+
+The [FUUID](https://christopherdavenport.github.io/fuuid/) integration provides both semi (via extension methods) and auto conversions between memeid's `UUID` type and `FUUID`.
+
+```scala
+import memeid4s.UUID
+import io.chrisdavenport.fuuid.FUUID
+import memeid4s.fuuid.syntax._
+
+val fuuid: FUUID = UUID.V4.random.toFUUID
+
+val uuid: UUID = fuuid.toUUID
+```
+
+```scala
+import memeid4s.UUID
+import io.chrisdavenport.fuuid.FUUID
+import memeid4s.fuuid.auto._
+
+def usingFUUID(fuuid: FUUID) = fuuid
+def usingUUID(uuid: UUID) = uuid
+
+val uuid: UUID = UUID.V4.random
+val fuuid: FUUID = FUUID.fromUUID(java.util.UUID.randomUUID)
+
+usingFUUID(uuid)
+usingUUID(fuuid)
+```
+
 ##### Cats & Cats-effect
 
 ```scala
-libraryDependencies += "com.47deg" %% "memeid4s-cats" % "0.1"
+libraryDependencies += "com.47deg" %% "memeid4s-cats" % "0.2.0"
 ```
 
 The cats integration provides typeclass implementation for `UUID`, as well as effectful constructors for UUIDs for integration with programs that use `cats-effect`.
@@ -294,6 +348,7 @@ The cats integration provides typeclass implementation for `UUID`, as well as ef
 ```scala
 import cats._
 import memeid4s.cats.implicits._
+import cats.effect.IO
 
 Order[UUID]
 Hash[UUID]
@@ -305,6 +360,9 @@ Show[UUID]
 
 ```scala
 UUID.random[IO]
+
+val namespace = UUID.V4.random
+
 UUID.v3[IO, String](namespace, "my-secret-code")
 UUID.v5[IO, String](namespace, "my-secret-code")
 ```
@@ -312,7 +370,7 @@ UUID.v5[IO, String](namespace, "my-secret-code")
 ##### Scalacheck
 
 ```scala
-libraryDependencies += "com.47deg" %% "memeid4s-scalacheck" % "0.1"
+libraryDependencies += "com.47deg" %% "memeid4s-scalacheck" % "0.2.0"
 ```
 
 The scalacheck integration provides `Arbitrary` instances for the `UUID`, as well as for the different version classes.
