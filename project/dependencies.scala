@@ -40,7 +40,7 @@ object dependencies extends AutoPlugin {
   private val common = Seq("org.specs2" %% "specs2-scalacheck" % "4.11.0" % Test)
 
   private val parallel = on(2, 13) {
-    "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.2" % Test
+    "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.3" % Test
   }
 
   private val cats = Def.setting {
