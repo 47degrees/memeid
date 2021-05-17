@@ -40,14 +40,14 @@ object dependencies extends AutoPlugin {
   private val common = Seq("org.specs2" %% "specs2-scalacheck" % "4.11.0" % Test)
 
   private val parallel = on(2, 13) {
-    "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.2" % Test
+    "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.3" % Test
   }
 
   private val cats = Def.setting {
     Seq(
       "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
-      "org.typelevel" %% "cats-laws"         % "2.6.0"               % Test,
-      "org.typelevel" %% "discipline-specs2" % "1.1.6"               % Test,
+      "org.typelevel" %% "cats-laws"         % "2.6.1"               % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.1.5"               % Test,
       "org.specs2"    %% "specs2-cats"       % "4.11.0"              % Test
     )
   }
@@ -102,7 +102,7 @@ object dependencies extends AutoPlugin {
   )
 
   private val documentation = Seq(
-    "org.typelevel"               %% "cats-effect" % "2.5.0",
+    "org.typelevel"               %% "cats-effect" % "2.5.1",
     "io.circe"                    %% "circe-core"  % "0.13.0",
     "org.tpolecat"                %% "doobie-h2"   % "0.13.2",
     "org.http4s"                  %% "http4s-dsl"  % "0.21.22",
