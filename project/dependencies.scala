@@ -47,7 +47,7 @@ object dependencies extends AutoPlugin {
     Seq(
       "org.typelevel" %% "cats-effect"       % V.`cats-effect`.value % Provided,
       "org.typelevel" %% "cats-laws"         % "2.6.1"               % Test,
-      "org.typelevel" %% "discipline-specs2" % "1.1.5"               % Test,
+      "org.typelevel" %% "discipline-specs2" % "1.1.6"               % Test,
       "org.specs2"    %% "specs2-cats"       % "4.11.0"              % Test
     )
   }
