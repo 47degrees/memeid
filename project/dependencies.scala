@@ -64,7 +64,7 @@ object dependencies extends AutoPlugin {
       "org.tpolecat" %% "doobie-core"   % V.doobie.value % Provided,
       "org.tpolecat" %% "doobie-specs2" % "0.13.4"       % Test,
       "org.tpolecat" %% "doobie-h2"     % "0.13.4"       % Test,
-      "org.specs2"   %% "specs2-cats"   % "4.11.0"       % Test
+      "org.specs2"   %% "specs2-cats"   % "4.12.0"       % Test
     )
   }
 
