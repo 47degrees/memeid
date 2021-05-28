@@ -72,7 +72,7 @@ object dependencies extends AutoPlugin {
     Seq(
       "io.circe"      %% "circe-core"        % V.circe.value % Provided,
       "org.typelevel" %% "discipline-specs2" % "1.1.6"       % Test,
-      "io.circe"      %% "circe-testing"     % "0.13.0"      % Test
+      "io.circe"      %% "circe-testing"     % "0.14.1"      % Test
     )
   }
 
@@ -103,7 +103,7 @@ object dependencies extends AutoPlugin {
 
   private val documentation = Seq(
     "org.typelevel"               %% "cats-effect" % "2.5.1",
-    "io.circe"                    %% "circe-core"  % "0.13.0",
+    "io.circe"                    %% "circe-core"  % "0.14.1",
     "org.tpolecat"                %% "doobie-h2"   % "0.13.4",
     "org.http4s"                  %% "http4s-dsl"  % "0.21.23",
     "org.scalacheck"              %% "scalacheck"  % "1.15.4",
