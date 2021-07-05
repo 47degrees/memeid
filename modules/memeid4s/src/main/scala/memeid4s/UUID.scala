@@ -43,28 +43,26 @@ object UUID {
     /** The least significant 64 bits of this UUID's 128 bit value */
     @inline def lsb: Long = uuid.getLeastSignificantBits
 
-    /**
-     * Returns this UUID as the provided type if versions match;
-     * otherwise, returns `None`.
-     *
-     * @tparam A must be subtype of [[UUID]]
-     * @return this [[UUID]] as the provided type if versions match;
-     *         otherwise, returns `None`
-     */
+    /** Returns this UUID as the provided type if versions match;
+      * otherwise, returns `None`.
+      *
+      * @tparam A must be subtype of [[UUID]]
+      * @return this [[UUID]] as the provided type if versions match;
+      *         otherwise, returns `None`
+      */
     def as[A <: UUID: ClassTag]: Option[A] =
       uuid match {
         case a: A => Some(a)
         case _    => None
       }
 
-    /**
-     * Returns `true` if this UUID matches the provided type;
-     * otherwise, returns `false`.
-     *
-     * @tparam A must be subtype of [[UUID]]
-     * @return `true` if this [[UUID]] matches the provided type;
-     *         otherwise, returns `false`
-     */
+    /** Returns `true` if this UUID matches the provided type;
+      * otherwise, returns `false`.
+      *
+      * @tparam A must be subtype of [[UUID]]
+      * @return `true` if this [[UUID]] matches the provided type;
+      *         otherwise, returns `false`
+      */
     def is[A <: UUID: ClassTag]: Boolean =
       uuid match {
         case _: A => true
@@ -77,47 +75,43 @@ object UUID {
     if (!str.isEmpty) UUID.from(str).toOption
     else None
 
-  /**
-   * Creates a valid [[UUID]] from two [[_root_.scala.Long Long]] values representing
-   * the most/least significant bits.
-   *
-   * @param msb Most significant bit in [[_root_.scala.Long Long]] representation
-   * @param lsb Least significant bit in [[_root_.scala.Long Long]] representation
-   * @return a new [[UUID]] constructed from msb and lsb
-   */
+  /** Creates a valid [[UUID]] from two [[_root_.scala.Long Long]] values representing
+    * the most/least significant bits.
+    *
+    * @param msb Most significant bit in [[_root_.scala.Long Long]] representation
+    * @param lsb Least significant bit in [[_root_.scala.Long Long]] representation
+    * @return a new [[UUID]] constructed from msb and lsb
+    */
   @inline def from(msb: Long, lsb: Long): UUID = memeid.UUID.from(msb, lsb)
 
-  /**
-   * Creates a valid [[UUID]] from a [[UUID]].
-   *
-   * @param juuid the { @link java.util.UUID}
-   * @return a valid { @link UUID} created from a { @link java.util.UUID}
-   */
+  /** Creates a valid [[UUID]] from a [[UUID]].
+    *
+    * @param juuid the { @link java.util.UUID}
+    * @return a valid { @link UUID} created from a { @link java.util.UUID}
+    */
   @inline def fromUUID(juuid: JUUID): UUID = memeid.UUID.fromUUID(juuid)
 
-  /**
-   * Creates a [[UUID UUID]] from the [[java.util.UUID#toString string standard representation]]
-   * wrapped in a [[_root_.scala.util.Right Right]].
-   *
-   * Returns [[_root_.scala.util.Left Left]] with the error in case the string doesn't follow the
-   * string standard representation.
-   *
-   * @param s String for the [[java.util.UUID UUID]] to be generated as an [[UUID]]
-   * @return [[_root_.scala.util.Either Either]] with [[_root_.scala.util.Left Left]] with the error in case the string doesn't follow the
-   *         string standard representation or [[_root_.scala.util.Right Right]] with the [[UUID UUID]] representation.
-   */
+  /** Creates a [[UUID UUID]] from the [[java.util.UUID#toString string standard representation]]
+    * wrapped in a [[_root_.scala.util.Right Right]].
+    *
+    * Returns [[_root_.scala.util.Left Left]] with the error in case the string doesn't follow the
+    * string standard representation.
+    *
+    * @param s String for the [[java.util.UUID UUID]] to be generated as an [[UUID]]
+    * @return [[_root_.scala.util.Either Either]] with [[_root_.scala.util.Left Left]] with the error in case the string doesn't follow the
+    *         string standard representation or [[_root_.scala.util.Right Right]] with the [[UUID UUID]] representation.
+    */
   def from(s: String): Either[Throwable, UUID] =
     Try(memeid.UUID.fromString(s)).toEither
 
   object V1 {
 
-    /**
-     * Construct a [[UUID.V1 V1]] (time-based) UUID.
-     *
-     * @param N [[node.Node Node]] for the V1 UUID generation
-     * @param T [[time.Time Time]] which assures the V1 UUID time is unique
-     * @return [[UUID.V1 V1]]
-     */
+    /** Construct a [[UUID.V1 V1]] (time-based) UUID.
+      *
+      * @param N [[node.Node Node]] for the V1 UUID generation
+      * @param T [[time.Time Time]] which assures the V1 UUID time is unique
+      * @return [[UUID.V1 V1]]
+      */
     @inline def next(implicit N: Node, T: Time): UUID =
       memeid.UUID.V1.next(N.value, () => T.monotonic)
 
@@ -125,15 +119,14 @@ object UUID {
 
   object V3 {
 
-    /**
-     * Construct a namespace name-based v3 UUID. Uses MD5 as a hash algorithm
-     *
-     * @param namespace [[UUID UUID]] used for the [[UUID.V3 V3]] generation
-     * @param local     name used for the [[UUID.V3 V3]] generation
-     * @param D         implicit [[digest.Digestible Digestible]] parameter
-     * @tparam A Sets the type for the local and Digestible parameters
-     * @return [[UUID.V3 V3]]
-     */
+    /** Construct a namespace name-based v3 UUID. Uses MD5 as a hash algorithm
+      *
+      * @param namespace [[UUID UUID]] used for the [[UUID.V3 V3]] generation
+      * @param local     name used for the [[UUID.V3 V3]] generation
+      * @param D         implicit [[digest.Digestible Digestible]] parameter
+      * @tparam A Sets the type for the local and Digestible parameters
+      * @return [[UUID.V3 V3]]
+      */
     @inline def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
       memeid.UUID.V3.from(namespace, local, D.toByteArray)
 
@@ -141,13 +134,12 @@ object UUID {
 
   object V4 {
 
-    /**
-     * Construct a v4 (random) UUID from the given `msb` and `lsb`.
-     *
-     * @param msb Most significant bit in [[_root_.scala.Long Long]] representation
-     * @param lsb Least significant bit in [[_root_.scala.Long Long]] representation
-     * @return [[UUID.V4 V4]]
-     */
+    /** Construct a v4 (random) UUID from the given `msb` and `lsb`.
+      *
+      * @param msb Most significant bit in [[_root_.scala.Long Long]] representation
+      * @param lsb Least significant bit in [[_root_.scala.Long Long]] representation
+      * @return [[UUID.V4 V4]]
+      */
     @inline def apply(msb: Long, lsb: Long): UUID = memeid.UUID.V4.from(msb, lsb)
 
     // Construct a v4 (random) UUID.
@@ -160,15 +152,14 @@ object UUID {
 
   object V5 {
 
-    /**
-     * Construct a namespace name-based v5 UUID. Uses SHA as a hash algorithm
-     *
-     * @param namespace [[UUID UUID]] used for the [[UUID.V5 V5]] generation
-     * @param local     name used for the [[UUID.V5 V5]] generation
-     * @param D         implicit [[digest.Digestible Digestible]] parameter
-     * @tparam A Sets the type for the local and Digestible parameters
-     * @return [[UUID.V5 V5]]
-     */
+    /** Construct a namespace name-based v5 UUID. Uses SHA as a hash algorithm
+      *
+      * @param namespace [[UUID UUID]] used for the [[UUID.V5 V5]] generation
+      * @param local     name used for the [[UUID.V5 V5]] generation
+      * @param D         implicit [[digest.Digestible Digestible]] parameter
+      * @tparam A Sets the type for the local and Digestible parameters
+      * @return [[UUID.V5 V5]]
+      */
     @inline def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
       memeid.UUID.V5.from(namespace, local, D.toByteArray)
 
