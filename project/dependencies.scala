@@ -79,7 +79,7 @@ object dependencies extends AutoPlugin {
   private val http4s = Def.setting {
     Seq(
       "org.http4s" %% "http4s-core" % V.http4s.value % Provided,
-      "org.http4s" %% "http4s-dsl"  % "0.22.0"      % Test
+      "org.http4s" %% "http4s-dsl"  % "0.22.0"       % Test
     )
   }
 
