@@ -20,13 +20,21 @@ lazy val `memeid` = module
 /////////////////
 
 lazy val memeid4s              = module.dependsOn(`memeid`, `memeid4s-scalacheck` % Test)
+
 lazy val `memeid4s-cats`       = module.dependsOn(`memeid4s`, `memeid4s-scalacheck` % Test)
+
 lazy val `memeid4s-literal`    = module.dependsOn(`memeid4s`)
+
 lazy val `memeid4s-doobie`     = module.dependsOn(`memeid4s`)
+
 lazy val `memeid4s-circe`      = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
+
 lazy val `memeid4s-http4s`     = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
+
 lazy val `memeid4s-tapir`      = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
+
 lazy val `memeid4s-fuuid`      = module.dependsOn(`memeid4s`, `memeid4s-scalacheck` % Test)
+
 lazy val `memeid4s-scalacheck` = module.dependsOn(memeid)
 
 /////////////////////////

@@ -28,13 +28,13 @@ class SynxtaxSpec extends Specification with ScalaCheck {
   "UUID-FUUID conversions" should {
 
     "convert between UUID & FUUID" in prop { uuid: UUID =>
-      uuid.toFUUID must be equalTo FUUID.fromUUID(uuid.asJava())
+      (uuid.toFUUID must be).equalTo(FUUID.fromUUID(uuid.asJava()))
     }
 
     "convert between FUUID & UUID" in prop { uuid: UUID =>
       val fuuid = uuid.toFUUID
 
-      fuuid.toUUID must be equalTo uuid
+      (fuuid.toUUID must be).equalTo(uuid)
     }
 
   }

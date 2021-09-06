@@ -29,7 +29,7 @@ class V3Spec extends Specification {
       val uuid1 = UUID.V3(namespace, name)
       val uuid2 = UUID.V3(namespace, name)
 
-      uuid1 must be equalTo uuid2
+      (uuid1 must be).equalTo(uuid2)
     }
 
     "create different UUIDs for distinct name" in {

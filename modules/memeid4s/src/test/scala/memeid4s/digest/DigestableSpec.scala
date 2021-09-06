@@ -29,7 +29,7 @@ class DigestableSpec extends Specification with ScalaCheck {
     "give the same bytes for the same string" in {
       val str = "a-thing"
 
-      Digestible[String].toByteArray(str) must be equalTo Digestible[String].toByteArray(str)
+      (Digestible[String].toByteArray(str) must be).equalTo(Digestible[String].toByteArray(str))
     }
 
   }
@@ -44,13 +44,13 @@ class DigestableSpec extends Specification with ScalaCheck {
     "round-trip" in prop { (msb: Long, lsb: Long) =>
       val uuid  = UUID.from(msb, lsb)
       val bytes = Digestible[UUID].toByteArray(uuid)
-      fromByteArray(bytes) must be equalTo uuid
+      (fromByteArray(bytes) must be).equalTo(uuid)
     }
 
     "give the same bytes for the same UUID" in {
       val uuid = UUID.V1.next
 
-      Digestible[UUID].toByteArray(uuid) must be equalTo Digestible[UUID].toByteArray(uuid)
+      (Digestible[UUID].toByteArray(uuid) must be).equalTo(Digestible[UUID].toByteArray(uuid))
     }
 
   }

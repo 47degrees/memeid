@@ -58,20 +58,20 @@ class InstancesSpec extends Specification with ScalaCheck {
           |          description: ''
           |""".stripMargin
 
-      result must be equalTo expected
+      (result must be).equalTo(expected)
     }
 
     "validates a valid UUID" in prop { uuid: UUID =>
       val result = UUIDCodec.decode(uuid.show)
 
-      result must be equalTo DecodeResult.Value(uuid)
+      (result must be).equalTo(DecodeResult.Value(uuid))
     }
 
     "validates an invalid UUID" in {
       val result = UUIDCodec.decode("miau")
 
-      result must be like { case DecodeResult.Error("miau", e: IllegalArgumentException) =>
-        e.getMessage() must be equalTo "Invalid UUID string: miau"
+      (result must be).like { case DecodeResult.Error("miau", e: IllegalArgumentException) =>
+        (e.getMessage() must be).equalTo("Invalid UUID string: miau")
       }
     }
 

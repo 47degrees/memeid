@@ -34,7 +34,7 @@ class SQUUIDSpec extends Specification {
     "not generate the same UUID twice" in {
       val uuids = new ParRange(1 to 10).map(_ => UUID.V4.squuid).toVector.toSet
 
-      uuids.size must be equalTo 10
+      (uuids.size must be).equalTo(10)
     }
 
   }

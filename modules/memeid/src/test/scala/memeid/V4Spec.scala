@@ -34,7 +34,7 @@ class V4Spec extends Specification {
     "not generate the same UUID twice" in {
       val uuids = new ParRange(1 to 10).map(_ => UUID.V4.random).toVector.toSet
 
-      uuids.size must be equalTo 10
+      (uuids.size must be).equalTo(10)
     }
 
     "be unable to create non-v4 values regardless of msb/lsb values provided" in {
@@ -44,7 +44,7 @@ class V4Spec extends Specification {
 
     "generate version 4 UUIDs regardless of msb/lsb values provided" in {
       val nonNull: UUID = UUID.V4.from(0, 0)
-      nonNull.version must be equalTo 4
+      (nonNull.version must be).equalTo(4)
     }
 
   }

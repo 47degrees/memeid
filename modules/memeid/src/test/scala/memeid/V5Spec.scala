@@ -29,7 +29,7 @@ class V5Spec extends Specification {
       val uuid1 = UUID.V5.from(namespace, name)
       val uuid2 = UUID.V5.from(namespace, name)
 
-      uuid1 must be equalTo uuid2
+      (uuid1 must be).equalTo(uuid2)
     }
 
     "create different UUIDs for distinct name" in {

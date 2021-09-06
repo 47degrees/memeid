@@ -33,7 +33,7 @@ class CirceInstancesSpec extends Specification with ScalaCheck {
   "Encoder[UUID]" should {
 
     "encode UUID as JSON" in prop { uuid: UUID =>
-      Encoder[UUID].apply(uuid) must be equalTo Json.fromString(uuid.show)
+      (Encoder[UUID].apply(uuid) must be).equalTo(Json.fromString(uuid.show))
     }
 
   }

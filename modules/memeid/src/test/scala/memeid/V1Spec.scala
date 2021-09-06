@@ -35,19 +35,19 @@ class V1Spec extends Specification {
       val uuid1: UUID = UUID.V1.next
       val uuid2: UUID = UUID.V1.next
 
-      uuid1 must be lessThan uuid2
+      (uuid1 must be).lessThan(uuid2)
     }
 
     "not generate the same UUID twice" in {
       val ids = new ParRange(1 to 10).map(_ => UUID.V1.next).toSet
 
-      ids.size must be equalTo 10
+      (ids.size must be).equalTo(10)
     }
 
     "not generate the same UUID twice with high concurrency" in {
       val ids = new ParRange(1 to 999).map(_ => UUID.V1.next).toSet
 
-      ids.size must be equalTo 999
+      (ids.size must be).equalTo(999)
     }
 
     "check time components" in {
@@ -59,11 +59,11 @@ class V1Spec extends Specification {
       val timeHigh     = 0x1ea.toLong
       val uuidV1       = uuid.asV1.get
 
-      uuidV1.clockSeqLow must be equalTo clockSeqLow
-      uuidV1.clockSeqHigh must be equalTo clockSeqHigh
-      uuidV1.timeLow must be equalTo timeLow
-      uuidV1.timeMid must be equalTo timeMid
-      uuidV1.timeHigh must be equalTo timeHigh
+      (uuidV1.clockSeqLow must be).equalTo(clockSeqLow)
+      (uuidV1.clockSeqHigh must be).equalTo(clockSeqHigh)
+      (uuidV1.timeLow must be).equalTo(timeLow)
+      (uuidV1.timeMid must be).equalTo(timeMid)
+      (uuidV1.timeHigh must be).equalTo(timeHigh)
     }
   }
 

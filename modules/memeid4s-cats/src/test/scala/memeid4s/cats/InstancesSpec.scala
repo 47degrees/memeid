@@ -37,7 +37,7 @@ class InstancesSpec extends Specification with ScalaCheck {
   "Show[UUID]" should {
 
     "allow representing uuids as String" in prop { uuid: UUID =>
-      uuid.show must be equalTo uuid.toString
+      (uuid.show must be).equalTo(uuid.toString)
     }
 
   }
@@ -49,7 +49,7 @@ class InstancesSpec extends Specification with ScalaCheck {
 
       val expected = Digestible[String].toByteArray(4.toString)
 
-      intDigestible.toByteArray(4) must be equalTo expected
+      (intDigestible.toByteArray(4) must be).equalTo(expected)
     }
 
   }
@@ -61,8 +61,9 @@ class InstancesSpec extends Specification with ScalaCheck {
       val uuid1 = UUID.from(0x20000000.toLong, lsb)
       val uuid2 = UUID.from(0xe0000000.toLong, lsb)
 
-      (Order[UUID].compare(uuid1, uuid2) must be equalTo -1) and
-        (Order[JUUID].compare(uuid1.asJava, uuid2.asJava) must be equalTo 1)
+      ((Order[UUID].compare(uuid1, uuid2) must be)
+        .equalTo(-1))
+        .and((Order[JUUID].compare(uuid1.asJava, uuid2.asJava) must be).equalTo(1))
     }
 
   }
@@ -70,7 +71,7 @@ class InstancesSpec extends Specification with ScalaCheck {
   "Hash[UUID] returns hash code consistent with java.util.UUID" in prop { (msb: Long, lsb: Long) =>
     val uuid = UUID.from(msb, lsb)
 
-    Hash[UUID].hash(uuid) must be equalTo Hash[JUUID].hash(uuid.asJava)
+    (Hash[UUID].hash(uuid) must be).equalTo(Hash[JUUID].hash(uuid.asJava))
   }
 
 }

@@ -29,8 +29,8 @@ class NodeSpec extends Specification {
 
       val clockSeq = node1.value.clockSequence
 
-      node2.value.clockSequence must be equalTo clockSeq
-      node3.value.clockSequence must be equalTo clockSeq
+      (node2.value.clockSequence must be).equalTo(clockSeq)
+      (node3.value.clockSequence must be).equalTo(clockSeq)
     }
   }
 
@@ -42,8 +42,8 @@ class NodeSpec extends Specification {
 
       val id = node1.value.id
 
-      node2.value.id must be equalTo id
-      node3.value.id must be equalTo id
+      (node2.value.id must be).equalTo(id)
+      (node3.value.id must be).equalTo(id)
     }
   }
 

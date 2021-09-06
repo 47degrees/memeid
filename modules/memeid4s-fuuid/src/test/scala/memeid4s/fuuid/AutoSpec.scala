@@ -33,6 +33,6 @@ class AutoSpec extends Specification with ScalaCheck {
 
   }
 
-  def mustBeEqual(uuid: UUID, fuuid: FUUID) = uuid.asJava must be equalTo FUUID.Unsafe.toUUID(fuuid)
+  def mustBeEqual(uuid: UUID, fuuid: FUUID) = (uuid.asJava must be).equalTo(FUUID.Unsafe.toUUID(fuuid))
 
 }

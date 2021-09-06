@@ -25,27 +25,27 @@ class BitsSpec extends Specification {
 
   "Bits.readByte" should {
     "read the bytes specified by the bitmask" in {
-      readByte(mask(4, 0), 0x0000000ffffffffL) must be equalTo 0xf
-      readByte(mask(4, 8), 0x0000000ffffffffL) must be equalTo 0xf
-      readByte(mask(4, 0), mask(32, 2)) must be equalTo 0xc
-      readByte(mask(64, 0), 0xffffffffffffffffL) must be equalTo -1
-      readByte(mask(63, 1), 0xffffffffffffffffL) must be equalTo 0x7fffffffffffffffL
-      readByte(mask(60, 4), 0xffffffffffffffffL) must be equalTo 0x0fffffffffffffffL
-      readByte(mask(1, 63), 0xffffffffffffffffL) must be equalTo 0x1
-      readByte(mask(4, 60), 0xffffffffffffffffL) must be equalTo 0xf
-      readByte(mask(4, 60), 0x7fffffffffffffffL) must be equalTo 7
+      (readByte(mask(4, 0), 0x0000000ffffffffL) must be).equalTo(0xf)
+      (readByte(mask(4, 8), 0x0000000ffffffffL) must be).equalTo(0xf)
+      (readByte(mask(4, 0), mask(32, 2)) must be).equalTo(0xc)
+      (readByte(mask(64, 0), 0xffffffffffffffffL) must be).equalTo(-1)
+      (readByte(mask(63, 1), 0xffffffffffffffffL) must be).equalTo(0x7fffffffffffffffL)
+      (readByte(mask(60, 4), 0xffffffffffffffffL) must be).equalTo(0x0fffffffffffffffL)
+      (readByte(mask(1, 63), 0xffffffffffffffffL) must be).equalTo(0x1)
+      (readByte(mask(4, 60), 0xffffffffffffffffL) must be).equalTo(0xf)
+      (readByte(mask(4, 60), 0x7fffffffffffffffL) must be).equalTo(7)
     }
 
     "bit access" in {
-      (0L to 63L)
+      ((0L to 63L)
         .map(i => readByte(mask(1, i), 0xffffffffffffffffL))
-        .toSet must be equalTo (Set(1))
+        .toSet must be).equalTo(Set(1))
     }
 
     "nibble access" in {
-      (0L to 60L)
+      ((0L to 60L)
         .map(i => readByte(mask(4, i), 0xffffffffffffffffL))
-        .toSet must be equalTo (Set(0xf))
+        .toSet must be).equalTo(Set(0xf))
     }
   }
 
@@ -54,20 +54,20 @@ class BitsSpec extends Specification {
       val byte = 0x3L
       val full = 0xffffffffffffffffL
 
-      (0L to 7L).map { i =>
+      ((0L to 7L).map { i =>
         val m       = mask(4, i * 4)
         val written = writeByte(m, full, byte)
         readByte(m, written)
-      }.toSet must be equalTo (Set(byte))
+      }.toSet must be).equalTo(Set(byte))
     }
   }
 
   "Bits.Cast" should {
     "work for significant 8-bit values" in {
-      Cast.sb8(255) must be equalTo -1
-      Cast.sb8(127) must be equalTo 127
-      Cast.sb8(-128) must be equalTo -128
-      Cast.sb8(-254) must be equalTo 2
+      (Cast.sb8(255) must be).equalTo(-1)
+      (Cast.sb8(127) must be).equalTo(127)
+      (Cast.sb8(-128) must be).equalTo(-128)
+      (Cast.sb8(-254) must be).equalTo(2)
     }
   }
 
@@ -79,12 +79,14 @@ class BitsSpec extends Specification {
           .toArray
       val assembled    = fromBytes(bytes)
       val disassembled = toBytes(assembled)
-      bytes.toList must be equalTo (disassembled.toList)
+      (bytes.toList must be).equalTo(disassembled.toList)
     }
   }
 
   object Cast {
+
     def sb8(b: Long): Byte = (0x00000000000000ff & b).toByte
+
   }
 
   private def mask(width: Long, offset: Long): Long =
