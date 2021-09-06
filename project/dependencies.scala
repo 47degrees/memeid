@@ -102,7 +102,7 @@ object dependencies extends AutoPlugin {
   )
 
   private val documentation = Seq(
-    "org.typelevel"               %% "cats-effect" % "2.5.3",
+    "org.typelevel"               %% "cats-effect" % "3.2.7",
     "io.circe"                    %% "circe-core"  % "0.14.1",
     "org.tpolecat"                %% "doobie-h2"   % "0.13.4",
     "org.http4s"                  %% "http4s-dsl"  % "0.22.4",
