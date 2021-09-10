@@ -1,5 +1,5 @@
-ThisBuild / scalaVersion       := "2.13.3"
-ThisBuild / crossScalaVersions := Seq("2.12.12", "2.13.3")
+ThisBuild / scalaVersion       := "2.13.6"
+ThisBuild / crossScalaVersions := Seq("2.12.14", "2.13.6")
 ThisBuild / organization       := "com.47deg"
 
 addCommandAlias("ci-test", "fix --check; +mdoc; testCovered")
