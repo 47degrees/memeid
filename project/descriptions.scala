@@ -1,4 +1,5 @@
 import com.alejandrohdezma.sbt.github.SbtGithubPlugin
+
 import sbt._
 import sbt.Keys._
 

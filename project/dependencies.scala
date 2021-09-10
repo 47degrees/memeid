@@ -1,4 +1,5 @@
 import sbt._
+
 import sbt.Keys._
 import sbt.plugins.JvmPlugin
 
@@ -135,9 +136,7 @@ object dependencies extends AutoPlugin {
       }
     )
 
-  /** Wraps the value in a `Seq` if current scala version matches the one provided,
-    * otherwise returns `Nil`.
-    */
+  /** Wraps the value in a `Seq` if current scala version matches the one provided, otherwise returns `Nil`. */
   def on[A](pf: PartialFunction[(Long, Long), String]): Def.Initialize[String] =
     Def.setting {
       CrossVersion.partialVersion(scalaVersion.value) match {
@@ -146,9 +145,7 @@ object dependencies extends AutoPlugin {
       }
     }
 
-  /** Wraps the value in a `Seq` if current scala version matches the one provided,
-    * otherwise returns `Nil`.
-    */
+  /** Wraps the value in a `Seq` if current scala version matches the one provided, otherwise returns `Nil`. */
   def on[A](major: Int, minor: Int)(a: A): Def.Initialize[Seq[A]] =
     Def.setting {
       CrossVersion.partialVersion(scalaVersion.value) match {

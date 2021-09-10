@@ -29,7 +29,9 @@ object Posix {
 
   implicit def apply: Posix =
     new Posix {
-      def value: Long = MILLISECONDS toSeconds System.currentTimeMillis
+
+      def value: Long = MILLISECONDS.toSeconds(System.currentTimeMillis)
+
     }
 
 }

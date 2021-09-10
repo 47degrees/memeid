@@ -1,4 +1,5 @@
 import mdoc.MdocPlugin
+
 import microsites.MicrositesPlugin
 import microsites.MicrositesPlugin.autoImport._
 import sbt._
