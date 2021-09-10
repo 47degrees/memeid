@@ -35,7 +35,7 @@ class InstancesSpec extends Specification with ScalaCheck {
     "provide correct schema when generating documentation" in {
       val testEndpoint = endpoint.get.in("hello" / path[UUID])
 
-      val result = OpenAPIDocsInterpreter.toOpenAPI(testEndpoint, "", "").toYaml
+      val result = OpenAPIDocsInterpreter().toOpenAPI(testEndpoint, "", "").toYaml
 
       val expected =
         """openapi: 3.0.3
@@ -56,6 +56,12 @@ class InstancesSpec extends Specification with ScalaCheck {
           |      responses:
           |        '200':
           |          description: ''
+          |        '400':
+          |          description: 'Invalid value for: path parameter p1'
+          |          content:
+          |            text/plain:
+          |              schema:
+          |                type: string
           |""".stripMargin
 
       result must be equalTo expected

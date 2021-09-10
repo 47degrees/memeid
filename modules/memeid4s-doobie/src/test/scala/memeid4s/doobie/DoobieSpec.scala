@@ -61,4 +61,5 @@ class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatc
 
     io must returnValue(uuid)
   }
+
 }

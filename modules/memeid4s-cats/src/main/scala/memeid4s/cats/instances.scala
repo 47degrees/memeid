@@ -59,6 +59,7 @@ trait instances {
       override def maxBound: UUID = UUID.from(-1L, -1L)
 
       override def partialOrder: PartialOrder[UUID] = UUIDHashOrderInstances
+
     }
 
 }

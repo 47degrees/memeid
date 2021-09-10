@@ -84,7 +84,9 @@ class BitsSpec extends Specification {
   }
 
   object Cast {
+
     def sb8(b: Long): Byte = (0x00000000000000ff & b).toByte
+
   }
 
   private def mask(width: Long, offset: Long): Long =

@@ -1,5 +1,5 @@
-ThisBuild / scalaVersion       := "2.13.3"
-ThisBuild / crossScalaVersions := Seq("2.12.12", "2.13.3")
+ThisBuild / scalaVersion       := "2.13.6"
+ThisBuild / crossScalaVersions := Seq("2.12.14", "2.13.6")
 ThisBuild / organization       := "com.47deg"
 
 addCommandAlias("ci-test", "fix --check; +mdoc; testCovered")
@@ -19,14 +19,22 @@ lazy val `memeid` = module
 ////  SCALA  ////
 /////////////////
 
-lazy val memeid4s              = module.dependsOn(`memeid`, `memeid4s-scalacheck` % Test)
-lazy val `memeid4s-cats`       = module.dependsOn(`memeid4s`, `memeid4s-scalacheck` % Test)
-lazy val `memeid4s-literal`    = module.dependsOn(`memeid4s`)
-lazy val `memeid4s-doobie`     = module.dependsOn(`memeid4s`)
-lazy val `memeid4s-circe`      = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
-lazy val `memeid4s-http4s`     = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
-lazy val `memeid4s-tapir`      = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
-lazy val `memeid4s-fuuid`      = module.dependsOn(`memeid4s`, `memeid4s-scalacheck` % Test)
+lazy val memeid4s = module.dependsOn(`memeid`, `memeid4s-scalacheck` % Test)
+
+lazy val `memeid4s-cats` = module.dependsOn(`memeid4s`, `memeid4s-scalacheck` % Test)
+
+lazy val `memeid4s-literal` = module.dependsOn(`memeid4s`)
+
+lazy val `memeid4s-doobie` = module.dependsOn(`memeid4s`)
+
+lazy val `memeid4s-circe` = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
+
+lazy val `memeid4s-http4s` = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
+
+lazy val `memeid4s-tapir` = module.dependsOn(`memeid4s`, `memeid4s-cats` % Test, `memeid4s-scalacheck` % Test)
+
+lazy val `memeid4s-fuuid` = module.dependsOn(`memeid4s`, `memeid4s-scalacheck` % Test)
+
 lazy val `memeid4s-scalacheck` = module.dependsOn(memeid)
 
 /////////////////////////

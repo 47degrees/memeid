@@ -23,6 +23,7 @@ import memeid4s.UUID
 import org.openjdk.jmh.annotations._
 
 object UUIDStates {
+
   val namespace = UUID.V1.next
 
   @SuppressWarnings(Array("scalafix:Disable.toString"))
@@ -30,7 +31,9 @@ object UUIDStates {
 
   @State(Scope.Benchmark)
   class RNG {
+
     def uuid: String = uuids(ThreadLocalRandom.current().nextInt(uuids.length))
+
   }
 
 }
@@ -72,4 +75,5 @@ class UUIDBenchmark {
   @Benchmark
   def fromString(x: RNG): UUID =
     memeid.UUID.fromString(x.uuid)
+
 }

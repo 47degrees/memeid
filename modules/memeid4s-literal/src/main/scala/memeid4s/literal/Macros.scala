@@ -21,6 +21,7 @@ import scala.reflect.macros.blackbox
 import memeid.UUID
 
 private[literal] class Macros(val c: blackbox.Context) {
+
   import c.universe._
 
   def uuidInterpolator(args: Any*): c.Expr[UUID] = {

@@ -1,4 +1,5 @@
 import com.fortysevendeg.hood.plugin.SbtHoodPlugin
+
 import com.fortysevendeg.hood.plugin.SbtHoodPlugin._
 import sbt._
 
@@ -17,4 +18,5 @@ object HoodPlugin extends AutoPlugin {
       repositoryName        := Option("memeid"),
       pullRequestNumber     := Option(System.getenv().get("PULL_REQUEST_NUMBER")).map(_.toInt)
     )
+
 }

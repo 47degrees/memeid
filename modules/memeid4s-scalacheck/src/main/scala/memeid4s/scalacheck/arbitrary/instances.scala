@@ -54,7 +54,7 @@ object instances {
       timestamp     <- arbitrary[Long]
       clockSequence <- arbitrary[Short]
       id            <- arbitrary[Long]
-      node = new Node(clockSequence, id)
+      node           = new Node(clockSequence, id)
     } yield UUID.V1.next(node, () => timestamp).asInstanceOf[UUID.V1]
   }
 
