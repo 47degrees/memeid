@@ -15,6 +15,7 @@ type for query/path params or headers in endpoints. As well as enriching documen
 
 ```scala mdoc:silent
 import memeid4s.UUID
+
 import memeid4s.tapir.implicits._
 
 import sttp.tapir._

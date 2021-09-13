@@ -38,11 +38,12 @@ sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(tran
 
 ```scala mdoc:silent
 import memeid4s.UUID
+
 import memeid4s.literal._
 import memeid4s.doobie.implicits._
 
 def select(uuid: UUID): Query0[UUID] =
-  sql"""SELECT id from test where id = ${uuid}""".query[UUID]
+  sql"""SELECT id from test where id = $uuid""".query[UUID]
 
 def insert(uuid: UUID): Update0 =
   sql"""insert into test (id) values ($uuid)""".update
