@@ -8,6 +8,7 @@
 -- [Wikipedia article on UUIDs](https://en.wikipedia.org/wiki/Universally_unique_identifier)
 
 ```scala mdoc:toc
+
 ```
 
 ## Rationale
@@ -116,11 +117,13 @@ UUID.V4.squuid
 
 ```scala mdoc:silent
 val j = java.util.UUID.fromString("a5fa7934-501c-46eb-9ea7-16de3086e6d8")
+
 val u = memeid.UUID.fromString("8b4d1529-5fd0-4a91-8f4f-ceee10d1c060")
 ```
 
 ```scala mdoc
 UUID.fromUUID(j)
+
 u.asJava
 ```
 
@@ -187,7 +190,7 @@ sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(tran
 import memeid4s.doobie.implicits._
 
 def select(uuid: UUID): Query0[UUID] =
-  sql"""SELECT id from test where id = ${uuid}""".query[UUID]
+  sql"""SELECT id from test where id = $uuid""".query[UUID]
 
 def insert(uuid: UUID): Update0 =
   sql"""insert into test (id) values ($uuid)""".update
@@ -213,11 +216,14 @@ libraryDependencies += "com.47deg" %% "memeid4s-circe" % "@VERSION@"
 You can import `memeid.circe.implicits` to have the `Encoder` and `Decoder` instances for `UUID` in scope.
 
 ```scala mdoc:silent
-import io.circe.{ Json, Encoder, Decoder }
+import io.circe.Json
+import io.circe.Encoder
+import io.circe.Decoder
 
 import memeid4s.circe.implicits._
 
 val uuid = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
+
 val json = Json.fromString(uuid.toString)
 ```
 
@@ -242,8 +248,8 @@ import cats.effect._
 import org.http4s._
 import org.http4s.dsl.io._
 
-HttpRoutes.of[IO] {
-  case GET -> Root / "user" / UUID(uuid) => Ok(s"Hello, ${uuid}!")
+HttpRoutes.of[IO] { case GET -> Root / "user" / UUID(uuid) =>
+  Ok(s"Hello, $uuid!")
 }
 ```
 
@@ -261,8 +267,8 @@ import memeid4s.http4s.implicits._
 
 object UUIDParamDecoder extends QueryParamDecoderMatcher[UUID]("uuid")
 
-HttpRoutes.of[IO] {
-  case GET -> Root / "user" :? UUIDParamDecoder(uuid) => Ok(s"Hello, ${uuid}!")
+HttpRoutes.of[IO] { case GET -> Root / "user" :? UUIDParamDecoder(uuid) =>
+  Ok(s"Hello, $uuid!")
 }
 ```
 
@@ -293,6 +299,7 @@ The [FUUID](https://christopherdavenport.github.io/fuuid/) integration provides 
 
 ```scala mdoc:reset:silent
 import memeid4s.UUID
+
 import io.chrisdavenport.fuuid.FUUID
 import memeid4s.fuuid.syntax._
 
@@ -303,13 +310,16 @@ val uuid: UUID = fuuid.toUUID
 
 ```scala mdoc:reset:silent
 import memeid4s.UUID
+
 import io.chrisdavenport.fuuid.FUUID
 import memeid4s.fuuid.auto._
 
 def usingFUUID(fuuid: FUUID) = fuuid
-def usingUUID(uuid: UUID) = uuid
 
-val uuid: UUID = UUID.V4.random
+def usingUUID(uuid: UUID)    = uuid
+
+val uuid: UUID   = UUID.V4.random
+
 val fuuid: FUUID = FUUID.fromUUID(java.util.UUID.randomUUID)
 
 usingFUUID(uuid)
@@ -328,6 +338,7 @@ The cats integration provides typeclass implementation for `UUID`, as well as ef
 
 ```scala mdoc:silent
 import cats._
+
 import memeid4s.cats.implicits._
 import cats.effect.IO
 
@@ -358,6 +369,7 @@ The scalacheck integration provides `Arbitrary` instances for the `UUID`, as wel
 
 ```scala mdoc:silent
 import org.scalacheck.Arbitrary.arbitrary
+
 import memeid4s.scalacheck.arbitrary.instances._
 
 arbitrary[UUID]
