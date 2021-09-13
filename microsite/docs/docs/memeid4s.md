@@ -73,11 +73,13 @@ UUID.V4.squuid
 
 ```scala mdoc:silent
 val j = java.util.UUID.fromString("a5fa7934-501c-46eb-9ea7-16de3086e6d8")
+
 val u = memeid.UUID.fromString("8b4d1529-5fd0-4a91-8f4f-ceee10d1c060")
 ```
 
 ```scala mdoc
 UUID.fromUUID(j)
+
 u.asJava
 ```
 

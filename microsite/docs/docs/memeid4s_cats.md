@@ -16,6 +16,7 @@ The cats integration provides typeclass implementation for `UUID`, as well as ef
 
 ```scala mdoc:silent
 import cats._
+
 import cats.effect.IO
 import memeid4s.UUID
 import memeid4s.literal._
