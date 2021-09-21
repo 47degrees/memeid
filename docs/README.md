@@ -217,6 +217,7 @@ You can import `memeid.circe.implicits` to have the `Encoder` and `Decoder` inst
 
 ```scala mdoc:silent
 import io.circe.Json
+
 import io.circe.Encoder
 import io.circe.Decoder
 
@@ -316,9 +317,9 @@ import memeid4s.fuuid.auto._
 
 def usingFUUID(fuuid: FUUID) = fuuid
 
-def usingUUID(uuid: UUID)    = uuid
+def usingUUID(uuid: UUID) = uuid
 
-val uuid: UUID   = UUID.V4.random
+val uuid: UUID = UUID.V4.random
 
 val fuuid: FUUID = FUUID.fromUUID(java.util.UUID.randomUUID)
 
