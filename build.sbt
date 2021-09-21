@@ -60,6 +60,13 @@ lazy val bench = project
   .enablePlugins(JmhPlugin)
   .disablePlugins(ScoverageSbtPlugin)
   .enablePlugins(HoodPlugin)
+  /*
+   * Not used but required by ScoverageSbtPlugin
+   * [error] Runtime reference to undefined setting:
+   * [error]
+   * [error]   bench / Compile / coverageDataDir from coverageAggregate ((scoverage.ScoverageSbtPlugin.projectSettings) ScoverageSbtPlugin.scala:62)
+   */
+  .settings(coverageDataDir := target.value / "test")
 
 val runAvgtimeCmd =
   "bench/jmh:run -i 15 -wi 15 -bm AverageTime -tu ns"
