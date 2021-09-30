@@ -8,7 +8,7 @@ object dependencies extends AutoPlugin {
   private val common = List("org.specs2" %% "specs2-scalacheck" % "4.12.12" % Test)
 
   private val parallel = on(2, 13) {
-    "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.3" % Test
+    "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4" % Test
   }
 
   private val cats = List(
