@@ -13,8 +13,8 @@ object dependencies extends AutoPlugin {
 
   private val cats = List(
     "org.typelevel" %% "cats-effect"       % "3.2.9",
-    "org.typelevel" %% "cats-laws"         % "2.6.1"   % Test,
-    "org.typelevel" %% "discipline-specs2" % "1.2.2"   % Test,
+    "org.typelevel" %% "cats-laws"         % "2.6.1"  % Test,
+    "org.typelevel" %% "discipline-specs2" % "1.2.3"  % Test,
     "org.specs2"    %% "specs2-cats"       % "4.12.12" % Test
   )
 
@@ -34,13 +34,13 @@ object dependencies extends AutoPlugin {
 
   private val circe = List(
     "io.circe"      %% "circe-core"        % "0.14.1",
-    "org.typelevel" %% "discipline-specs2" % "1.2.2"  % Test,
+    "org.typelevel" %% "discipline-specs2" % "1.2.3"  % Test,
     "io.circe"      %% "circe-testing"     % "0.14.1" % Test
   )
 
   private val http4s = List(
-    "org.http4s" %% "http4s-core" % "0.23.3",
-    "org.http4s" %% "http4s-dsl"  % "0.23.3" % Test
+    "org.http4s" %% "http4s-core" % "0.23.6",
+    "org.http4s" %% "http4s-dsl"  % "0.23.6" % Test
   )
 
   private val tapir = List(
@@ -61,7 +61,7 @@ object dependencies extends AutoPlugin {
     "org.typelevel"               %% "cats-effect" % "3.2.9",
     "io.circe"                    %% "circe-core"  % "0.14.1",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC1",
-    "org.http4s"                  %% "http4s-dsl"  % "0.23.3",
+    "org.http4s"                  %% "http4s-dsl"  % "0.23.6",
     "org.scalacheck"              %% "scalacheck"  % "1.15.4",
     "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.18.3",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
