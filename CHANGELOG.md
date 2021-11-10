@@ -1,5 +1,45 @@
 # Changelog
 
+## [v0.4.0](https://github.com/47degrees/memeid/tree/v0.4.0) (2021-11-10)
+
+[Full Changelog](https://github.com/47degrees/memeid/compare/v0.3.0...v0.4.0)
+
+⚠️ **Breaking changes**
+
+- Update to CE 3 [\#457](https://github.com/47degrees/memeid/pull/457) ([fedefernandez](https://github.com/fedefernandez))
+
+📈 **Dependency updates**
+
+- Update discipline-specs2 to 1.2.2 [\#451](https://github.com/47degrees/memeid/pull/451) ([47erbot](https://github.com/47erbot))
+- Update scalafmt-core to 3.0.3 [\#450](https://github.com/47degrees/memeid/pull/450) ([47erbot](https://github.com/47erbot))
+- Update mdoc\_2.12, mdoc\_2.13, sbt-mdoc to 2.2.23 [\#449](https://github.com/47degrees/memeid/pull/449) ([47erbot](https://github.com/47erbot))
+
+**Merged pull requests:**
+
+- Update sbt-scoverage to 1.9.2 [\#480](https://github.com/47degrees/memeid/pull/480) ([47erbot](https://github.com/47erbot))
+- Update sbt-github-header, sbt-github-mdoc to 0.11.1 [\#478](https://github.com/47degrees/memeid/pull/478) ([47erbot](https://github.com/47erbot))
+- Update sbt-github-header, sbt-github-mdoc to 0.11.0 [\#477](https://github.com/47degrees/memeid/pull/477) ([47erbot](https://github.com/47erbot))
+- Update discipline-specs2 to 1.3.0 [\#476](https://github.com/47degrees/memeid/pull/476) ([47erbot](https://github.com/47erbot))
+- Update discipline-specs2 to 1.2.4 [\#475](https://github.com/47degrees/memeid/pull/475) ([47erbot](https://github.com/47erbot))
+- Update mdoc, sbt-mdoc to 2.2.24 [\#474](https://github.com/47degrees/memeid/pull/474) ([47erbot](https://github.com/47erbot))
+- Update sbt-github-header, sbt-github-mdoc to 0.10.1 [\#473](https://github.com/47degrees/memeid/pull/473) ([47erbot](https://github.com/47erbot))
+- Update sbt-ci-release to 1.5.10 [\#471](https://github.com/47degrees/memeid/pull/471) ([47erbot](https://github.com/47erbot))
+- Update discipline-specs2 to 1.2.3 [\#470](https://github.com/47degrees/memeid/pull/470) ([47erbot](https://github.com/47erbot))
+- Update sbt-scoverage to 1.9.1 [\#469](https://github.com/47degrees/memeid/pull/469) ([47erbot](https://github.com/47erbot))
+- Update http4s-core, http4s-dsl to 0.22.7 [\#468](https://github.com/47degrees/memeid/pull/468) ([47erbot](https://github.com/47erbot))
+- Update http4s-core, http4s-dsl to 0.22.6 [\#466](https://github.com/47degrees/memeid/pull/466) ([47erbot](https://github.com/47erbot))
+- Update scalafmt-core to 3.0.6 [\#465](https://github.com/47degrees/memeid/pull/465) ([47erbot](https://github.com/47erbot))
+- Update scala-parallel-collections to 1.0.4 [\#464](https://github.com/47degrees/memeid/pull/464) ([47erbot](https://github.com/47erbot))
+- Update scalafmt-core to 3.0.5 [\#463](https://github.com/47degrees/memeid/pull/463) ([47erbot](https://github.com/47erbot))
+- Update sbt-ci-release to 1.5.9 [\#462](https://github.com/47degrees/memeid/pull/462) ([47erbot](https://github.com/47erbot))
+- Update sbt-github-header, sbt-github-mdoc to 0.10.0 [\#461](https://github.com/47degrees/memeid/pull/461) ([47erbot](https://github.com/47erbot))
+- Update http4s-core, http4s-dsl to 0.22.5 [\#458](https://github.com/47degrees/memeid/pull/458) ([47erbot](https://github.com/47erbot))
+- Update cats-effect to 2.5.4 [\#456](https://github.com/47degrees/memeid/pull/456) ([47erbot](https://github.com/47erbot))
+- Update scalafmt-core to 3.0.4 [\#455](https://github.com/47degrees/memeid/pull/455) ([47erbot](https://github.com/47erbot))
+- Update sbt-scoverage to 1.9.0 [\#454](https://github.com/47degrees/memeid/pull/454) ([47erbot](https://github.com/47erbot))
+- Update scala-library, scala-reflect to 2.12.15 [\#453](https://github.com/47degrees/memeid/pull/453) ([47erbot](https://github.com/47erbot))
+- Update sbt-scalafix to 0.9.31 [\#452](https://github.com/47degrees/memeid/pull/452) ([47erbot](https://github.com/47erbot))
+
 ## [v0.3.0](https://github.com/47degrees/memeid/tree/v0.3.0) (2021-09-10)
 
 [Full Changelog](https://github.com/47degrees/memeid/compare/v0.2.0...v0.3.0)
