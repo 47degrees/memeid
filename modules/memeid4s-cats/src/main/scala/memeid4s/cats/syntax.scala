@@ -16,8 +16,6 @@
 
 package memeid4s.cats
 
-import java.util.concurrent.TimeUnit.SECONDS
-
 import cats.effect.Clock
 import cats.effect.Sync
 import cats.syntax.functor._
@@ -42,11 +40,11 @@ trait syntax {
 
     def random[F[_]: Sync]: F[UUID] = Sync[F].delay(UUID.V4.random)
 
-    def squuid[F[_]: Sync: Clock]: F[UUID] =
-      Clock[F].realTime(SECONDS).map { s =>
+    def squuid[F[_]: Sync]: F[UUID] =
+      Clock[F].realTime.map { d =>
         UUID.V4.squuid {
           new Posix {
-            override def value: Long = s
+            override def value: Long = d.toSeconds
           }
         }
       }

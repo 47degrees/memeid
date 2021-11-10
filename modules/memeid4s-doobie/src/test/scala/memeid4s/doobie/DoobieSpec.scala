@@ -17,6 +17,7 @@
 package memeid4s.doobie
 
 import cats.effect._
+import cats.effect.unsafe.IORuntime
 
 import doobie._
 import doobie.h2.implicits._
@@ -39,7 +40,7 @@ class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatc
     )
 
   def beforeAll(): Unit =
-    sql"CREATE TABLE test (id UUID NOT NULL)".update.run.transact(transactor).void.unsafeRunSync()
+    sql"CREATE TABLE test (id UUID NOT NULL)".update.run.transact(transactor).void.unsafeRunSync()(IORuntime.global)
 
   def select(uuid: UUID): Query0[UUID] =
     sql"""SELECT id from test where id = $uuid""".query[UUID]
