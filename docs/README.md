@@ -171,9 +171,7 @@ import doobie._
 import doobie.h2.implicits._
 import doobie.implicits._
 
-import scala.concurrent.ExecutionContext
-
-implicit val cs: ContextShift[IO] = IO.contextShift(ExecutionContext.global)
+import cats.effect.unsafe.implicits.global
 
 val transactor: Transactor[IO] =
   Transactor.fromDriverManager[IO](
