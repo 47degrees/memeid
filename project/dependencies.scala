@@ -13,8 +13,8 @@ object dependencies extends AutoPlugin {
 
   private val cats = List(
     "org.typelevel" %% "cats-effect"       % "3.2.9",
-    "org.typelevel" %% "cats-laws"         % "2.6.1"   % Test,
-    "org.typelevel" %% "discipline-specs2" % "1.3.0"   % Test,
+    "org.typelevel" %% "cats-laws"         % "2.6.1"  % Test,
+    "org.typelevel" %% "discipline-specs2" % "1.3.0"  % Test,
     "org.specs2"    %% "specs2-cats"       % "4.13.0" % Test
   )
 
@@ -29,7 +29,7 @@ object dependencies extends AutoPlugin {
     "org.tpolecat" %% "doobie-core"   % "1.0.0-RC1",
     "org.tpolecat" %% "doobie-specs2" % "1.0.0-RC1" % Test,
     "org.tpolecat" %% "doobie-h2"     % "1.0.0-RC1" % Test,
-    "org.specs2"   %% "specs2-cats"   % "4.13.0"   % Test
+    "org.specs2"   %% "specs2-cats"   % "4.13.0"    % Test
   )
 
   private val circe = List(
