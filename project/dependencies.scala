@@ -44,9 +44,9 @@ object dependencies extends AutoPlugin {
   )
 
   private val tapir = List(
-    "com.softwaremill.sttp.tapir" %% "tapir-core"               % "0.18.3",
-    "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % "0.18.3" % Test,
-    "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % "0.18.3" % Test
+    "com.softwaremill.sttp.tapir" %% "tapir-core"               % "0.19.0",
+    "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % "0.19.0" % Test,
+    "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % "0.19.0" % Test
   )
 
   private val fuuid = List(
@@ -63,7 +63,7 @@ object dependencies extends AutoPlugin {
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC1",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.6",
     "org.scalacheck"              %% "scalacheck"  % "1.15.4",
-    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.18.3",
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.19.0",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
   )
 
