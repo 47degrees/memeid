@@ -26,9 +26,9 @@ object dependencies extends AutoPlugin {
   }
 
   private val doobie = List(
-    "org.tpolecat" %% "doobie-core"   % "1.0.0-RC1",
-    "org.tpolecat" %% "doobie-specs2" % "1.0.0-RC1" % Test,
-    "org.tpolecat" %% "doobie-h2"     % "1.0.0-RC1" % Test,
+    "org.tpolecat" %% "doobie-core"   % "1.0.0-RC2",
+    "org.tpolecat" %% "doobie-specs2" % "1.0.0-RC2" % Test,
+    "org.tpolecat" %% "doobie-h2"     % "1.0.0-RC2" % Test,
     "org.specs2"   %% "specs2-cats"   % "4.13.1"    % Test
   )
 
@@ -60,7 +60,7 @@ object dependencies extends AutoPlugin {
   private val documentation = List(
     "org.typelevel"               %% "cats-effect" % "3.3.4",
     "io.circe"                    %% "circe-core"  % "0.14.1",
-    "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC1",
+    "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC2",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.7",
     "org.scalacheck"              %% "scalacheck"  % "1.15.4",
     "com.softwaremill.sttp.tapir" %% "tapir-core"  % "0.19.3",
