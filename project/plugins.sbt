@@ -1,4 +1,4 @@
-addSbtPlugin("ch.epfl.scala"                     % "sbt-scalafix"             % "0.9.33")
+addSbtPlugin("ch.epfl.scala"                     % "sbt-scalafix"             % "0.9.34")
 addSbtPlugin("com.47deg"                         % "sbt-microsites"           % "1.3.2")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-codecov"              % "0.2.1")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"                  % "0.7.0")
@@ -15,6 +15,6 @@ addSbtPlugin("de.heikoseeberger"                 % "sbt-header"               % 
 addSbtPlugin("io.github.davidgregory084"         % "sbt-tpolecat"             % "0.1.20")
 addSbtPlugin("org.scalameta"                     % "sbt-mdoc"                 % "2.2.24")
 addSbtPlugin("org.scalameta"                     % "sbt-scalafmt"             % "2.4.6")
-addSbtPlugin("org.scoverage"                     % "sbt-scoverage"            % "1.9.2")
+addSbtPlugin("org.scoverage"                     % "sbt-scoverage"            % "1.9.3")
 addSbtPlugin("pl.project13.scala"                % "sbt-jmh"                  % "0.4.3")
 addSbtPlugin("com.47deg"                        %% "sbt-hood-plugin"          % "0.3.0")
