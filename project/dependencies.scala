@@ -5,7 +5,7 @@ import sbt.plugins.JvmPlugin
 
 object dependencies extends AutoPlugin {
 
-  private val common = List("org.specs2" %% "specs2-scalacheck" % "4.13.2" % Test)
+  private val common = List("org.specs2" %% "specs2-scalacheck" % "4.13.3" % Test)
 
   private val parallel = on(2, 13) {
     "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4" % Test
@@ -15,7 +15,7 @@ object dependencies extends AutoPlugin {
     "org.typelevel" %% "cats-effect"       % "3.3.5",
     "org.typelevel" %% "cats-laws"         % "2.7.0"  % Test,
     "org.typelevel" %% "discipline-specs2" % "1.3.1"  % Test,
-    "org.specs2"    %% "specs2-cats"       % "4.13.2" % Test
+    "org.specs2"    %% "specs2-cats"       % "4.13.3" % Test
   )
 
   private val literal = Def.setting {
@@ -29,7 +29,7 @@ object dependencies extends AutoPlugin {
     "org.tpolecat" %% "doobie-core"   % "1.0.0-RC2",
     "org.tpolecat" %% "doobie-specs2" % "1.0.0-RC2" % Test,
     "org.tpolecat" %% "doobie-h2"     % "1.0.0-RC2" % Test,
-    "org.specs2"   %% "specs2-cats"   % "4.13.2"    % Test
+    "org.specs2"   %% "specs2-cats"   % "4.13.3"    % Test
   )
 
   private val circe = List(
