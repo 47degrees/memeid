@@ -33,9 +33,9 @@ object dependencies extends AutoPlugin {
   )
 
   private val circe = List(
-    "io.circe"      %% "circe-core"        % "0.14.1",
+    "io.circe"      %% "circe-core"        % "0.14.2",
     "org.typelevel" %% "discipline-specs2" % "1.3.1"  % Test,
-    "io.circe"      %% "circe-testing"     % "0.14.1" % Test
+    "io.circe"      %% "circe-testing"     % "0.14.2" % Test
   )
 
   private val http4s = List(
@@ -59,7 +59,7 @@ object dependencies extends AutoPlugin {
 
   private val documentation = List(
     "org.typelevel"               %% "cats-effect" % "3.3.11",
-    "io.circe"                    %% "circe-core"  % "0.14.1",
+    "io.circe"                    %% "circe-core"  % "0.14.2",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC2",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.11",
     "org.scalacheck"              %% "scalacheck"  % "1.16.0",
