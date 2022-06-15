@@ -24,9 +24,9 @@ import memeid4s.scalacheck.arbitrary.instances._
 import memeid4s.tapir.implicits._
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
+import sttp.apispec.openapi.circe.yaml._
 import sttp.tapir._
 import sttp.tapir.docs.openapi.OpenAPIDocsInterpreter
-import sttp.tapir.openapi.circe.yaml._
 
 class InstancesSpec extends Specification with ScalaCheck {
 
