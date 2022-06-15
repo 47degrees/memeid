@@ -44,9 +44,9 @@ object dependencies extends AutoPlugin {
   )
 
   private val tapir = List(
-    "com.softwaremill.sttp.tapir" %% "tapir-core"               % "1.0.0",
-    "com.softwaremill.sttp.tapir" %% "tapir-openapi-docs"       % "1.0.0"  % Test,
-    "com.softwaremill.sttp.tapir" %% "tapir-openapi-circe-yaml" % "0.20.2" % Test
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.0.0",
+    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.0.0" % Test,
+    "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.2.1" % Test
   )
 
   private val fuuid = List(
