@@ -8,7 +8,7 @@
 
 The maintainers of the project are:
 
-- [![alejandrohdezma](https://avatars.githubusercontent.com/u/9027541?v=4&s=20) **Alejandro Hernández (alejandrohdezma)**](https://github.com/alejandrohdezma)
+- [![cb372](https://avatars.githubusercontent.com/u/106760?v=4&s=20) **Chris Birchall (cb372)**](https://github.com/cb372)
 - [![juanpedromoreno](https://avatars.githubusercontent.com/u/4879373?v=4&s=20) **Juan Pedro Moreno (juanpedromoreno)**](https://github.com/juanpedromoreno)
 
 ## Contributors
@@ -26,3 +26,4 @@ These are the people that have contributed to the _memeid_ project:
 - [![sloshy](https://avatars.githubusercontent.com/u/427237?v=4&s=20) **sloshy**](https://github.com/sloshy)
 - [![megankelly](https://avatars.githubusercontent.com/u/4417390?v=4&s=20) **megankelly**](https://github.com/megankelly)
 - [![Philippus](https://avatars.githubusercontent.com/u/1923596?v=4&s=20) **Philippus**](https://github.com/Philippus)
+- [![cb372](https://avatars.githubusercontent.com/u/106760?v=4&s=20) **cb372**](https://github.com/cb372)
