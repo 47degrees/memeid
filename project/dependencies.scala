@@ -12,7 +12,7 @@ object dependencies extends AutoPlugin {
   }
 
   private val cats = List(
-    "org.typelevel" %% "cats-effect"       % "3.3.12",
+    "org.typelevel" %% "cats-effect"       % "3.3.13",
     "org.typelevel" %% "cats-laws"         % "2.8.0"  % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
     "org.specs2"    %% "specs2-cats"       % "4.16.0" % Test
@@ -58,7 +58,7 @@ object dependencies extends AutoPlugin {
   )
 
   private val documentation = List(
-    "org.typelevel"               %% "cats-effect" % "3.3.12",
+    "org.typelevel"               %% "cats-effect" % "3.3.13",
     "io.circe"                    %% "circe-core"  % "0.14.2",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC2",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.13",
