@@ -21,7 +21,7 @@ object dependencies extends AutoPlugin {
   private val literal = Def.setting {
     Seq(
       "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
-      "com.chuusai"   %% "shapeless"     % "2.3.9"            % Test
+      "com.chuusai"   %% "shapeless"     % "2.3.10"           % Test
     )
   }
 
