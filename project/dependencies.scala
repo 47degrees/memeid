@@ -5,7 +5,7 @@ import sbt.plugins.JvmPlugin
 
 object dependencies extends AutoPlugin {
 
-  private val common = List("org.specs2" %% "specs2-scalacheck" % "4.16.1" % Test)
+  private val common = List("org.specs2" %% "specs2-scalacheck" % "4.17.0" % Test)
 
   private val parallel = on(2, 13) {
     "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4" % Test
@@ -15,7 +15,7 @@ object dependencies extends AutoPlugin {
     "org.typelevel" %% "cats-effect"       % "3.3.14",
     "org.typelevel" %% "cats-laws"         % "2.8.0"  % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
-    "org.specs2"    %% "specs2-cats"       % "4.16.1" % Test
+    "org.specs2"    %% "specs2-cats"       % "4.17.0" % Test
   )
 
   private val literal = Def.setting {
@@ -29,7 +29,7 @@ object dependencies extends AutoPlugin {
     "org.tpolecat" %% "doobie-core"   % "1.0.0-RC2",
     "org.tpolecat" %% "doobie-specs2" % "1.0.0-RC2" % Test,
     "org.tpolecat" %% "doobie-h2"     % "1.0.0-RC2" % Test,
-    "org.specs2"   %% "specs2-cats"   % "4.16.1"    % Test
+    "org.specs2"   %% "specs2-cats"   % "4.17.0"    % Test
   )
 
   private val circe = List(
@@ -44,8 +44,8 @@ object dependencies extends AutoPlugin {
   )
 
   private val tapir = List(
-    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.1.1",
-    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.1.1" % Test,
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.1.2",
+    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.1.2" % Test,
     "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.2.1" % Test
   )
 
@@ -63,7 +63,7 @@ object dependencies extends AutoPlugin {
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC2",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.16",
     "org.scalacheck"              %% "scalacheck"  % "1.17.0",
-    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.1.1",
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.1.2",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
   )
 
