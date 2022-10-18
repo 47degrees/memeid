@@ -54,6 +54,14 @@ class V5Spec extends Specification {
       uuid1 must not be equalTo(uuid2)
     }
 
+    "create valid v5 UUIDs" in {
+      val dnsNs  = UUID.fromString("34c90a22-998c-4676-af7f-64533819985a")
+      val name   = "a-thing"
+      val uuidV5 = UUID.V5.from(dnsNs, name)
+
+      uuidV5 must be equalTo (UUID.fromString("053d93ac-fcaf-5517-b3cc-18850517ece3"))
+    }
+
   }
 
 }
