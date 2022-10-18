@@ -1,7 +1,7 @@
 ThisBuild / libraryDependencySchemes ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
 )
-addSbtPlugin("ch.epfl.scala"                     % "sbt-scalafix"             % "0.10.3")
+addSbtPlugin("ch.epfl.scala"                     % "sbt-scalafix"             % "0.10.4")
 addSbtPlugin("com.47deg"                         % "sbt-microsites"           % "1.3.2")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-codecov"              % "0.2.1")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"                  % "0.7.0")
@@ -18,6 +18,6 @@ addSbtPlugin("de.heikoseeberger"                 % "sbt-header"               % 
 addSbtPlugin("io.github.davidgregory084"         % "sbt-tpolecat"             % "0.4.1")
 addSbtPlugin("org.scalameta"                     % "sbt-mdoc"                 % "2.3.6")
 addSbtPlugin("org.scalameta"                     % "sbt-scalafmt"             % "2.4.6")
-addSbtPlugin("org.scoverage"                     % "sbt-scoverage"            % "2.0.4")
+addSbtPlugin("org.scoverage"                     % "sbt-scoverage"            % "2.0.5")
 addSbtPlugin("pl.project13.scala"                % "sbt-jmh"                  % "0.4.3")
 addSbtPlugin("com.47deg"                        %% "sbt-hood-plugin"          % "0.3.0")
