@@ -28,7 +28,7 @@ public final class Offset {
     public final static long CLOCK_SEQ_LOW = 0L;
     public final static long CLOCK_SEQ_HIGH = 8L;
 
-    public final static long HASHED = 52L;
+	public final static long HASHED = 62L;
 
     public final static long V4_LSB = 62L;
 

@@ -54,6 +54,14 @@ class V3Spec extends Specification {
       uuid1 must not be equalTo(uuid2)
     }
 
+    "create valid v3 UUIDs" in {
+      val dnsNs  = UUID.fromString("6ba7b810-9dad-11d1-80b4-00c04fd430c8")
+      val name   = "a-thing"
+      val uuidV3 = UUID.V3.from(dnsNs, name)
+
+      uuidV3 must be equalTo (UUID.fromString("a814fa2d-efaa-32b1-8d0c-3dd50ccaa107"))
+    }
+
   }
 
 }

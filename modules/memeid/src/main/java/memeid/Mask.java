@@ -30,7 +30,7 @@ public final class Mask {
 
     public final static long UB32 = 0xFFFFFFFFL;
 
-    public final static long HASHED = 0x30000000000000L;
+	public final static long HASHED = 0xC000000000000000L;
 
     public final static long V4_LSB = 0xC000000000000000L;
 
