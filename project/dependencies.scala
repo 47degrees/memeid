@@ -13,7 +13,7 @@ object dependencies extends AutoPlugin {
 
   private val cats = List(
     "org.typelevel" %% "cats-effect"       % "3.4.0",
-    "org.typelevel" %% "cats-laws"         % "2.8.0"  % Test,
+    "org.typelevel" %% "cats-laws"         % "2.9.0"  % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
     "org.specs2"    %% "specs2-cats"       % "4.18.0" % Test
   )
