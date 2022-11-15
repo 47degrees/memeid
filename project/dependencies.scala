@@ -12,7 +12,7 @@ object dependencies extends AutoPlugin {
   }
 
   private val cats = List(
-    "org.typelevel" %% "cats-effect"       % "3.3.14",
+    "org.typelevel" %% "cats-effect"       % "3.4.0",
     "org.typelevel" %% "cats-laws"         % "2.9.0"  % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
     "org.specs2"    %% "specs2-cats"       % "4.18.0" % Test
@@ -44,8 +44,8 @@ object dependencies extends AutoPlugin {
   )
 
   private val tapir = List(
-    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.2.0",
-    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.2.0" % Test,
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.2.1",
+    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.2.1" % Test,
     "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.3.1" % Test
   )
 
@@ -58,12 +58,12 @@ object dependencies extends AutoPlugin {
   )
 
   private val documentation = List(
-    "org.typelevel"               %% "cats-effect" % "3.3.14",
+    "org.typelevel"               %% "cats-effect" % "3.4.0",
     "io.circe"                    %% "circe-core"  % "0.14.3",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC2",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.16",
     "org.scalacheck"              %% "scalacheck"  % "1.17.0",
-    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.2.0",
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.2.1",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
   )
 
