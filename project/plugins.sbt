@@ -17,7 +17,7 @@ addSbtPlugin("com.thoughtworks.sbt-api-mappings" % "sbt-api-mappings"         % 
 addSbtPlugin("de.heikoseeberger"                 % "sbt-header"               % "5.8.0")
 addSbtPlugin("io.github.davidgregory084"         % "sbt-tpolecat"             % "0.4.1")
 addSbtPlugin("org.scalameta"                     % "sbt-mdoc"                 % "2.3.6")
-addSbtPlugin("org.scalameta"                     % "sbt-scalafmt"             % "2.4.6")
+addSbtPlugin("org.scalameta"                     % "sbt-scalafmt"             % "2.5.0")
 addSbtPlugin("org.scoverage"                     % "sbt-scoverage"            % "2.0.6")
 addSbtPlugin("pl.project13.scala"                % "sbt-jmh"                  % "0.4.3")
 addSbtPlugin("com.47deg"                        %% "sbt-hood-plugin"          % "0.3.0")
