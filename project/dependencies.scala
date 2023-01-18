@@ -39,8 +39,8 @@ object dependencies extends AutoPlugin {
   )
 
   private val http4s = List(
-    "org.http4s" %% "http4s-core" % "0.23.17",
-    "org.http4s" %% "http4s-dsl"  % "0.23.17" % Test
+    "org.http4s" %% "http4s-core" % "0.23.18",
+    "org.http4s" %% "http4s-dsl"  % "0.23.18" % Test
   )
 
   private val tapir = List(
@@ -61,7 +61,7 @@ object dependencies extends AutoPlugin {
     "org.typelevel"               %% "cats-effect" % "3.4.4",
     "io.circe"                    %% "circe-core"  % "0.14.3",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC2",
-    "org.http4s"                  %% "http4s-dsl"  % "0.23.17",
+    "org.http4s"                  %% "http4s-dsl"  % "0.23.18",
     "org.scalacheck"              %% "scalacheck"  % "1.17.0",
     "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.2.5",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
