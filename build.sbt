@@ -39,15 +39,8 @@ lazy val `memeid4s-cats` = module
 lazy val `memeid4s-literal` = module
   .dependsOn(`memeid4s`)
   .settings(
-    // Macros
-    scalacOptions ++= (CrossVersion.partialVersion(scalaVersion.value) match {
-      case Some((2, major)) if major <= 12 =>
-        Seq()
-      case _ =>
-        Seq("-Ytasty-reader")
-    }),
-    scalaVersion       := dependencies.scala2_13,
-    crossScalaVersions := Seq(dependencies.scala2_12, dependencies.scala2_13)
+    scalaVersion       := dependencies.scala3,
+    crossScalaVersions := fullCrossScala
   )
 
 lazy val `memeid4s-doobie` = module

@@ -31,10 +31,16 @@ object dependencies extends AutoPlugin {
   )
 
   private val literal = Def.setting {
-    Seq(
-      "org.scala-lang" % "scala-reflect" % scalaVersion.value % Provided,
-      "com.chuusai"   %% "shapeless"     % "2.3.10"           % Test
-    )
+    (CrossVersion.partialVersion(scalaVersion.value) match {
+      case Some((2, _)) =>
+        Seq(
+          "org.scala-lang" % "scala-reflect" % scalaVersion.value
+        )
+      case _ => Seq.empty
+    }) ++
+      Seq(
+        "org.scalameta" %% "munit" % "0.7.29" % Test
+      )
   }
 
   private val doobie = List(
@@ -84,7 +90,6 @@ object dependencies extends AutoPlugin {
 
   override def projectSettings: List[Def.Setting[_]] =
     List(
-      testFrameworks       += new TestFramework("munit.Framework"),
       libraryDependencies ++= common ++ parallel.value,
       libraryDependencies ++= {
         projectID.value.name match {

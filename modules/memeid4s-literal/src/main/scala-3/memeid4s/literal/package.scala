@@ -14,24 +14,13 @@
  * limitations under the License.
  */
 
-package memeid4s.literal
+package memeid4s
 
-import memeid.UUID
+package object literal {
 
-class LiteralSpec extends munit.FunSuite {
-
-  test("uuid interpolator create UUID on valid string literal") {
-    assert(uuid"be5cb243-06a9-409e-899f-109d0ed8ea01".isInstanceOf[UUID])
-  }
-
-  test("fail on invalid string literal") {
-    val errors = compileErrors("""uuid"miau"""")
-    assert(
-      errors.contains("invalid UUID: miau"),
-      s"""
-         |"$errors" doesn' contains "invalid UUID: miau"
-         |""".stripMargin
-    )
+  implicit class UUIDContextOps(sc: StringContext) {
+    inline def uuid(inline args: Any*): UUID =
+      ${ Macros.uuidInterpolator('this) }
   }
 
 }
