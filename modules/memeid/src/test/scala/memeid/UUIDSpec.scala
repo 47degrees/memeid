@@ -29,7 +29,7 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "UUID.fromString" should {
 
-    "return uuid on valid uuid string" in prop { uuid: UUID =>
+    "return uuid on valid uuid string" in prop { (uuid: UUID) =>
       UUID.fromString(uuid.toString) should be equalTo uuid
     }
 
@@ -37,7 +37,7 @@ class UUIDSpec extends Specification with ScalaCheck {
       UUID.fromString("1-1-1-1-1") must throwAn[IllegalArgumentException]
     }
 
-    "throw exception on invalid string" in prop { s: String =>
+    "throw exception on invalid string" in prop { (s: String) =>
       UUID.fromString(s) must throwAn[IllegalArgumentException]
     }.setGen(Gen.alphaNumStr)
 
@@ -49,7 +49,7 @@ class UUIDSpec extends Specification with ScalaCheck {
       UUID.fromUUID(UUID.NIL.asJava) must be equalTo UUID.NIL
     }
 
-    "return uuid depending on version" in prop { uuid: UUID =>
+    "return uuid depending on version" in prop { (uuid: UUID) =>
       UUID.fromUUID(uuid.asJava) must be like {
         case _: UUID.V1             => uuid.version must be equalTo 1
         case _: UUID.V2             => uuid.version must be equalTo 2
@@ -74,7 +74,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
     }
 
-    "uuid.asV2 should return optional with uuid only if class is UUID.V2" in prop { uuid: UUID.V2 =>
+    "uuid.asV2 should return optional with uuid only if class is UUID.V2" in prop { (uuid: UUID.V2) =>
       (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
         (uuid.asV2 must be equalTo Optional.of[UUID.V2](uuid)) and
         (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
@@ -127,7 +127,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.isV5 must beFalse)
     }
 
-    "uuid.isV2 should return true only if class is UUID.V2" in prop { uuid: UUID.V2 =>
+    "uuid.isV2 should return true only if class is UUID.V2" in prop { (uuid: UUID.V2) =>
       (uuid.isNil must beFalse) and
         (uuid.isV1 must beFalse) and
         (uuid.isV2 must beTrue) and
@@ -182,13 +182,13 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "UUID.variant" should {
 
-    "detect a valid variant" in prop { msb: Long =>
+    "detect a valid variant" in prop { (msb: Long) =>
       val uuid = UUID.from(msb, 0x9000000000000000L)
 
       uuid.variant must be equalTo 2
     }
 
-    "detect an invalid UUID variant" in prop { msb: Long =>
+    "detect an invalid UUID variant" in prop { (msb: Long) =>
       val uuid = UUID.from(msb, 0xc000000000000000L)
 
       uuid.variant must not be equalTo(2)

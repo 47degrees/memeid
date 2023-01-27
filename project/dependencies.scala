@@ -5,17 +5,29 @@ import sbt.plugins.JvmPlugin
 
 object dependencies extends AutoPlugin {
 
-  private val common = List("org.specs2" %% "specs2-scalacheck" % "4.19.1" % Test)
+  val scala2_12 = "2.12.17"
 
-  private val parallel = on(2, 13) {
-    "org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4" % Test
-  }
+  val scala2_13 = "2.13.10"
+
+  val scala3 = "3.2.1"
+
+  private val common = List("org.specs2" %% "specs2-scalacheck" % "4.19.0" % Test)
+
+  private val parallel =
+    Def.setting {
+      CrossVersion.partialVersion(scalaVersion.value) match {
+        case Some((2, major)) if major <= 12 =>
+          Seq()
+        case _ =>
+          Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4" % Test)
+      }
+    }
 
   private val cats = List(
     "org.typelevel" %% "cats-effect"       % "3.4.5",
     "org.typelevel" %% "cats-laws"         % "2.9.0"  % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
-    "org.specs2"    %% "specs2-cats"       % "4.19.1" % Test
+    "org.specs2"    %% "specs2-cats"       % "4.19.0" % Test
   )
 
   private val literal = Def.setting {
@@ -26,10 +38,9 @@ object dependencies extends AutoPlugin {
   }
 
   private val doobie = List(
-    "org.tpolecat" %% "doobie-core"   % "1.0.0-RC2",
-    "org.tpolecat" %% "doobie-specs2" % "1.0.0-RC2" % Test,
-    "org.tpolecat" %% "doobie-h2"     % "1.0.0-RC2" % Test,
-    "org.specs2"   %% "specs2-cats"   % "4.19.1"    % Test
+    "org.tpolecat" %% "doobie-core"  % "1.0.0-RC2",
+    "org.tpolecat" %% "doobie-h2"    % "1.0.0-RC2" % Test,
+    "org.tpolecat" %% "doobie-munit" % "1.0.0-RC2" % Test
   )
 
   private val circe = List(
@@ -73,6 +84,7 @@ object dependencies extends AutoPlugin {
 
   override def projectSettings: List[Def.Setting[_]] =
     List(
+      testFrameworks       += new TestFramework("munit.Framework"),
       libraryDependencies ++= common ++ parallel.value,
       libraryDependencies ++= {
         projectID.value.name match {
@@ -90,14 +102,5 @@ object dependencies extends AutoPlugin {
         }
       }
     )
-
-  /** Wraps the value in a `List` if current scala version matches the one provided, otherwise returns `Nil`. */
-  def on[A](major: Int, minor: Int)(a: A): Def.Initialize[List[A]] =
-    Def.setting {
-      CrossVersion.partialVersion(scalaVersion.value) match {
-        case Some(v) if v == (major, minor) => List(a)
-        case _                              => Nil
-      }
-    }
 
 }

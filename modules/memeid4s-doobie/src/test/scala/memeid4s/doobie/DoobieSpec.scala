@@ -18,18 +18,18 @@ package memeid4s.doobie
 
 import cats.effect._
 import cats.effect.unsafe.IORuntime
+import cats.effect.unsafe.implicits.global
 
-import doobie._
-import doobie.h2.implicits._
-import doobie.implicits._
-import doobie.specs2._
-import memeid4s.UUID
-import memeid4s.doobie.implicits._
-import org.specs2.matcher.IOMatchers
-import org.specs2.mutable.Specification
-import org.specs2.specification.BeforeAll
+import _root_.doobie.h2.implicits._
+import _root_.doobie.implicits._
+import _root_.memeid4s.UUID
+import _root_.memeid4s.doobie.implicits._
+import _root_.munit._
+import doobie.Query0
+import doobie.Transactor
+import doobie.Update0
 
-class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatchers {
+class DoobieSpec extends FunSuite with doobie.munit.IOChecker {
 
   lazy val transactor: Transactor[IO] =
     Transactor.fromDriverManager[IO](
@@ -39,7 +39,7 @@ class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatc
       pass = ""
     )
 
-  def beforeAll(): Unit =
+  override def beforeAll(): Unit =
     sql"CREATE TABLE test (id UUID NOT NULL)".update.run.transact(transactor).void.unsafeRunSync()(IORuntime.global)
 
   def select(uuid: UUID): Query0[UUID] =
@@ -48,11 +48,17 @@ class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatc
   def insert(uuid: UUID): Update0 =
     sql"""insert into test (id) values ($uuid)""".update
 
-  check(sql"SELECT id from test".query[UUID])
-  check(insert(UUID.V1.next))
-  check(select(UUID.V1.next))
+  test("SELECT") {
+    check(sql"SELECT id from test".query[UUID])
+  }
+  test("Insert UUID V1") {
+    check(insert(UUID.V1.next))
+  }
+  test("Select UUID V1") {
+    check(select(UUID.V1.next))
+  }
 
-  "We can insert and select UUIDs" in {
+  test("We can insert and select UUIDs") {
     val uuid = UUID.V1.next
 
     val io: IO[UUID] = for {
@@ -60,7 +66,7 @@ class DoobieSpec extends Specification with IOChecker with BeforeAll with IOMatc
       u <- select(uuid).unique.transact(transactor)
     } yield u
 
-    io must returnValue(uuid)
+    assertEquals(io.unsafeRunSync(), uuid)
   }
 
 }

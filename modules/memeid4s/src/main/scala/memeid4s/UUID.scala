@@ -40,7 +40,10 @@ object UUID {
 
   type V5 = memeid.UUID.V5
 
-  implicit final class RichUUID(private val uuid: memeid.UUID) extends AnyVal {
+  @SuppressWarnings(Array("scalafix:DisableSyntax.implicitConversion"))
+  implicit def richUUID(uuid: memeid.UUID): RichUUID = new RichUUID(uuid)
+
+  final class RichUUID(private val uuid: memeid.UUID) extends AnyVal {
 
     /** The most significant 64 bits of this UUID's 128 bit value */
     @inline def msb: Long = uuid.getMostSignificantBits

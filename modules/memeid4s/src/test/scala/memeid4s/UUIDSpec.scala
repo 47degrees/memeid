@@ -16,7 +16,6 @@
 
 package memeid4s
 
-import memeid4s.UUID.RichUUID
 import memeid4s.scalacheck.arbitrary.instances._
 import org.scalacheck.Gen
 import org.specs2.ScalaCheck
@@ -25,13 +24,15 @@ import org.specs2.mutable.Specification
 @SuppressWarnings(Array("scalafix:Disable.toString"))
 class UUIDSpec extends Specification with ScalaCheck {
 
+  import UUID.richUUID
+
   "UUID.from" should {
 
-    "return Right on valid UUID" in prop { uuid: UUID =>
+    "return Right on valid UUID" in prop { (uuid: UUID) =>
       UUID.from(uuid.toString) should beRight(uuid)
     }
 
-    "return Left on invalid string" in prop { s: String =>
+    "return Left on invalid string" in prop { (s: String) =>
       UUID.from(s) must beLeft().like { case e: IllegalArgumentException =>
         e.getMessage must contain("UUID string")
       }
@@ -41,7 +42,7 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "UUID.as" should {
 
-    "return Some[UUID.V1] only if version is 1" in prop { uuid: UUID.V1 =>
+    "return Some[UUID.V1] only if version is 1" in prop { (uuid: UUID.V1) =>
       (uuid.as[UUID.V1] must beSome(uuid)) and
         (uuid.as[UUID.V2] must beNone) and
         (uuid.as[UUID.V3] must beNone) and
@@ -49,7 +50,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.as[UUID.V5] must beNone)
     }
 
-    "return Some[UUID.V2] only if version is 2" in prop { uuid: UUID.V2 =>
+    "return Some[UUID.V2] only if version is 2" in prop { (uuid: UUID.V2) =>
       (uuid.as[UUID.V1] must beNone) and
         (uuid.as[UUID.V2] must beSome(uuid)) and
         (uuid.as[UUID.V3] must beNone) and
@@ -57,7 +58,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.as[UUID.V5] must beNone)
     }
 
-    "return Some[UUID.V3] only if version is 3" in prop { uuid: UUID.V3 =>
+    "return Some[UUID.V3] only if version is 3" in prop { (uuid: UUID.V3) =>
       (uuid.as[UUID.V1] must beNone) and
         (uuid.as[UUID.V2] must beNone) and
         (uuid.as[UUID.V3] must beSome(uuid)) and
@@ -65,7 +66,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.as[UUID.V5] must beNone)
     }
 
-    "return Some[UUID.V4] only if version is 4" in prop { uuid: UUID.V4 =>
+    "return Some[UUID.V4] only if version is 4" in prop { (uuid: UUID.V4) =>
       (uuid.as[UUID.V1] must beNone) and
         (uuid.as[UUID.V2] must beNone) and
         (uuid.as[UUID.V3] must beNone) and
@@ -73,7 +74,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.as[UUID.V5] must beNone)
     }
 
-    "return Some[UUID.V5] only if version is 5" in prop { uuid: UUID.V5 =>
+    "return Some[UUID.V5] only if version is 5" in prop { (uuid: UUID.V5) =>
       (uuid.as[UUID.V1] must beNone) and
         (uuid.as[UUID.V2] must beNone) and
         (uuid.as[UUID.V3] must beNone) and
@@ -85,7 +86,7 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "UUID.is" should {
 
-    "return true only if version is 1" in prop { uuid: UUID.V1 =>
+    "return true only if version is 1" in prop { (uuid: UUID.V1) =>
       (uuid.is[UUID.V1] must beTrue) and
         (uuid.is[UUID.V2] must beFalse) and
         (uuid.is[UUID.V3] must beFalse) and
@@ -93,7 +94,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.is[UUID.V5] must beFalse)
     }
 
-    "return true only if version is 2" in prop { uuid: UUID.V2 =>
+    "return true only if version is 2" in prop { (uuid: UUID.V2) =>
       (uuid.is[UUID.V1] must beFalse) and
         (uuid.is[UUID.V2] must beTrue) and
         (uuid.is[UUID.V3] must beFalse) and
@@ -101,7 +102,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.is[UUID.V5] must beFalse)
     }
 
-    "return true only if version is 3" in prop { uuid: UUID.V3 =>
+    "return true only if version is 3" in prop { (uuid: UUID.V3) =>
       (uuid.is[UUID.V1] must beFalse) and
         (uuid.is[UUID.V2] must beFalse) and
         (uuid.is[UUID.V3] must beTrue) and
@@ -109,7 +110,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.is[UUID.V5] must beFalse)
     }
 
-    "return true only if version is 4" in prop { uuid: UUID.V4 =>
+    "return true only if version is 4" in prop { (uuid: UUID.V4) =>
       (uuid.is[UUID.V1] must beFalse) and
         (uuid.is[UUID.V2] must beFalse) and
         (uuid.is[UUID.V3] must beFalse) and
@@ -117,7 +118,7 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.is[UUID.V5] must beFalse)
     }
 
-    "return true only if version is 5" in prop { uuid: UUID.V5 =>
+    "return true only if version is 5" in prop { (uuid: UUID.V5) =>
       (uuid.is[UUID.V1] must beFalse) and
         (uuid.is[UUID.V2] must beFalse) and
         (uuid.is[UUID.V3] must beFalse) and
@@ -129,7 +130,7 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "uuid.msb" should {
 
-    "be an alias for uuid.getMostSignificantBits()" in prop { uuid: UUID =>
+    "be an alias for uuid.getMostSignificantBits()" in prop { (uuid: UUID) =>
       uuid.msb must be equalTo uuid.getMostSignificantBits
     }
 
@@ -137,7 +138,7 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "uuid.lsb" should {
 
-    "be an alias for uuid.getLeastSignificantBits()" in prop { uuid: UUID =>
+    "be an alias for uuid.getLeastSignificantBits()" in prop { (uuid: UUID) =>
       uuid.lsb must be equalTo uuid.getLeastSignificantBits
     }
 
@@ -145,13 +146,13 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "UUID.variant" should {
 
-    "detect a valid variant" in prop { msb: Long =>
+    "detect a valid variant" in prop { (msb: Long) =>
       val uuid = UUID.from(msb, 0x9000000000000000L)
 
       uuid.variant must be equalTo 2
     }
 
-    "detect an invalid UUID variant" in prop { msb: Long =>
+    "detect an invalid UUID variant" in prop { (msb: Long) =>
       val uuid = UUID.from(msb, 0xc000000000000000L)
 
       uuid.variant must not be equalTo(2)
@@ -173,11 +174,11 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   "unapply" should {
 
-    "extract valid uuid string as UUID" in prop { uuid: UUID =>
+    "extract valid uuid string as UUID" in prop { (uuid: UUID) =>
       UUID.unapply(uuid.toString) must be some uuid
     }
 
-    "fail on invalid uuid string as UUID" in prop { string: String =>
+    "fail on invalid uuid string as UUID" in prop { (string: String) =>
       UUID.unapply(string) must beNone
     }.setGen(Gen.alphaNumStr)
 

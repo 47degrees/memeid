@@ -35,13 +35,13 @@ class InstancesSpec extends Specification with ScalaCheck {
 
   "QueryParamDecoder[UUID]" should {
 
-    "correctly decode a valid UUID" in prop { uuid: UUID =>
+    "correctly decode a valid UUID" in prop { (uuid: UUID) =>
       val queryParams = Map("miau" -> List(uuid.show))
 
       QueryParamMatcher.unapply(queryParams) must be some uuid
     }
 
-    "fail given an invalid UUID" in prop { string: String =>
+    "fail given an invalid UUID" in prop { (string: String) =>
       val queryParams = Map("miau" -> List(string))
 
       QueryParamMatcher.unapply(queryParams) must beNone
@@ -51,7 +51,7 @@ class InstancesSpec extends Specification with ScalaCheck {
 
   "QueryParamEncoder[UUID]" should {
 
-    "correctly encode a valid UUID" in prop { uuid: UUID =>
+    "correctly encode a valid UUID" in prop { (uuid: UUID) =>
       QueryParamEncoder[UUID].encode(uuid) must be like { case QueryParameterValue(string) =>
         string must be equalTo uuid.show
       }

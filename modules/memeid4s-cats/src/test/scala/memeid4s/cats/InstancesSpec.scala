@@ -36,7 +36,7 @@ class InstancesSpec extends Specification with ScalaCheck {
 
   "Show[UUID]" should {
 
-    "allow representing uuids as String" in prop { uuid: UUID =>
+    "allow representing uuids as String" in prop { (uuid: UUID) =>
       uuid.show must be equalTo uuid.toString
     }
 
@@ -56,7 +56,7 @@ class InstancesSpec extends Specification with ScalaCheck {
 
   "Order[UUID]" should {
 
-    "compare using unsigned comparison" in prop { lsb: Long =>
+    "compare using unsigned comparison" in prop { (lsb: Long) =>
       // specifically chosen since they will not compare correctly unless using unsigned comparison
       val uuid1 = UUID.from(0x20000000.toLong, lsb)
       val uuid2 = UUID.from(0xe0000000.toLong, lsb)

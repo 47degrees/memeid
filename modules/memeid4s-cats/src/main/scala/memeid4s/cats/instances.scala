@@ -23,7 +23,7 @@ import cats.Show
 import cats.kernel._
 
 import memeid4s.UUID
-import memeid4s.UUID.RichUUID
+import memeid4s.UUID._
 import memeid4s.digest.Digestible
 
 trait instances {
