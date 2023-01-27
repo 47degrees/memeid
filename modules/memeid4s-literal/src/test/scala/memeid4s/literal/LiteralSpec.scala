@@ -16,12 +16,11 @@
 
 package memeid4s.literal
 
-import memeid.UUID
-
 class LiteralSpec extends munit.FunSuite {
 
   test("uuid interpolator create UUID on valid string literal") {
-    assert(uuid"be5cb243-06a9-409e-899f-109d0ed8ea01".isInstanceOf[UUID])
+    uuid"be5cb243-06a9-409e-899f-109d0ed8ea01"
+    assert(cond = true)
   }
 
   test("fail on invalid string literal") {

@@ -16,13 +16,14 @@
 
 package memeid4s.literal
 
-import memeid.UUID
-
 import scala.quoted.*
+
+import memeid.UUID
 
 object Macros {
 
   given UUIDToExpr: ToExpr[UUID] with {
+    @SuppressWarnings(Array("scalafix:Disable.toString"))
     def apply(x: UUID)(using Quotes): Expr[UUID] =
       '{ UUID.fromString(${ Expr(x.toString) }) }
   }
