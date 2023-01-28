@@ -154,7 +154,7 @@ UUID.fromUUID(j)
 // res5: UUID = a5fa7934-501c-46eb-9ea7-16de3086e6d8
 
 u.asJava
-// res6: java.util.UUID = 8b4d1529-5fd0-4a91-8f4f-ceee10d1c060
+// res6: UUID = 8b4d1529-5fd0-4a91-8f4f-ceee10d1c060
 ```
 
 #### Literal syntax
@@ -179,9 +179,10 @@ Invalid UUID literals will fail at compile time:
 
 ```scala
 uuid"not-a-uuid"
+// error:
 // error: invalid UUID: not-a-uuid
-// uuid"not-a-uuid"
-// ^^^^^^^^^^^^^^^^
+// endpoint.get.in("hello" / path[UUID])
+//                          ^
 ```
 
 #### Integrations
@@ -198,6 +199,25 @@ libraryDependencies += "com.47deg" %% "memeid4s-doobie" % "0.7.0"
 
 To have the [UUID mappings](https://tpolecat.github.io/doobie/docs/12-Custom-Mappings.html) available in scope you can import `memeid.doobie.implicits`.
 
+```scala
+import cats.effect._
+
+import doobie._
+import doobie.h2.implicits._
+import doobie.implicits._
+
+import cats.effect.unsafe.implicits.global
+
+val transactor: Transactor[IO] =
+  Transactor.fromDriverManager[IO](
+    driver = "org.h2.Driver",
+    url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
+    user = "",
+    pass = ""
+  )
+
+sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync()
+```
 
 ```scala
 import memeid4s.doobie.implicits._
@@ -218,7 +238,6 @@ val example = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
     u <- select(example).unique.transact(transactor)
   } yield u
 }.unsafeRunSync()
-// res10: UUID = 58d61328-1b08-1171-1ee7-1283ed639e77
 ```
 
 ##### Circe
@@ -244,9 +263,9 @@ val json = Json.fromString(uuid.toString)
 
 ```scala
 Encoder[UUID].apply(uuid)
-// res11: Json = JString(value = "58d61328-1b08-1171-1ee7-1283ed639e77")
+// res9: Json = JString(value = "58d61328-1b08-1171-1ee7-1283ed639e77")
 Decoder[UUID].decodeJson(json)
-// res12: Decoder.Result[UUID] = Right(
+// res10: Either[DecodingFailure, UUID] = Right(
 //   value = 58d61328-1b08-1171-1ee7-1283ed639e77
 // )
 ```
@@ -266,7 +285,6 @@ import cats.effect._
 
 import org.http4s._
 import org.http4s.dsl.io._
-import memeid4s.UUID
 
 HttpRoutes.of[IO] { case GET -> Root / "user" / UUID(uuid) =>
   Ok(s"Hello, $uuid!")
