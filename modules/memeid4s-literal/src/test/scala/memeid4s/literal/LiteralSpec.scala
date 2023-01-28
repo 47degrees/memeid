@@ -28,7 +28,7 @@ class LiteralSpec extends munit.FunSuite {
     assert(
       errors.contains("invalid UUID: miau"),
       s"""
-         |"$errors" doesn' contains "invalid UUID: miau"
+         |"$errors" doesn't contains "invalid UUID: miau"
          |""".stripMargin
     )
   }
