@@ -16,6 +16,7 @@
 
 package memeid4s
 
+import memeid4s.UUID.RichUUID
 import memeid4s.scalacheck.arbitrary.instances._
 import org.scalacheck.Gen
 import org.specs2.ScalaCheck
@@ -181,6 +182,14 @@ class UUIDSpec extends Specification with ScalaCheck {
     "fail on invalid uuid string as UUID" in prop { (string: String) =>
       UUID.unapply(string) must beNone
     }.setGen(Gen.alphaNumStr)
+
+  }
+
+  "new RichUUID" should {
+
+    "create a new instance with the UUID" in prop { (uuid: UUID.V1) =>
+      new RichUUID(uuid).is[UUID.V1] must beTrue
+    }
 
   }
 
