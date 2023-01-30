@@ -11,7 +11,7 @@ object dependencies extends AutoPlugin {
 
   val scala3 = "3.2.1"
 
-  private val common = List("org.specs2" %% "specs2-scalacheck" % "4.19.0" % Test)
+  private val common = List("org.specs2" %% "specs2-scalacheck" % "4.19.2" % Test)
 
   private val parallel =
     Def.setting {
@@ -27,7 +27,7 @@ object dependencies extends AutoPlugin {
     "org.typelevel" %% "cats-effect"       % "3.4.5",
     "org.typelevel" %% "cats-laws"         % "2.9.0"  % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
-    "org.specs2"    %% "specs2-cats"       % "4.19.0" % Test
+    "org.specs2"    %% "specs2-cats"       % "4.19.2" % Test
   )
 
   private val literal = Def.setting {
@@ -61,8 +61,8 @@ object dependencies extends AutoPlugin {
   )
 
   private val tapir = List(
-    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.2.6",
-    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.2.6" % Test,
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.2.7",
+    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.2.7" % Test,
     "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.3.2" % Test
   )
 
@@ -80,7 +80,7 @@ object dependencies extends AutoPlugin {
 //    "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC2",
     "org.http4s"                  %% "http4s-dsl" % "0.23.18",
     "org.scalacheck"              %% "scalacheck" % "1.17.0",
-    "com.softwaremill.sttp.tapir" %% "tapir-core" % "1.2.6",
+    "com.softwaremill.sttp.tapir" %% "tapir-core" % "1.2.7",
     "io.chrisdavenport"           %% "fuuid"      % "0.8.0-M2"
   )
 
