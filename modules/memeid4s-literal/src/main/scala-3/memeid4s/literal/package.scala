@@ -19,8 +19,10 @@ package memeid4s
 package object literal {
 
   implicit class UUIDContextOps(sc: StringContext) {
+
     inline def uuid(inline args: Any*): UUID =
       ${ Macros.uuidInterpolator('this) }
+
   }
 
 }

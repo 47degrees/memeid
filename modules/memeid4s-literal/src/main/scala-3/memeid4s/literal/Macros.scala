@@ -23,9 +23,11 @@ import memeid.UUID
 object Macros {
 
   given UUIDToExpr: ToExpr[UUID] with {
+
     @SuppressWarnings(Array("scalafix:Disable.toString"))
     def apply(x: UUID)(using Quotes): Expr[UUID] =
       '{ UUID.fromString(${ Expr(x.toString) }) }
+
   }
 
   def uuidInterpolator(sops: Expr[UUIDContextOps])(using quotes: Quotes): Expr[UUID] = {
@@ -41,7 +43,8 @@ object Macros {
 
     values match
       case head :: Nil =>
-        scala.util.Try(UUID.fromString(head))
+        scala.util
+          .Try(UUID.fromString(head))
           .toEither
           .fold(_ => report.errorAndAbort(errorMsg(head)), uuid => Expr[UUID](uuid))
       case _ => report.errorAndAbort("uuid interpolator should only be used on string literals")
