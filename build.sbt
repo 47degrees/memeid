@@ -4,7 +4,7 @@ ThisBuild / scalaVersion       := dependencies.scala3
 ThisBuild / crossScalaVersions := fullCrossScala
 ThisBuild / organization       := "com.47deg"
 
-addCommandAlias("ci-test", "fix --check; testCovered")
+addCommandAlias("ci-test", "fix --check; +mdoc; testCovered")
 addCommandAlias("ci-docs", "github; mdoc; headerCreateAll; publishMicrosite")
 addCommandAlias("ci-publish", "github; ci-release")
 
