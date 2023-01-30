@@ -154,7 +154,7 @@ UUID.fromUUID(j)
 // res5: UUID = a5fa7934-501c-46eb-9ea7-16de3086e6d8
 
 u.asJava
-// res6: UUID = 8b4d1529-5fd0-4a91-8f4f-ceee10d1c060
+// res6: java.util.UUID = 8b4d1529-5fd0-4a91-8f4f-ceee10d1c060
 ```
 
 #### Literal syntax
@@ -179,10 +179,9 @@ Invalid UUID literals will fail at compile time:
 
 ```scala
 uuid"not-a-uuid"
-// error:
 // error: invalid UUID: not-a-uuid
-// endpoint.get.in("hello" / path[UUID])
-//                          ^
+// uuid"not-a-uuid"
+// ^^^^^^^^^^^^^^^^
 ```
 
 #### Integrations
