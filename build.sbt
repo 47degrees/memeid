@@ -52,10 +52,6 @@ lazy val microsite = project
   .enablePlugins(MdocPlugin)
   .enablePlugins(MicrositesPlugin)
   .dependsOn(allModules: _*)
-  .settings(
-    scalaVersion       := dependencies.scala3,
-    crossScalaVersions := Seq()
-  )
 
 //////////////////////
 ////  BENCHMARKS  ////
