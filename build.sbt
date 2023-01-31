@@ -1,9 +1,17 @@
 lazy val fullCrossScala = Seq(dependencies.scala2_12, dependencies.scala2_13, dependencies.scala3)
 
-ThisBuild / scalaVersion := dependencies.scala3
-ThisBuild / organization := "com.47deg"
+ThisBuild / scalaVersion      := dependencies.scala3
+ThisBuild / organization      := "com.47deg"
+ThisBuild / semanticdbEnabled := true
+ThisBuild / scalafixDependencies ++= Seq(
+  "com.github.liancheng" %% "organize-imports" % "0.6.0",
+  "com.github.vovapolu"  %% "scaluzzi"         % "0.1.23"
+)
 
-addCommandAlias("ci-test", "fix --check; +mdoc; testCovered")
+addCommandAlias(
+  "ci-test",
+  s"fix --check; ++${dependencies.scala2_12} mdoc; ++${dependencies.scala2_13} mdoc; testCovered"
+)
 addCommandAlias("ci-docs", "github; documentation/mdoc; headerCreateAll; microsite3/publishMicrosite")
 addCommandAlias("ci-publish", "github; ci-release")
 
@@ -120,7 +128,7 @@ lazy val documentation = projectMatrix
   .dependsOn(crossBuiltModuleDeps: _*)
   .settings(mdocOut := file("."))
   .settings(publish / skip := true)
-  .jvmPlatform(scalaVersions = Seq(dependencies.scala2_13))
+  .jvmPlatform(scalaVersions = Seq(dependencies.scala2_12, dependencies.scala2_13))
 
 lazy val microsite = projectMatrix
   .enablePlugins(MdocPlugin)
