@@ -16,21 +16,20 @@
 
 package memeid4s.literal
 
-class LiteralSpec extends munit.FunSuite {
+class MacroSpec extends munit.FunSuite {
 
-  test("uuid interpolator create UUID on valid string literal") {
-    uuid"be5cb243-06a9-409e-899f-109d0ed8ea01"
-    assert(cond = true)
-  }
-
-  test("fail on invalid string literal") {
-    val errors = compileErrors("""uuid"miau"""")
+  test("fail on using variables") {
+    val message = "error: uuid interpolator should only be used on string literals"
+    val errors = compileErrors("""
+        val part = "06a9"
+        uuid"be5cb243-$part-409e-899f-109d0ed8ea01"
+        """)
     assert(
-      errors.contains("invalid UUID: miau"),
+      errors.contains(message),
       s"""
          |$errors
-         | doesn't contain
-         |invalid UUID: miau
+         |doesn't contain
+         |$message
          |""".stripMargin
     )
   }

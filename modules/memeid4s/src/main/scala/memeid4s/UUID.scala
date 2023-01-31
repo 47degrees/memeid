@@ -80,7 +80,7 @@ object UUID {
   }
 
   def unapply(str: String): Option[UUID] =
-    if (!str.isEmpty) UUID.from(str).toOption
+    if (str.nonEmpty) UUID.from(str).toOption
     else None
 
   /** Creates a valid [[UUID]] from two [[_root_.scala.Long Long]] values representing the most/least significant bits.
