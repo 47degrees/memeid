@@ -14,7 +14,7 @@ libraryDependencies += "com.47deg" %% "memeid4s-doobie" % "@VERSION@"
 
 To have the [UUID mappings](https://tpolecat.github.io/doobie/docs/12-Custom-Mappings.html) available in scope you can import `memeid.doobie.implicits`.
 
-```scala
+```scala mdoc:invisible
 import cats.effect._
 
 import doobie._
@@ -34,7 +34,7 @@ val transactor: Transactor[IO] =
 sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync()
 ```
 
-```scala
+```scala mdoc:silent
 import memeid4s.UUID
 
 import memeid4s.literal._
@@ -49,7 +49,7 @@ def insert(uuid: UUID): Update0 =
 val example = uuid"58d61328-1b08-1171-1ee7-1283ed639e77"
 ```
 
-```scala
+```scala mdoc
 {
   for {
     _ <- insert(example).run.transact(transactor)
