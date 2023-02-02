@@ -12,7 +12,7 @@ addCommandAlias(
   "ci-test",
   s"fix --check; ++${dependencies.scala2_12} mdoc; ++${dependencies.scala2_13} mdoc; testCovered"
 )
-addCommandAlias("ci-docs", "github; documentation/mdoc; headerCreateAll; microsite3/publishMicrosite")
+addCommandAlias("ci-docs", "github; documentation/mdoc; headerCreateAll; microsite/publishMicrosite")
 addCommandAlias("ci-publish", "github; ci-release")
 
 ////////////////
@@ -138,7 +138,7 @@ lazy val microsite = projectMatrix
   .settings(dependencies.micrositeSettings)
   .dependsOn(crossBuiltModuleDeps: _*)
   .settings(publish / skip := true)
-  .jvmPlatform(scalaVersions = Seq(dependencies.scala3))
+  .jvmPlatform(scalaVersions = Seq(dependencies.scala2_12, dependencies.scala2_13))
 
 //////////////////////
 ////  BENCHMARKS  ////
