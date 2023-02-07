@@ -14,28 +14,14 @@
  * limitations under the License.
  */
 
-package memeid4s.tapir
+package memeid4s
 
-import io.chrisdavenport.fuuid.FUUID
-import memeid4s.UUID
-import memeid4s.fuuid.syntax._
-import memeid4s.scalacheck.arbitrary.instances._
-import org.specs2.ScalaCheck
-import org.specs2.mutable.Specification
+package object literal {
 
-class SynxtaxSpec extends Specification with ScalaCheck {
+  implicit class UUIDContextOps(sc: StringContext) {
 
-  "UUID-FUUID conversions" should {
-
-    "convert between UUID & FUUID" in prop { (uuid: UUID) =>
-      uuid.toFUUID must be equalTo FUUID.fromUUID(uuid.asJava())
-    }
-
-    "convert between FUUID & UUID" in prop { (uuid: UUID) =>
-      val fuuid = uuid.toFUUID
-
-      fuuid.toUUID must be equalTo uuid
-    }
+    inline def uuid(inline args: Any*): UUID =
+      ${ Macros.uuidInterpolator('this) }
 
   }
 

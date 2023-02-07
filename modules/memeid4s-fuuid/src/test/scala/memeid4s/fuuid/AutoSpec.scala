@@ -27,7 +27,7 @@ class AutoSpec extends Specification with ScalaCheck {
 
   "UUID-FUUID auto conversions" should {
 
-    "convert between UUID & FUUID" in prop { uuid: UUID =>
+    "convert between UUID & FUUID" in prop { (uuid: UUID) =>
       mustBeEqual(FUUID.fromUUID(uuid.asJava()), uuid)
     }
 

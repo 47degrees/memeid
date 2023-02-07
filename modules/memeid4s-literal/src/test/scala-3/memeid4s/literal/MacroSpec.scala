@@ -14,29 +14,24 @@
  * limitations under the License.
  */
 
-package memeid4s.tapir
+package memeid4s.literal
 
-import io.chrisdavenport.fuuid.FUUID
-import memeid4s.UUID
-import memeid4s.fuuid.syntax._
-import memeid4s.scalacheck.arbitrary.instances._
-import org.specs2.ScalaCheck
-import org.specs2.mutable.Specification
+class MacroSpec extends munit.FunSuite {
 
-class SynxtaxSpec extends Specification with ScalaCheck {
-
-  "UUID-FUUID conversions" should {
-
-    "convert between UUID & FUUID" in prop { (uuid: UUID) =>
-      uuid.toFUUID must be equalTo FUUID.fromUUID(uuid.asJava())
-    }
-
-    "convert between FUUID & UUID" in prop { (uuid: UUID) =>
-      val fuuid = uuid.toFUUID
-
-      fuuid.toUUID must be equalTo uuid
-    }
-
+  test("fail on using variables") {
+    val message = "error: uuid interpolator should only be used on string literals"
+    val errors = compileErrors("""
+        val part = "06a9"
+        uuid"be5cb243-$part-409e-899f-109d0ed8ea01"
+        """)
+    assert(
+      errors.contains(message),
+      s"""
+         |$errors
+         |doesn't contain
+         |$message
+         |""".stripMargin
+    )
   }
 
 }

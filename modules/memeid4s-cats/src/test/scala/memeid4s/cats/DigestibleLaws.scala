@@ -35,7 +35,7 @@ class DigestibleLaws extends Specification with Discipline {
   implicit private def DigestibleArbitraryInstance: Arbitrary[Digestible[MiniInt]] =
     Arbitrary(Arbitrary.arbitrary[MiniInt => Array[Byte]].map(f => f(_)))
 
-  implicit private val EqByteArrayInstance: Eq[Array[Byte]] = Eq.instance(_.toList === _.toList)
+  implicit private val EqByteArrayInstance: Eq[Array[Byte]] = Eq.by(_.toList)
 
   implicit private def DigestibleEqInstance: Eq[Digestible[MiniInt]] =
     Eq.by[Digestible[MiniInt], MiniInt => Array[Byte]](_.toByteArray)

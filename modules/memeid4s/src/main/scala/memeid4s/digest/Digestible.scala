@@ -20,7 +20,7 @@ import java.nio.charset.StandardCharsets.UTF_8
 
 import memeid.Bits.toBytes
 import memeid4s.UUID
-import memeid4s.UUID.RichUUID
+import memeid4s.UUID._
 
 trait Digestible[A] { self =>
 

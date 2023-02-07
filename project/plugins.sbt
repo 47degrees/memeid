@@ -1,6 +1,7 @@
 ThisBuild / libraryDependencySchemes ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
 )
+addSbtPlugin("com.eed3si9n"                      % "sbt-projectmatrix"        % "0.9.0")
 addSbtPlugin("ch.epfl.scala"                     % "sbt-scalafix"             % "0.10.4")
 addSbtPlugin("com.47deg"                         % "sbt-microsites"           % "1.4.1")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-codecov"              % "0.2.1")
@@ -8,9 +9,7 @@ addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"                  % 
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-header"        % "0.11.6")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-mdoc"          % "0.11.6")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-mdoc-toc"             % "0.4.0")
-addSbtPlugin("com.alejandrohdezma"               % "sbt-modules"              % "0.2.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-remove-test-from-pom" % "0.1.0")
-addSbtPlugin("com.alejandrohdezma"               % "sbt-scalafix-defaults"    % "0.10.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-scalafmt-defaults"    % "0.8.0")
 addSbtPlugin("com.github.sbt"                    % "sbt-ci-release"           % "1.5.11")
 addSbtPlugin("com.thoughtworks.sbt-api-mappings" % "sbt-api-mappings"         % "3.0.2")
