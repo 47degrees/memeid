@@ -11,7 +11,7 @@ object dependencies extends AutoPlugin {
 
   val scala2_13 = "2.13.10"
 
-  val scala3 = "3.2.1"
+  val scala3 = "3.2.2"
 
   val commonSettings: Seq[Def.Setting[_]] = Seq(
     libraryDependencies ++= Seq(
