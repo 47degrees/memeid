@@ -90,6 +90,10 @@ public class UUID implements Comparable<UUID> {
 	 */
 	public static UUID fromUUID(java.util.UUID juuid) {
 		switch (juuid.version()) {
+		case 7:
+			return new V7(juuid);
+		case 6:
+			return new V6(juuid);
 		case 5:
 			return new V5(juuid);
 		case 4:
@@ -369,6 +373,20 @@ public class UUID implements Comparable<UUID> {
 	}
 
 	/**
+	 * Returns this {@link UUID} as a {@link V6} if versions match; otherwise,
+	 * returns {@link Optional#empty}.
+	 *
+	 * @return this {@link UUID} as a {@link V6} if versions match; otherwise,
+	 *         returns {@link Optional#empty}.
+	 */
+	public Optional<V6> asV6() {
+                if (isV6())
+ 			return Optional.of((V6) this);
+                else
+			return Optional.empty();
+	}
+
+	/**
 	 * Returns this {@link UUID} as a {@link V7} if versions match; otherwise,
 	 * returns {@link Optional#empty}.
 	 *
@@ -449,6 +467,24 @@ public class UUID implements Comparable<UUID> {
 		return this instanceof V5;
 	}
 
+	/**
+	 * Returns {@code true} if this UUID is a {@link V6}; otherwise, returns
+	 * {@code false}.
+	 *
+	 * @return {@code true} if this {@link UUID} is a {@link V6}; {@code false}
+	 *         otherwise
+	 */
+	public boolean isV6() {
+		return this instanceof V6;
+	}
+
+	/**
+	 * Returns {@code true} if this UUID is a {@link V7}; otherwise, returns
+	 * {@code false}.
+	 *
+	 * @return {@code true} if this {@link UUID} is a {@link V7}; {@code false}
+	 *         otherwise
+	 */
         public boolean isV7() {
 		return this instanceof V7;
 	}
@@ -755,6 +791,110 @@ public class UUID implements Comparable<UUID> {
 	}
 
 	/**
+	 * Version 6 UUIDs are the same as version ! but with the
+	 * timestamp field reorderd to be msb first. They are also
+	 * encouraged to use a random value for node rather than a mac
+	 * address.
+	 *
+	 * @see <a href="">Peabody Draft UUID</a>
+	 */
+	public final static class V6 extends UUID {
+
+		// /**
+		//  * Get the time_low component of the timestamp field
+		//  *
+		//  * @return time_low component of the timestamp field
+		//  * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.2">RFC-4122</a>
+		//  */
+		// public final long timeHigh() {
+		// 	return Bits.readByte(Mask.TIME_LOW, Offset.TIME_LOW, this.asJava().timestamp());
+		// }
+
+		// /**
+		//  * Get the time_mid component of the timestamp field
+		//  *
+		//  * @return time_mid component of the timestamp field
+		//  * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.2">RFC-4122</a>
+		//  */
+		// public final long timeLow() {
+		// 	return Bits.readByte(Mask.TIME_MID, Offset.TIME_MID, this.asJava().timestamp());
+		// }
+
+		// /**
+		//  * Get the clock_seq_low component of the clock sequence field
+		//  *
+		//  * @return clock_seq_low component of the clock sequence field
+		//  * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.2">RFC-4122</a>
+		//  */
+		// public final long clockSeqLow() {
+		// 	return Bits.readByte(Mask.CLOCK_SEQ_LOW, Offset.CLOCK_SEQ_LOW, this.asJava().clockSequence());
+		// }
+
+		// /**
+		//  * Get the clock_seq_high component of the clock sequence field
+		//  *
+		//  * @return clock_seq_high component of the clock sequence field
+		//  * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.2">RFC-4122</a>
+		//  */
+		// public final long clockSeqHigh() {
+		// 	return Bits.readByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH, this.asJava().clockSequence());
+		// }
+
+		private V6(java.util.UUID uuid) {
+			super(uuid);
+		}
+
+		/**
+		 * Constructs a time-based {@link V6} UUID using the default {@link Node} and
+		 * {@link Timestamp#monotonic()} as the monotonic timestamp supplier.
+		 *
+		 * @return a {@link V6} UUID
+		 */
+		public static UUID next() {
+			return next(Node.getInstance());
+		}
+
+		/**
+		 * Constructs a time-based {@link V6} UUID using the provided {@link Node} and
+		 * {@link Timestamp#monotonic()} as the monotonic timestamp supplier.
+		 *
+		 * @param node Node for the V6 UUID generation
+		 * @return a {@link V6} UUID
+		 */
+		public static UUID next(Node node) {
+			return next(node, Timestamp::monotonic);
+		}
+
+		/**
+		 * Constructs a time-based {@link V6} UUID using the provided {@link Node} and
+		 * monotonic timestamp supplier.
+		 *
+		 * @param node              node for the V6 UUID generation
+		 * @param monotonicSupplier monotonic timestamp which assures the V6 UUID time
+		 *                          is unique
+		 * @return a {@link V6} UUID
+		 */
+		public static UUID next(Node node, LongSupplier monotonicSupplier) {
+                    // mostly this is V1 with changes to the order of the time bits by writing 
+                        final long version   = 0x6000L; // cheat to avoid bitshifting
+			final long timestamp = monotonicSupplier.getAsLong();
+                        final long ts12      = timestamp & Mask.UB12;
+                        final long msb       = timestamp << 16 | version | ts12;
+
+			final long clkHigh   = writeByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH,
+                                               readByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH, node.id), 0x2);
+
+			final long clkLow    = readByte(Mask.CLOCK_SEQ_LOW, Offset.CLOCK_SEQ_LOW, node.clockSequence);
+
+			final long lsb       = writeByte(Mask.MASKS_56, Offset.OFFSET_56,
+					       writeByte(Mask.MASKS_48, Offset.OFFSET_48, node.id, clkLow), clkHigh);
+
+			return new UUID.V6(new java.util.UUID(msb, lsb));
+		}
+
+	}
+
+    /**
 	 * Version 7 UUIDs are those generated using a 48 unix epoch
 	 * timestamp in milliseconds and a random value.
 	 *

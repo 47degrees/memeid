@@ -1,4 +1,4 @@
-/*
+/**
  * Copyright 2019-2023 47 Degrees Open Source <https://www.47deg.com>
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,6 +39,8 @@ object UUID {
   type V4 = memeid.UUID.V4
 
   type V5 = memeid.UUID.V5
+
+  type V6 = memeid.UUID.V6
 
   type V7 = memeid.UUID.V7
 
@@ -196,6 +198,20 @@ object UUID {
     @inline def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
       memeid.UUID.V5.from(namespace, local, D.toByteArray)
 
+  }
+
+  object V6 {
+    /** Construct a [[UUID.V6 V6]] (time-based) UUID.
+      *
+      * @param N
+      *   [[node.Node Node]] for the V6 UUID generation
+      * @param T
+      *   [[time.Time Time]] which assures the V6 UUID time is unique
+      * @return
+      *   [[UUID.V6 V6]]
+      */
+    @inline def next(implicit N: Node, T: Time): UUID =
+      memeid.UUID.V6.next(N.value, () => T.monotonic)
   }
 
   object V7 {

@@ -14,148 +14,216 @@
  * limitations under the License.
  */
 
-package memeid4s
+package memeid
 
-import memeid4s.UUID.RichUUID
-import memeid4s.scalacheck.arbitrary.instances._
+import java.util.Optional
+
+import org.scalacheck.Arbitrary
+import org.scalacheck.Arbitrary.arbitrary
 import org.scalacheck.Gen
 import org.specs2.ScalaCheck
 import org.specs2.mutable.Specification
 
-@SuppressWarnings(Array("scalafix:Disable.toString"))
+@SuppressWarnings(Array("scalafix:Disable.toString", "scalafix:DisableSyntax.asInstanceOf"))
 class UUIDSpec extends Specification with ScalaCheck {
 
-  import UUID.richUUID
+  "UUID.fromString" should {
 
-  "UUID.from" should {
-
-    "return Right on valid UUID" in prop { (uuid: UUID) =>
-      UUID.from(uuid.toString) should beRight(uuid)
+    "return uuid on valid uuid string" in prop { (uuid: UUID) =>
+      UUID.fromString(uuid.toString) should be equalTo uuid
     }
 
-    "return Left on invalid string" in prop { (s: String) =>
-      UUID.from(s) must beLeft().like { case e: IllegalArgumentException =>
-        e.getMessage must contain("UUID string")
-      }
+    "throw exception on an invalid string that is accepted by java.util.fromString" >> {
+      UUID.fromString("1-1-1-1-1") must throwAn[IllegalArgumentException]
+    }
+
+    "throw exception on invalid string" in prop { (s: String) =>
+      UUID.fromString(s) must throwAn[IllegalArgumentException]
     }.setGen(Gen.alphaNumStr)
 
   }
 
-  "UUID.as" should {
+  "UUID.fromUUID" should {
 
-    "return Some[UUID.V1] only if version is 1" in prop { (uuid: UUID.V1) =>
-      (uuid.as[UUID.V1] must beSome(uuid)) and
-        (uuid.as[UUID.V2] must beNone) and
-        (uuid.as[UUID.V3] must beNone) and
-        (uuid.as[UUID.V4] must beNone) and
-        (uuid.as[UUID.V5] must beNone)
+    "return NIL on NIL UUID" >> {
+      UUID.fromUUID(UUID.NIL.asJava) must be equalTo UUID.NIL
     }
 
-    "return Some[UUID.V2] only if version is 2" in prop { (uuid: UUID.V2) =>
-      (uuid.as[UUID.V1] must beNone) and
-        (uuid.as[UUID.V2] must beSome(uuid)) and
-        (uuid.as[UUID.V3] must beNone) and
-        (uuid.as[UUID.V4] must beNone) and
-        (uuid.as[UUID.V5] must beNone)
-    }
-
-    "return Some[UUID.V3] only if version is 3" in prop { (uuid: UUID.V3) =>
-      (uuid.as[UUID.V1] must beNone) and
-        (uuid.as[UUID.V2] must beNone) and
-        (uuid.as[UUID.V3] must beSome(uuid)) and
-        (uuid.as[UUID.V4] must beNone) and
-        (uuid.as[UUID.V5] must beNone)
-    }
-
-    "return Some[UUID.V4] only if version is 4" in prop { (uuid: UUID.V4) =>
-      (uuid.as[UUID.V1] must beNone) and
-        (uuid.as[UUID.V2] must beNone) and
-        (uuid.as[UUID.V3] must beNone) and
-        (uuid.as[UUID.V4] must beSome(uuid)) and
-        (uuid.as[UUID.V5] must beNone)
-    }
-
-    "return Some[UUID.V5] only if version is 5" in prop { (uuid: UUID.V5) =>
-      (uuid.as[UUID.V1] must beNone) and
-        (uuid.as[UUID.V2] must beNone) and
-        (uuid.as[UUID.V3] must beNone) and
-        (uuid.as[UUID.V4] must beNone) and
-        (uuid.as[UUID.V5] must beSome(uuid))
+    "return uuid depending on version" in prop { (uuid: UUID) =>
+      UUID.fromUUID(uuid.asJava) must be like {
+        case _: UUID.V1             => uuid.version must be equalTo 1
+        case _: UUID.V2             => uuid.version must be equalTo 2
+        case _: UUID.V3             => uuid.version must be equalTo 3
+        case _: UUID.V4             => uuid.version must be equalTo 4
+        case _: UUID.V5             => uuid.version must be equalTo 5
+        case _: UUID.V6             => uuid.version must be equalTo 6
+        case _: UUID.V7             => uuid.version must be equalTo 7
+        case _: UUID.UnknownVersion => uuid.version must not be between(1, 7)
+      }
     }
 
   }
 
-  "UUID.is" should {
+  "uuid.asV* methods" should {
 
-    "return true only if version is 1" in prop { (uuid: UUID.V1) =>
-      (uuid.is[UUID.V1] must beTrue) and
-        (uuid.is[UUID.V2] must beFalse) and
-        (uuid.is[UUID.V3] must beFalse) and
-        (uuid.is[UUID.V4] must beFalse) and
-        (uuid.is[UUID.V5] must beFalse) and
-        (uuid.is[UUID.V7] must beFalse)
+    "uuid.asV1 should return optional with uuid only if class is UUID.V1" >> {
+      val uuid = UUID.V1.next.asInstanceOf[UUID.V1]
+
+      (uuid.asV1 must be equalTo Optional.of[UUID.V1](uuid)) and
+        (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
+        (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
+        (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5]) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V7])
     }
 
-    "return true only if version is 2" in prop { (uuid: UUID.V2) =>
-      (uuid.is[UUID.V1] must beFalse) and
-        (uuid.is[UUID.V2] must beTrue) and
-        (uuid.is[UUID.V3] must beFalse) and
-        (uuid.is[UUID.V4] must beFalse) and
-        (uuid.is[UUID.V5] must beFalse) and
-        (uuid.is[UUID.V7] must beFalse)
+    "uuid.asV2 should return optional with uuid only if class is UUID.V2" in prop { (uuid: UUID.V2) =>
+      (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
+        (uuid.asV2 must be equalTo Optional.of[UUID.V2](uuid)) and
+        (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
+        (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5]) and
+        (uuid.asV6 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV7 must be equalTo Optional.empty[UUID.V7])
     }
 
-    "return true only if version is 3" in prop { (uuid: UUID.V3) =>
-      (uuid.is[UUID.V1] must beFalse) and
-        (uuid.is[UUID.V2] must beFalse) and
-        (uuid.is[UUID.V3] must beTrue) and
-        (uuid.is[UUID.V4] must beFalse) and
-        (uuid.is[UUID.V5] must beFalse) and
-        (uuid.is[UUID.V7] must beFalse)
+    "uuid.asV3 should return optional with uuid only if class is UUID.V3" >> {
+      val uuid = UUID.V3.from(UUID.V4.random, "miau").asInstanceOf[UUID.V3]
+
+      (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
+        (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
+        (uuid.asV3 must be equalTo Optional.of[UUID.V3](uuid)) and
+        (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5]) and
+        (uuid.asV6 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV7 must be equalTo Optional.empty[UUID.V7])
     }
 
-    "return true only if version is 4" in prop { (uuid: UUID.V4) =>
-      (uuid.is[UUID.V1] must beFalse) and
-        (uuid.is[UUID.V2] must beFalse) and
-        (uuid.is[UUID.V3] must beFalse) and
-        (uuid.is[UUID.V4] must beTrue) and
-        (uuid.is[UUID.V5] must beFalse) and
-        (uuid.is[UUID.V7] must beFalse)
+    "uuid.asV4 should return optional with uuid only if class is UUID.V4" >> {
+      val uuid = UUID.V4.random.asInstanceOf[UUID.V4]
+
+      (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
+        (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
+        (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
+        (uuid.asV4 must be equalTo Optional.of[UUID.V4](uuid)) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
     }
 
-    "return true only if version is 5" in prop { (uuid: UUID.V5) =>
-      (uuid.is[UUID.V1] must beFalse) and
-        (uuid.is[UUID.V2] must beFalse) and
-        (uuid.is[UUID.V3] must beFalse) and
-        (uuid.is[UUID.V4] must beFalse) and
-        (uuid.is[UUID.V5] must beTrue) and
-        (uuid.is[UUID.V7] must beFalse)
+    "uuid.asV5 should return optional with uuid only if class is UUID.V5" >> {
+      val uuid = UUID.V5.from(UUID.V4.random, "miau").asInstanceOf[UUID.V5]
 
-    }
-
-    "return true only if version is 7" in prop { (uuid: UUID.V7) =>
-      (uuid.is[UUID.V1] must beFalse) and
-        (uuid.is[UUID.V2] must beFalse) and
-        (uuid.is[UUID.V3] must beFalse) and
-        (uuid.is[UUID.V4] must beFalse) and
-        (uuid.is[UUID.V5] must beFalse) and
-        (uuid.is[UUID.V7] must beTrue)
-    }
-
-  }
-
-  "uuid.msb" should {
-
-    "be an alias for uuid.getMostSignificantBits()" in prop { (uuid: UUID) =>
-      uuid.msb must be equalTo uuid.getMostSignificantBits
+      (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
+        (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
+        (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
+        (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
+        (uuid.asV5 must be equalTo Optional.of[UUID.V5](uuid)) and
+        (uuid.asV6 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV7 must be equalTo Optional.empty[UUID.V7]) 
     }
 
   }
 
-  "uuid.lsb" should {
+  "uuid.isV* methods" should {
 
-    "be an alias for uuid.getLeastSignificantBits()" in prop { (uuid: UUID) =>
-      uuid.lsb must be equalTo uuid.getLeastSignificantBits
+    "uuid.isV1 should return true only if class is UUID.V1" >> {
+      val uuid = UUID.V1.next
+
+      (uuid.isNil must beFalse) and
+        (uuid.isV1 must beTrue) and
+        (uuid.isV2 must beFalse) and
+        (uuid.isV3 must beFalse) and
+        (uuid.isV4 must beFalse) and
+        (uuid.isV5 must beFalse) and
+        (uuid.isV6 must beFalse) and
+        (uuid.isV7 must beFalse)
+    }
+
+    "uuid.isV2 should return true only if class is UUID.V2" in prop { (uuid: UUID.V2) =>
+      (uuid.isNil must beFalse) and
+        (uuid.isV1 must beFalse) and
+        (uuid.isV2 must beTrue) and
+        (uuid.isV3 must beFalse) and
+        (uuid.isV4 must beFalse) and
+        (uuid.isV5 must beFalse) and
+        (uuid.isV6 must beFalse) and
+        (uuid.isV7 must beFalse)
+    }
+
+    "uuid.isV3 should return true only if class is UUID.V3" >> {
+      val uuid = UUID.V3.from(UUID.V4.random, "miau")
+
+      (uuid.isNil must beFalse) and
+        (uuid.isV1 must beFalse) and
+        (uuid.isV2 must beFalse) and
+        (uuid.isV3 must beTrue) and
+        (uuid.isV4 must beFalse) and
+        (uuid.isV5 must beFalse) and
+        (uuid.isV6 must beFalse) and
+        (uuid.isV7 must beFalse)
+    }
+
+    "uuid.isV4 should return true only if class is UUID.V4" >> {
+      val uuid = UUID.V4.random
+
+      (uuid.isNil must beFalse) and
+        (uuid.isV1 must beFalse) and
+        (uuid.isV2 must beFalse) and
+        (uuid.isV3 must beFalse) and
+        (uuid.isV4 must beTrue) and
+        (uuid.isV5 must beFalse) and
+        (uuid.isV6 must beFalse) and
+        (uuid.isV7 must beFalse)
+    }
+
+    "uuid.isV5 should return true only if class is UUID.V5" >> {
+      val uuid = UUID.V5.from(UUID.V4.random, "miau")
+
+      (uuid.isNil must beFalse) and
+        (uuid.isV1 must beFalse) and
+        (uuid.isV2 must beFalse) and
+        (uuid.isV3 must beFalse) and
+        (uuid.isV4 must beFalse) and
+        (uuid.isV5 must beTrue) and
+        (uuid.isV6 must beFalse) and
+        (uuid.isV7 must beFalse)
+    }
+
+    "uuid.isV6 should return true only if class is UUID.V6" >> {
+      val uuid = UUID.V6.next
+
+      (uuid.isNil must beFalse) and
+        (uuid.isV1 must beFalse) and
+        (uuid.isV2 must beFalse) and
+        (uuid.isV3 must beFalse) and
+        (uuid.isV4 must beFalse) and
+        (uuid.isV5 must beFalse) and
+        (uuid.isV6 must beTrue) and
+        (uuid.isV7 must beFalse)
+    }
+
+    "uuid.isV7 should return true only if class is UUID.V7" >> {
+      val uuid = UUID.V7.next
+
+      (uuid.isNil must beFalse) and
+        (uuid.isV1 must beFalse) and
+        (uuid.isV2 must beFalse) and
+        (uuid.isV3 must beFalse) and
+        (uuid.isV4 must beFalse) and
+        (uuid.isV5 must beFalse) and
+        (uuid.isV6 must beFalse) and
+        (uuid.isV7 must beTrue)
+    }
+
+    "uuid.isNil should return true only if uuid is NIL uuid" >> {
+      (UUID.NIL.isNil must beTrue) and
+        (UUID.NIL.isV1 must beFalse) and
+        (UUID.NIL.isV2 must beFalse) and
+        (UUID.NIL.isV3 must beFalse) and
+        (UUID.NIL.isV4 must beFalse) and
+        (UUID.NIL.isV5 must beFalse) and
+        (UUID.NIL.isV6 must beFalse) and
+        (UUID.NIL.isV7 must beFalse)
     }
 
   }
@@ -176,36 +244,29 @@ class UUIDSpec extends Specification with ScalaCheck {
 
   }
 
-  "UUID.Nil" should {
+  "UUID.NIL" should {
 
     "have variant 0" in {
-      UUID.Nil.variant must be equalTo 0
+      UUID.NIL.variant must be equalTo 0
     }
 
     "have all 128 bits to 0" in {
-      (UUID.Nil.msb must be equalTo 0L) and (UUID.Nil.lsb must be equalTo 0L)
+      (UUID.NIL.getMostSignificantBits must be equalTo 0L) and
+        (UUID.NIL.getLeastSignificantBits must be equalTo 0L)
     }
 
   }
 
-  "unapply" should {
-
-    "extract valid uuid string as UUID" in prop { (uuid: UUID) =>
-      UUID.unapply(uuid.toString) must be some uuid
-    }
-
-    "fail on invalid uuid string as UUID" in prop { (string: String) =>
-      UUID.unapply(string) must beNone
-    }.setGen(Gen.alphaNumStr)
-
+  implicit val UUIDArbitraryInstance: Arbitrary[UUID] = Arbitrary {
+    for {
+      msb <- arbitrary[Long]
+      lsb <- arbitrary[Long]
+    } yield UUID.from(msb, lsb)
   }
 
-  "new RichUUID" should {
-
-    "create a new instance with the UUID" in prop { (uuid: UUID.V1) =>
-      new RichUUID(uuid).is[UUID.V1] must beTrue
-    }
-
+  @SuppressWarnings(Array("scalafix:DisableSyntax.isInstanceOf"))
+  implicit val UUIDV2ArbitraryInstance: Arbitrary[UUID.V2] = Arbitrary {
+    arbitrary[UUID].retryUntil(_.isInstanceOf[UUID.V2]).map(_.asInstanceOf[UUID.V2])
   }
 
 }
