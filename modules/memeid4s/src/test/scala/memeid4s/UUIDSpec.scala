@@ -92,7 +92,8 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.is[UUID.V2] must beFalse) and
         (uuid.is[UUID.V3] must beFalse) and
         (uuid.is[UUID.V4] must beFalse) and
-        (uuid.is[UUID.V5] must beFalse)
+        (uuid.is[UUID.V5] must beFalse) and
+        (uuid.is[UUID.V7] must beFalse)
     }
 
     "return true only if version is 2" in prop { (uuid: UUID.V2) =>
@@ -100,7 +101,8 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.is[UUID.V2] must beTrue) and
         (uuid.is[UUID.V3] must beFalse) and
         (uuid.is[UUID.V4] must beFalse) and
-        (uuid.is[UUID.V5] must beFalse)
+        (uuid.is[UUID.V5] must beFalse) and
+        (uuid.is[UUID.V7] must beFalse)
     }
 
     "return true only if version is 3" in prop { (uuid: UUID.V3) =>
@@ -108,7 +110,8 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.is[UUID.V2] must beFalse) and
         (uuid.is[UUID.V3] must beTrue) and
         (uuid.is[UUID.V4] must beFalse) and
-        (uuid.is[UUID.V5] must beFalse)
+        (uuid.is[UUID.V5] must beFalse) and
+        (uuid.is[UUID.V7] must beFalse)
     }
 
     "return true only if version is 4" in prop { (uuid: UUID.V4) =>
@@ -116,7 +119,8 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.is[UUID.V2] must beFalse) and
         (uuid.is[UUID.V3] must beFalse) and
         (uuid.is[UUID.V4] must beTrue) and
-        (uuid.is[UUID.V5] must beFalse)
+        (uuid.is[UUID.V5] must beFalse) and
+        (uuid.is[UUID.V7] must beFalse)
     }
 
     "return true only if version is 5" in prop { (uuid: UUID.V5) =>
@@ -124,7 +128,18 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.is[UUID.V2] must beFalse) and
         (uuid.is[UUID.V3] must beFalse) and
         (uuid.is[UUID.V4] must beFalse) and
-        (uuid.is[UUID.V5] must beTrue)
+        (uuid.is[UUID.V5] must beTrue) and
+        (uuid.is[UUID.V7] must beFalse)
+
+    }
+
+    "return true only if version is 7" in prop { (uuid: UUID.V7) =>
+      (uuid.is[UUID.V1] must beFalse) and
+        (uuid.is[UUID.V2] must beFalse) and
+        (uuid.is[UUID.V3] must beFalse) and
+        (uuid.is[UUID.V4] must beFalse) and
+        (uuid.is[UUID.V5] must beFalse) and
+        (uuid.is[UUID.V7] must beTrue)
     }
 
   }

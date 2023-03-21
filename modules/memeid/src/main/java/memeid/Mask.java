@@ -25,11 +25,13 @@ public final class Mask {
 	public final static long TIME_LOW = 0xFFFFFFFFL;
 	public final static long TIME_MID = 0xFFFF00000000L;
 	public final static long TIME_HIGH = 0xFFF000000000000L;
+    public final static long TIMESTAMP = 0xFFFFFFFFFFFF0000L;
 
 	public final static long CLOCK_SEQ_LOW = 0xFFL;
 	public final static long CLOCK_SEQ_HIGH = 0x3F00L;
 
-	public final static long UB32 = 0xFFFFFFFFL;
+	public final static long UB12 = 0xFFFL;
+    public final static long UB32 = 0xFFFFFFFFL;
 
 	public final static long HASHED = 0xC000000000000000L;
 

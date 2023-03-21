@@ -40,6 +40,8 @@ object UUID {
 
   type V5 = memeid.UUID.V5
 
+  type V7 = memeid.UUID.V7
+
   @SuppressWarnings(Array("scalafix:DisableSyntax.implicitConversion"))
   implicit def richUUID(uuid: memeid.UUID): RichUUID = new RichUUID(uuid)
 
@@ -193,6 +195,20 @@ object UUID {
       */
     @inline def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
       memeid.UUID.V5.from(namespace, local, D.toByteArray)
+
+  }
+
+  object V7 {
+
+    /** Construct a timestamp plus random v7 UUID. There's 48 bits of unix
+      * millisecond timestamp and the rest is random bits. This uses
+      * [[System.currentTimeMillis]] to get the current time.
+      *
+      * @return
+      *   [[UUID.V7 V7]]
+      */
+    @inline def apply(): UUID =
+      memeid.UUID.V7.next()
 
   }
 

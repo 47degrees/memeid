@@ -20,6 +20,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.Random;
 import java.util.function.Function;
 import java.util.function.LongSupplier;
 
@@ -368,6 +369,20 @@ public class UUID implements Comparable<UUID> {
 	}
 
 	/**
+	 * Returns this {@link UUID} as a {@link V7} if versions match; otherwise,
+	 * returns {@link Optional#empty}.
+	 *
+	 * @return this {@link UUID} as a {@link V7} if versions match; otherwise,
+	 *         returns {@link Optional#empty}.
+	 */
+	public Optional<V7> asV7() {
+		if (isV7())
+			return Optional.of((V7) this);
+		else
+			return Optional.empty();
+	}
+
+	/**
 	 * Returns {@code true} if this UUID is a
 	 * <a href="https://tools.ietf.org/html/rfc4122#section-4.1.7">NIL UUID</a>;
 	 * otherwise, returns {@code false}.
@@ -434,6 +449,10 @@ public class UUID implements Comparable<UUID> {
 		return this instanceof V5;
 	}
 
+        public boolean isV7() {
+		return this instanceof V7;
+	}
+        
 	/**
 	 * Version 1 UUIDs are those generated using a timestamp and the MAC address of
 	 * the computer on which it was generated.
@@ -736,6 +755,36 @@ public class UUID implements Comparable<UUID> {
 	}
 
 	/**
+	 * Version 7 UUIDs are those generated using a 48 unix epoch
+	 * timestamp in milliseconds and a random value.
+	 *
+	 * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.3">RFC-4122</a>
+	 */
+	public final static class V7 extends UUID {
+            private final static long version = 0x7000L;
+
+            public final long timestamp() {
+                return (getMostSignificantBits() & Mask.TIMESTAMP) >>> 16;
+            }
+            
+            public static UUID next() {
+                return next(System.currentTimeMillis());
+            }
+
+            public static UUID next(long ts) {
+                final UUID uuid = V4.random();
+                final long msb = (ts << 16) | version | (uuid.getMostSignificantBits() & Mask.UB12);
+
+                return new V7(new java.util.UUID(msb,uuid.getLeastSignificantBits()));
+            }
+
+            private V7(java.util.UUID uuid) {
+                super(uuid);
+            }
+            
+        }
+    
+       /**
 	 * Not standard-version UUIDs.
 	 *
 	 * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.3">RFC-4122</a>
