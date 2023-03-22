@@ -56,7 +56,9 @@ class UUIDSpec extends Specification with ScalaCheck {
         case _: UUID.V3             => uuid.version must be equalTo 3
         case _: UUID.V4             => uuid.version must be equalTo 4
         case _: UUID.V5             => uuid.version must be equalTo 5
-        case _: UUID.UnknownVersion => uuid.version must not be between(1, 5)
+        case _: UUID.V6             => uuid.version must be equalTo 6
+        case _: UUID.V7             => uuid.version must be equalTo 7
+        case _: UUID.UnknownVersion => uuid.version must not be between(1, 7)
       }
     }
 
@@ -71,7 +73,9 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
         (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
         (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
-        (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5]) and
+        (uuid.asV6 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV7 must be equalTo Optional.empty[UUID.V7])
     }
 
     "uuid.asV2 should return optional with uuid only if class is UUID.V2" in prop { (uuid: UUID.V2) =>
@@ -79,7 +83,9 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.asV2 must be equalTo Optional.of[UUID.V2](uuid)) and
         (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
         (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
-        (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5]) and
+        (uuid.asV6 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV7 must be equalTo Optional.empty[UUID.V7])
     }
 
     "uuid.asV3 should return optional with uuid only if class is UUID.V3" >> {
@@ -89,7 +95,9 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
         (uuid.asV3 must be equalTo Optional.of[UUID.V3](uuid)) and
         (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
-        (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5]) and
+        (uuid.asV6 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV7 must be equalTo Optional.empty[UUID.V7])
     }
 
     "uuid.asV4 should return optional with uuid only if class is UUID.V4" >> {
@@ -99,7 +107,9 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
         (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
         (uuid.asV4 must be equalTo Optional.of[UUID.V4](uuid)) and
-        (uuid.asV5 must be equalTo Optional.empty[UUID.V5])
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5]) and
+        (uuid.asV6 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV7 must be equalTo Optional.empty[UUID.V7])
     }
 
     "uuid.asV5 should return optional with uuid only if class is UUID.V5" >> {
@@ -109,7 +119,33 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
         (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
         (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
-        (uuid.asV5 must be equalTo Optional.of[UUID.V5](uuid))
+        (uuid.asV5 must be equalTo Optional.of[UUID.V5](uuid)) and
+        (uuid.asV6 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV7 must be equalTo Optional.empty[UUID.V7])
+    }
+
+    "uuid.asV6 should return optional with uuid only if class is UUID.V6" >> {
+      val uuid = UUID.V6.next().asInstanceOf[UUID.V6]
+
+      (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
+        (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
+        (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
+        (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5]) and
+        (uuid.asV6 must be equalTo Optional.of[UUID.V6](uuid)) and
+        (uuid.asV7 must be equalTo Optional.empty[UUID.V7])
+    }
+
+    "uuid.asV5 should return optional with uuid only if class is UUID.V5" >> {
+      val uuid = UUID.V7.next().asInstanceOf[UUID.V7]
+
+      (uuid.asV1 must be equalTo Optional.empty[UUID.V1]) and
+        (uuid.asV2 must be equalTo Optional.empty[UUID.V2]) and
+        (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
+        (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
+        (uuid.asV5 must be equalTo Optional.empty[UUID.V5]) and
+        (uuid.asV6 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV7 must be equalTo Optional.of[UUID.V7](uuid))
     }
 
   }
