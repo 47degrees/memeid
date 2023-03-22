@@ -74,8 +74,8 @@ class UUIDSpec extends Specification with ScalaCheck {
         (uuid.asV3 must be equalTo Optional.empty[UUID.V3]) and
         (uuid.asV4 must be equalTo Optional.empty[UUID.V4]) and
         (uuid.asV5 must be equalTo Optional.empty[UUID.V5]) and
-        (uuid.asV5 must be equalTo Optional.empty[UUID.V6]) and
-        (uuid.asV5 must be equalTo Optional.empty[UUID.V7])
+        (uuid.asV6 must be equalTo Optional.empty[UUID.V6]) and
+        (uuid.asV7 must be equalTo Optional.empty[UUID.V7])
     }
 
     "uuid.asV2 should return optional with uuid only if class is UUID.V2" in prop { (uuid: UUID.V2) =>

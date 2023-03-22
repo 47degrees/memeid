@@ -800,45 +800,7 @@ public class UUID implements Comparable<UUID> {
 	 */
 	public final static class V6 extends UUID {
 
-		// /**
-		//  * Get the time_low component of the timestamp field
-		//  *
-		//  * @return time_low component of the timestamp field
-		//  * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.2">RFC-4122</a>
-		//  */
-		// public final long timeHigh() {
-		// 	return Bits.readByte(Mask.TIME_LOW, Offset.TIME_LOW, this.asJava().timestamp());
-		// }
-
-		// /**
-		//  * Get the time_mid component of the timestamp field
-		//  *
-		//  * @return time_mid component of the timestamp field
-		//  * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.2">RFC-4122</a>
-		//  */
-		// public final long timeLow() {
-		// 	return Bits.readByte(Mask.TIME_MID, Offset.TIME_MID, this.asJava().timestamp());
-		// }
-
-		// /**
-		//  * Get the clock_seq_low component of the clock sequence field
-		//  *
-		//  * @return clock_seq_low component of the clock sequence field
-		//  * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.2">RFC-4122</a>
-		//  */
-		// public final long clockSeqLow() {
-		// 	return Bits.readByte(Mask.CLOCK_SEQ_LOW, Offset.CLOCK_SEQ_LOW, this.asJava().clockSequence());
-		// }
-
-		// /**
-		//  * Get the clock_seq_high component of the clock sequence field
-		//  *
-		//  * @return clock_seq_high component of the clock sequence field
-		//  * @see <a href="https://tools.ietf.org/html/rfc4122#section-4.1.2">RFC-4122</a>
-		//  */
-		// public final long clockSeqHigh() {
-		// 	return Bits.readByte(Mask.CLOCK_SEQ_HIGH, Offset.CLOCK_SEQ_HIGH, this.asJava().clockSequence());
-		// }
+                static final long version = 0x6000L;
 
 		private V6(java.util.UUID uuid) {
 			super(uuid);
@@ -875,8 +837,6 @@ public class UUID implements Comparable<UUID> {
 		 * @return a {@link V6} UUID
 		 */
 		public static UUID next(Node node, LongSupplier monotonicSupplier) {
-                    // mostly this is V1 with changes to the order of the time bits by writing 
-                        final long version   = 0x6000L; // cheat to avoid bitshifting
 			final long timestamp = monotonicSupplier.getAsLong();
                         final long ts12      = timestamp & Mask.UB12;
                         final long msb       = timestamp << 16 | version | ts12;
