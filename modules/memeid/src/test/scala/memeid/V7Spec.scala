@@ -43,7 +43,7 @@ class V7Spec extends Specification {
     }
 
     "generate a version 7 UUID with the proper timestamp" in {
-      val uuid: UUID.V7 = UUID.V7.next(-1).asV7().get();
+      val uuid: UUID.V7 = UUID.V7.next(-1).asV7().get()
       uuid.timestamp must be equalTo 281474976710655L
     }
   }
