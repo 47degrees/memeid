@@ -15,7 +15,7 @@ object dependencies extends AutoPlugin {
 
   val commonSettings: Seq[Def.Setting[_]] = Seq(
     libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2-scalacheck" % "4.19.2" % Test
+      "org.specs2" %% "specs2-scalacheck" % "4.20.0" % Test
     ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, major)) if major <= 12 =>
         Seq()
@@ -28,7 +28,7 @@ object dependencies extends AutoPlugin {
     "org.typelevel" %% "cats-effect"       % "3.4.9",
     "org.typelevel" %% "cats-laws"         % "2.9.0"  % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
-    "org.specs2"    %% "specs2-cats"       % "4.19.2" % Test
+    "org.specs2"    %% "specs2-cats"       % "4.20.0" % Test
   )
 
   val literalSettings: Seq[Def.Setting[_]] = Seq(
