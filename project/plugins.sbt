@@ -17,6 +17,6 @@ addSbtPlugin("de.heikoseeberger"                 % "sbt-header"               % 
 addSbtPlugin("io.github.davidgregory084"         % "sbt-tpolecat"             % "0.4.1")
 addSbtPlugin("org.scalameta"                     % "sbt-mdoc"                 % "2.3.7")
 addSbtPlugin("org.scalameta"                     % "sbt-scalafmt"             % "2.5.0")
-addSbtPlugin("org.scoverage"                     % "sbt-scoverage"            % "2.0.7")
+addSbtPlugin("org.scoverage"                     % "sbt-scoverage"            % "2.0.8")
 addSbtPlugin("pl.project13.scala"                % "sbt-jmh"                  % "0.4.4")
 addSbtPlugin("com.47deg"                        %% "sbt-hood-plugin"          % "0.4.0")
