@@ -2,7 +2,7 @@ ThisBuild / libraryDependencySchemes ++= Seq(
   "org.scala-lang.modules" %% "scala-xml" % VersionScheme.Always
 )
 addSbtPlugin("com.eed3si9n"                      % "sbt-projectmatrix"        % "0.9.0")
-addSbtPlugin("ch.epfl.scala"                     % "sbt-scalafix"             % "0.10.4")
+addSbtPlugin("ch.epfl.scala"                     % "sbt-scalafix"             % "0.11.0")
 addSbtPlugin("com.47deg"                         % "sbt-microsites"           % "1.4.3")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-codecov"              % "0.2.1")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"                  % "0.7.0")
