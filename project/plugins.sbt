@@ -8,7 +8,7 @@ addSbtPlugin("com.alejandrohdezma"               % "sbt-codecov"              % 
 addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"                  % "0.7.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-header"        % "0.11.8")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-mdoc"          % "0.11.8")
-addSbtPlugin("com.alejandrohdezma"               % "sbt-mdoc-toc"             % "0.4.0")
+addSbtPlugin("com.alejandrohdezma"               % "sbt-mdoc-toc"             % "0.4.1")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-remove-test-from-pom" % "0.1.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-scalafmt-defaults"    % "0.8.0")
 addSbtPlugin("com.github.sbt"                    % "sbt-ci-release"           % "1.5.12")
