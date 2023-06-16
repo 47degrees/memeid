@@ -5,7 +5,7 @@ addSbtPlugin("com.eed3si9n"                      % "sbt-projectmatrix"        % 
 addSbtPlugin("ch.epfl.scala"                     % "sbt-scalafix"             % "0.11.0")
 addSbtPlugin("com.47deg"                         % "sbt-microsites"           % "1.4.3")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-codecov"              % "0.2.1")
-addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"                  % "0.7.0")
+addSbtPlugin("com.alejandrohdezma"               % "sbt-fix"                  % "0.7.1")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-header"        % "0.11.8")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-github-mdoc"          % "0.11.8")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-mdoc-toc"             % "0.4.0")
