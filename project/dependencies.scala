@@ -57,8 +57,8 @@ object dependencies extends AutoPlugin {
   )
 
   val http4s: Seq[ModuleID] = Seq(
-    "org.http4s" %% "http4s-core" % "0.23.20",
-    "org.http4s" %% "http4s-dsl"  % "0.23.20" % Test
+    "org.http4s" %% "http4s-core" % "0.23.21",
+    "org.http4s" %% "http4s-dsl"  % "0.23.21" % Test
   )
 
   val tapir: Seq[ModuleID] = Seq(
@@ -79,7 +79,7 @@ object dependencies extends AutoPlugin {
     "org.typelevel"               %% "cats-effect" % "3.5.0",
     "io.circe"                    %% "circe-core"  % "0.14.5",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC2",
-    "org.http4s"                  %% "http4s-dsl"  % "0.23.20",
+    "org.http4s"                  %% "http4s-dsl"  % "0.23.21",
     "org.scalacheck"              %% "scalacheck"  % "1.17.0",
     "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.5.5",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
