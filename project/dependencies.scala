@@ -25,7 +25,7 @@ object dependencies extends AutoPlugin {
   )
 
   val cats: Seq[ModuleID] = Seq(
-    "org.typelevel" %% "cats-effect"       % "3.5.0",
+    "org.typelevel" %% "cats-effect"       % "3.5.1",
     "org.typelevel" %% "cats-laws"         % "2.9.0"  % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
     "org.specs2"    %% "specs2-cats"       % "4.20.0" % Test
@@ -76,7 +76,7 @@ object dependencies extends AutoPlugin {
   )
 
   val documentation: Seq[ModuleID] = Seq(
-    "org.typelevel"               %% "cats-effect" % "3.5.0",
+    "org.typelevel"               %% "cats-effect" % "3.5.1",
     "io.circe"                    %% "circe-core"  % "0.14.5",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC2",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.21",
