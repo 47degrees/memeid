@@ -33,10 +33,7 @@ class DoobieSpec extends FunSuite with doobie.munit.IOChecker {
 
   lazy val transactor: Transactor[IO] =
     Transactor.fromDriverManager[IO](
-      driver = "org.h2.Driver",
-      url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
-      user = "",
-      pass = ""
+      driver = "org.h2.Driver", url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", user = "", password = "", None
     )
 
   override def beforeAll(): Unit =
