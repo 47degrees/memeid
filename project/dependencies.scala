@@ -7,7 +7,7 @@ import mdoc.MdocPlugin.autoImport._
 
 object dependencies extends AutoPlugin {
 
-  val scala2_12 = "2.12.17"
+  val scala2_12 = "2.12.18"
 
   val scala2_13 = "2.13.11"
 
