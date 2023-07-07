@@ -7,9 +7,9 @@ import mdoc.MdocPlugin.autoImport._
 
 object dependencies extends AutoPlugin {
 
-  val scala2_12 = "2.12.17"
+  val scala2_12 = "2.12.18"
 
-  val scala2_13 = "2.13.10"
+  val scala2_13 = "2.13.11"
 
   val scala3 = "3.3.0"
 
@@ -25,7 +25,7 @@ object dependencies extends AutoPlugin {
   )
 
   val cats: Seq[ModuleID] = Seq(
-    "org.typelevel" %% "cats-effect"       % "3.5.0",
+    "org.typelevel" %% "cats-effect"       % "3.5.1",
     "org.typelevel" %% "cats-laws"         % "2.9.0"  % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
     "org.specs2"    %% "specs2-cats"       % "4.20.0" % Test
@@ -45,9 +45,9 @@ object dependencies extends AutoPlugin {
   )
 
   val doobie: Seq[ModuleID] = Seq(
-    "org.tpolecat" %% "doobie-core"  % "1.0.0-RC2",
-    "org.tpolecat" %% "doobie-h2"    % "1.0.0-RC2",
-    "org.tpolecat" %% "doobie-munit" % "1.0.0-RC2" % Test
+    "org.tpolecat" %% "doobie-core"  % "1.0.0-RC4",
+    "org.tpolecat" %% "doobie-h2"    % "1.0.0-RC4",
+    "org.tpolecat" %% "doobie-munit" % "1.0.0-RC4" % Test
   )
 
   val circe: Seq[ModuleID] = Seq(
@@ -62,9 +62,9 @@ object dependencies extends AutoPlugin {
   )
 
   val tapir: Seq[ModuleID] = Seq(
-    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.5.5",
-    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.5.5" % Test,
-    "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.4.0" % Test
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.6.0",
+    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.6.0" % Test,
+    "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.5.3" % Test
   )
 
   val fuuid: Seq[ModuleID] = Seq(
@@ -76,12 +76,12 @@ object dependencies extends AutoPlugin {
   )
 
   val documentation: Seq[ModuleID] = Seq(
-    "org.typelevel"               %% "cats-effect" % "3.5.0",
+    "org.typelevel"               %% "cats-effect" % "3.5.1",
     "io.circe"                    %% "circe-core"  % "0.14.5",
-    "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC2",
+    "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC4",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.22",
     "org.scalacheck"              %% "scalacheck"  % "1.17.0",
-    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.5.5",
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.6.0",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
   )
 

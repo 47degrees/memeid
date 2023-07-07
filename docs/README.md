@@ -178,7 +178,8 @@ val transactor: Transactor[IO] =
     driver = "org.h2.Driver",
     url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
     user = "",
-    pass = ""
+    password = "",
+    logHandler = None
   )
 
 sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync()

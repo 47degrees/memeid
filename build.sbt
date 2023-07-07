@@ -3,6 +3,7 @@ lazy val fullCrossScala = Seq(dependencies.scala2_12, dependencies.scala2_13, de
 ThisBuild / scalaVersion      := dependencies.scala3
 ThisBuild / organization      := "com.47deg"
 ThisBuild / semanticdbEnabled := true
+ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 ThisBuild / scalafixDependencies ++= Seq(
   "com.github.liancheng" %% "organize-imports" % "0.6.0",
   "com.github.vovapolu"  %% "scaluzzi"         % "0.1.23"

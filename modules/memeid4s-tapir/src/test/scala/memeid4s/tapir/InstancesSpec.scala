@@ -38,7 +38,7 @@ class InstancesSpec extends Specification with ScalaCheck {
       val result = OpenAPIDocsInterpreter().toOpenAPI(testEndpoint, "", "").toYaml
 
       val expected =
-        """openapi: 3.0.3
+        """openapi: 3.1.0
           |info:
           |  title: ''
           |  version: ''
