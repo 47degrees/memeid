@@ -62,8 +62,8 @@ object dependencies extends AutoPlugin {
   )
 
   val tapir: Seq[ModuleID] = Seq(
-    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.7.0",
-    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.7.0" % Test,
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.7.1",
+    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.7.1" % Test,
     "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.6.0" % Test
   )
 
@@ -81,7 +81,7 @@ object dependencies extends AutoPlugin {
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC4",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.23",
     "org.scalacheck"              %% "scalacheck"  % "1.17.0",
-    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.7.0",
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.7.1",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
   )
 
