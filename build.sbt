@@ -129,6 +129,7 @@ lazy val documentation = projectMatrix
   .dependsOn(crossBuiltModuleDeps: _*)
   .settings(mdocOut := file("."))
   .settings(publish / skip := true)
+  .settings(scalacOptions -= "-Xfatal-warnings")
   .jvmPlatform(scalaVersions = Seq(dependencies.scala2_12, dependencies.scala2_13))
 
 lazy val microsite = projectMatrix
@@ -139,6 +140,7 @@ lazy val microsite = projectMatrix
   .settings(dependencies.micrositeSettings)
   .dependsOn(crossBuiltModuleDeps: _*)
   .settings(publish / skip := true)
+  .settings(scalacOptions -= "-Xfatal-warnings")
   .jvmPlatform(scalaVersions = Seq(dependencies.scala2_12, dependencies.scala2_13))
 
 //////////////////////
