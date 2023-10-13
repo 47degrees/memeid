@@ -9,13 +9,13 @@ object dependencies extends AutoPlugin {
 
   val scala2_12 = "2.12.18"
 
-  val scala2_13 = "2.13.11"
+  val scala2_13 = "2.13.12"
 
   val scala3 = "3.3.0"
 
   val commonSettings: Seq[Def.Setting[_]] = Seq(
     libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2-scalacheck" % "4.20.0" % Test
+      "org.specs2" %% "specs2-scalacheck" % "4.20.2" % Test
     ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, major)) if major <= 12 =>
         Seq()
@@ -25,10 +25,10 @@ object dependencies extends AutoPlugin {
   )
 
   val cats: Seq[ModuleID] = Seq(
-    "org.typelevel" %% "cats-effect"       % "3.5.1",
-    "org.typelevel" %% "cats-laws"         % "2.9.0"  % Test,
+    "org.typelevel" %% "cats-effect"       % "3.5.2",
+    "org.typelevel" %% "cats-laws"         % "2.10.0" % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
-    "org.specs2"    %% "specs2-cats"       % "4.20.0" % Test
+    "org.specs2"    %% "specs2-cats"       % "4.20.2" % Test
   )
 
   val literalSettings: Seq[Def.Setting[_]] = Seq(
@@ -51,20 +51,20 @@ object dependencies extends AutoPlugin {
   )
 
   val circe: Seq[ModuleID] = Seq(
-    "io.circe"      %% "circe-core"        % "0.14.5",
+    "io.circe"      %% "circe-core"        % "0.14.6",
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
-    "io.circe"      %% "circe-testing"     % "0.14.5" % Test
+    "io.circe"      %% "circe-testing"     % "0.14.6" % Test
   )
 
   val http4s: Seq[ModuleID] = Seq(
-    "org.http4s" %% "http4s-core" % "0.23.22",
-    "org.http4s" %% "http4s-dsl"  % "0.23.22" % Test
+    "org.http4s" %% "http4s-core" % "0.23.23",
+    "org.http4s" %% "http4s-dsl"  % "0.23.23" % Test
   )
 
   val tapir: Seq[ModuleID] = Seq(
-    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.6.0",
-    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.6.0" % Test,
-    "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.5.3" % Test
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.7.6",
+    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.7.6" % Test,
+    "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.6.3" % Test
   )
 
   val fuuid: Seq[ModuleID] = Seq(
@@ -76,12 +76,12 @@ object dependencies extends AutoPlugin {
   )
 
   val documentation: Seq[ModuleID] = Seq(
-    "org.typelevel"               %% "cats-effect" % "3.5.1",
-    "io.circe"                    %% "circe-core"  % "0.14.5",
+    "org.typelevel"               %% "cats-effect" % "3.5.2",
+    "io.circe"                    %% "circe-core"  % "0.14.6",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC4",
-    "org.http4s"                  %% "http4s-dsl"  % "0.23.22",
+    "org.http4s"                  %% "http4s-dsl"  % "0.23.23",
     "org.scalacheck"              %% "scalacheck"  % "1.17.0",
-    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.6.0",
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.7.6",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
   )
 

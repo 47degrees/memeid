@@ -25,11 +25,7 @@ import cats.effect.unsafe.implicits.global
 
 val transactor: Transactor[IO] =
   Transactor.fromDriverManager[IO](
-    driver = "org.h2.Driver",
-    url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1",
-    user = "",
-    password = "",
-    logHandler = None
+    driver = "org.h2.Driver", url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1", user = "", password = "", logHandler = None
   )
 
 sql"CREATE TABLE IF NOT EXISTS test (id UUID NOT NULL)".update.run.transact(transactor).unsafeRunSync()
