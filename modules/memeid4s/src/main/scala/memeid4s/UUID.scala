@@ -97,9 +97,9 @@ object UUID {
   /** Creates a valid [[UUID]] from a [[UUID]].
     *
     * @param juuid
-    *   the { @link java.util.UUID}
+    *   the {@@linkjava.util.UUID}
     * @return
-    *   a valid { @link UUID} created from a { @link java.util.UUID}
+    *   a valid {@@linkUUID} created from a {@@linkjava.util.UUID}
     */
   @inline def fromUUID(juuid: JUUID): UUID = memeid.UUID.fromUUID(juuid)
 
