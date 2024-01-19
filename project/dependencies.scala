@@ -15,7 +15,7 @@ object dependencies extends AutoPlugin {
 
   val commonSettings: Seq[Def.Setting[_]] = Seq(
     libraryDependencies ++= Seq(
-      "org.specs2" %% "specs2-scalacheck" % "4.20.3" % Test
+      "org.specs2" %% "specs2-scalacheck" % "4.20.4" % Test
     ) ++ (CrossVersion.partialVersion(scalaVersion.value) match {
       case Some((2, major)) if major <= 12 =>
         Seq()
@@ -25,10 +25,10 @@ object dependencies extends AutoPlugin {
   )
 
   val cats: Seq[ModuleID] = Seq(
-    "org.typelevel" %% "cats-effect"       % "3.5.2",
+    "org.typelevel" %% "cats-effect"       % "3.5.3",
     "org.typelevel" %% "cats-laws"         % "2.10.0" % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
-    "org.specs2"    %% "specs2-cats"       % "4.20.3" % Test
+    "org.specs2"    %% "specs2-cats"       % "4.20.4" % Test
   )
 
   val literalSettings: Seq[Def.Setting[_]] = Seq(
@@ -57,13 +57,13 @@ object dependencies extends AutoPlugin {
   )
 
   val http4s: Seq[ModuleID] = Seq(
-    "org.http4s" %% "http4s-core" % "0.23.24",
-    "org.http4s" %% "http4s-dsl"  % "0.23.24" % Test
+    "org.http4s" %% "http4s-core" % "0.23.25",
+    "org.http4s" %% "http4s-dsl"  % "0.23.25" % Test
   )
 
   val tapir: Seq[ModuleID] = Seq(
-    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.9.3",
-    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.9.3" % Test,
+    "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.9.6",
+    "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.9.6" % Test,
     "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.7.3" % Test
   )
 
@@ -76,12 +76,12 @@ object dependencies extends AutoPlugin {
   )
 
   val documentation: Seq[ModuleID] = Seq(
-    "org.typelevel"               %% "cats-effect" % "3.5.2",
+    "org.typelevel"               %% "cats-effect" % "3.5.3",
     "io.circe"                    %% "circe-core"  % "0.14.6",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC5",
-    "org.http4s"                  %% "http4s-dsl"  % "0.23.24",
+    "org.http4s"                  %% "http4s-dsl"  % "0.23.25",
     "org.scalacheck"              %% "scalacheck"  % "1.17.0",
-    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.9.3",
+    "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.9.6",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
   )
 
