@@ -64,7 +64,7 @@ object dependencies extends AutoPlugin {
   val tapir: Seq[ModuleID] = Seq(
     "com.softwaremill.sttp.tapir"   %% "tapir-core"         % "1.9.6",
     "com.softwaremill.sttp.tapir"   %% "tapir-openapi-docs" % "1.9.6" % Test,
-    "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.7.3" % Test
+    "com.softwaremill.sttp.apispec" %% "openapi-circe-yaml" % "0.7.4" % Test
   )
 
   val fuuid: Seq[ModuleID] = Seq(
