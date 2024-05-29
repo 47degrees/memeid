@@ -26,7 +26,7 @@ object dependencies extends AutoPlugin {
 
   val cats: Seq[ModuleID] = Seq(
     "org.typelevel" %% "cats-effect"       % "3.5.4",
-    "org.typelevel" %% "cats-laws"         % "2.10.0" % Test,
+    "org.typelevel" %% "cats-laws"         % "2.12.0" % Test,
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
     "org.specs2"    %% "specs2-cats"       % "4.20.5" % Test
   )
