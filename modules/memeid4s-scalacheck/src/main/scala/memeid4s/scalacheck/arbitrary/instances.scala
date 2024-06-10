@@ -83,4 +83,19 @@ object instances {
     } yield UUID.V5.from(namespace, name).asInstanceOf[UUID.V5]
   }
 
+  implicit val UUIDV6ArbitraryInstance: Arbitrary[UUID.V6] = Arbitrary {
+    for {
+      timestamp     <- arbitrary[Long]
+      clockSequence <- arbitrary[Short]
+      id            <- arbitrary[Long]
+      node           = new Node(clockSequence, id)
+    } yield UUID.V6.next(node, () => timestamp).asInstanceOf[UUID.V6]
+  }
+
+  implicit val UUIDV7ArbitraryInstance: Arbitrary[UUID.V7] = Arbitrary {
+    for {
+      timestamp <- arbitrary[Long]
+    } yield UUID.V7.next(timestamp).asInstanceOf[UUID.V7]
+  }
+
 }
