@@ -19,7 +19,6 @@ import cats._
 
 import cats.effect.IO
 import memeid4s.UUID
-import memeid4s.literal._
 import memeid4s.cats.implicits._
 
 Order[UUID]
