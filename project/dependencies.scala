@@ -72,7 +72,7 @@ object dependencies extends AutoPlugin {
   )
 
   val scalacheck: Seq[ModuleID] = Seq(
-    "org.scalacheck" %% "scalacheck" % "1.17.0"
+    "org.scalacheck" %% "scalacheck" % "1.17.1"
   )
 
   val documentation: Seq[ModuleID] = Seq(
@@ -80,7 +80,7 @@ object dependencies extends AutoPlugin {
     "io.circe"                    %% "circe-core"  % "0.14.6",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC5",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.30",
-    "org.scalacheck"              %% "scalacheck"  % "1.17.0",
+    "org.scalacheck"              %% "scalacheck"  % "1.17.1",
     "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.10.3",
     "io.chrisdavenport"           %% "fuuid"       % "0.8.0-M2"
   )
