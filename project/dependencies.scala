@@ -20,7 +20,7 @@ object dependencies extends AutoPlugin {
       case Some((2, major)) if major <= 12 =>
         Seq()
       case _ =>
-        Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "1.0.4" % Test)
+        Seq("org.scala-lang.modules" %% "scala-parallel-collections" % "1.1.0" % Test)
     })
   )
 
