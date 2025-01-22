@@ -1,18 +1,14 @@
-/*
- * Copyright 2019-2023 47 Degrees Open Source <https://www.47deg.com>
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
+/** Copyright 2019-2023 47 Degrees Open Source <https://www.47deg.com>
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with
+  * the License. You may obtain a copy of the License at
+  *
+  * http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on
+  * an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the
+  * specific language governing permissions and limitations under the License.
+  */
 
 package memeid4s
 
@@ -39,6 +35,10 @@ object UUID {
   type V4 = memeid.UUID.V4
 
   type V5 = memeid.UUID.V5
+
+  type V6 = memeid.UUID.V6
+
+  type V7 = memeid.UUID.V7
 
   @SuppressWarnings(Array("scalafix:DisableSyntax.implicitConversion"))
   implicit def richUUID(uuid: memeid.UUID): RichUUID = new RichUUID(uuid)
@@ -193,6 +193,35 @@ object UUID {
       */
     @inline def apply[A](namespace: UUID, local: A)(implicit D: Digestible[A]): UUID =
       memeid.UUID.V5.from(namespace, local, D.toByteArray)
+
+  }
+
+  object V6 {
+
+    /** Construct a [[UUID.V6 V6]] (time-based) UUID.
+      *
+      * @param N
+      *   [[node.Node Node]] for the V6 UUID generation
+      * @param T
+      *   [[time.Time Time]] which assures the V6 UUID time is unique
+      * @return
+      *   [[UUID.V6 V6]]
+      */
+    @inline def next(implicit N: Node, T: Time): UUID =
+      memeid.UUID.V6.next(N.value, () => T.monotonic)
+
+  }
+
+  object V7 {
+
+    /** Construct a timestamp plus random v7 UUID. There's 48 bits of unix millisecond timestamp and the rest is random
+      * bits. This uses [[System.currentTimeMillis]] to get the current time.
+      *
+      * @return
+      *   [[UUID.V7 V7]]
+      */
+    @inline def apply(): UUID =
+      memeid.UUID.V7.next()
 
   }
 
