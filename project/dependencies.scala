@@ -33,7 +33,7 @@ object dependencies extends AutoPlugin {
 
   val literalSettings: Seq[Def.Setting[_]] = Seq(
     libraryDependencies ++= Seq(
-      "org.scalameta" %% "munit" % "0.7.29" % Test
+      "org.scalameta" %% "munit" % "1.1.0" % Test
     ) ++
       (CrossVersion.partialVersion(scalaVersion.value) match {
         case Some((2, _)) =>
