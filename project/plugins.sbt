@@ -11,7 +11,7 @@ addSbtPlugin("com.alejandrohdezma"               % "sbt-github-mdoc"          % 
 addSbtPlugin("com.alejandrohdezma"               % "sbt-mdoc-toc"             % "0.4.1")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-remove-test-from-pom" % "0.1.0")
 addSbtPlugin("com.alejandrohdezma"               % "sbt-scalafmt-defaults"    % "0.9.0")
-addSbtPlugin("com.github.sbt"                    % "sbt-ci-release"           % "1.5.12")
+addSbtPlugin("com.github.sbt"                    % "sbt-ci-release"           % "1.6.1")
 addSbtPlugin("com.thoughtworks.sbt-api-mappings" % "sbt-api-mappings"         % "3.0.2")
 addSbtPlugin("de.heikoseeberger"                 % "sbt-header"               % "5.10.0")
 addSbtPlugin("io.github.davidgregory084"         % "sbt-tpolecat"             % "0.4.1")
