@@ -45,9 +45,9 @@ object dependencies extends AutoPlugin {
   )
 
   val doobie: Seq[ModuleID] = Seq(
-    "org.tpolecat" %% "doobie-core"  % "1.0.0-RC5",
-    "org.tpolecat" %% "doobie-h2"    % "1.0.0-RC5",
-    "org.tpolecat" %% "doobie-munit" % "1.0.0-RC5" % Test
+    "org.tpolecat" %% "doobie-core"  % "1.0.0-RC7",
+    "org.tpolecat" %% "doobie-h2"    % "1.0.0-RC7",
+    "org.tpolecat" %% "doobie-munit" % "1.0.0-RC7" % Test
   )
 
   val circe: Seq[ModuleID] = Seq(
@@ -78,7 +78,7 @@ object dependencies extends AutoPlugin {
   val documentation: Seq[ModuleID] = Seq(
     "org.typelevel"               %% "cats-effect" % "3.5.4",
     "io.circe"                    %% "circe-core"  % "0.14.6",
-    "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC5",
+    "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC7",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.30",
     "org.scalacheck"              %% "scalacheck"  % "1.17.0",
     "com.softwaremill.sttp.tapir" %% "tapir-core"  % "1.10.3",
