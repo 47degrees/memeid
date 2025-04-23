@@ -87,6 +87,8 @@ tags
 .direnv
 .envrc
 
-### JavaScript ###
+### JavaScript / NPM / Yarn / Bundlers ###
 
 node_modules
+.parcel-cache
+dist
