@@ -51,9 +51,9 @@ object dependencies extends AutoPlugin {
   )
 
   val circe: Seq[ModuleID] = Seq(
-    "io.circe"      %% "circe-core"        % "0.14.6",
+    "io.circe"      %% "circe-core"        % "0.14.9",
     "org.typelevel" %% "discipline-specs2" % "1.4.0"  % Test,
-    "io.circe"      %% "circe-testing"     % "0.14.6" % Test
+    "io.circe"      %% "circe-testing"     % "0.14.9" % Test
   )
 
   val http4s: Seq[ModuleID] = Seq(
@@ -77,7 +77,7 @@ object dependencies extends AutoPlugin {
 
   val documentation: Seq[ModuleID] = Seq(
     "org.typelevel"               %% "cats-effect" % "3.5.4",
-    "io.circe"                    %% "circe-core"  % "0.14.6",
+    "io.circe"                    %% "circe-core"  % "0.14.9",
     "org.tpolecat"                %% "doobie-h2"   % "1.0.0-RC5",
     "org.http4s"                  %% "http4s-dsl"  % "0.23.30",
     "org.scalacheck"              %% "scalacheck"  % "1.17.0",
